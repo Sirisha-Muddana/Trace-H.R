@@ -1,5 +1,5 @@
 {
-  "name": "focus-server",
+  "name": "trace-server",
   "version": "1.0.0",
   "description": "Back-end server for the Kairos HR Application.",
   "main": "server.js",
