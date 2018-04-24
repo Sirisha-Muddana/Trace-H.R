@@ -32,6 +32,17 @@ const UserSchema = mongoose.Schema({
   timestamps: true
 });
 
+/**
+ * Compare the passed password with the value in the database. A model method.
+ *
+ * @param {string} password
+ * @returns {object} callback
+ */
+UserSchema.methods.comparePassword = function comparePassword(password, callback) {
+  bcrypt.compare(password, this.password, callback);
+};
+
+
 //Hashing a password before saving it to the database
 UserSchema.pre('save', function(next){
   var user = this;

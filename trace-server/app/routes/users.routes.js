@@ -1,11 +1,13 @@
+const passport = require('passport');
+
 module.exports = (app) => {
     const users = require('../controllers/users.controller.js');
 
     // Create a new user
-    app.post('/api/register', users.create);
+    app.post('/api/signup', users.create);
 
     // Retrieve all users
-    app.get('/api/users', users.findAll);
+    app.get('/api/users', passport.authenticate('jwt', { session: false }), users.findAll);
 
     // Retrieve a single user with userId
     app.get('/api/users/:userId', users.findOne);
@@ -18,5 +20,4 @@ module.exports = (app) => {
 
     app.post('/api/authenticate', users.authenticate);
 
-    app.get('/api/login', users.login);
 }

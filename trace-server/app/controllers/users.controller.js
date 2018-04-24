@@ -13,14 +13,22 @@ exports.create = (req, res) => {
       message: "Email can not be empty"
     });
   }
-
+  else{
+    Users.findOne({email: req.body.email}) 
+    .then(user => {
+      if(user) {
+        return res.status(409).send({
+          message: "User with email already exists!"
+        });
+      }
+      else{
   // Create a User
   const users = new Users({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
-    userAccessRole: "USER"
+    userAccessRole: "ACCESS LEVEL 1"
   });
 
   // Save user in the database
@@ -32,18 +40,10 @@ exports.create = (req, res) => {
       message: err.message || "Some error occurred while creating the user."
     });
   });
-};
+}
+});
 
-// Retrieve and return all users from the database.
-exports.findAll = (req, res) => {
-  Users.find()
-  .then(users => {
-    res.send(users);
-  }).catch(err => {
-    res.status(500).send({
-      message: err.message || "Some error occurred while retrieving user."
-    });
-  });
+  }
 };
 
 // Find a single user with a userId
@@ -77,25 +77,24 @@ exports.update = (req, res) => {
     });
   }
 
-  // retrieve the password field
-  var password = req.body.password
-  // generate a salt
-  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next(err);
-    // update it with hash
-    bcrypt.hash(password, salt, function(err, hash) {
-      if (err) return next(err);
+  // // retrieve the password field
+  // var password = req.body.password
+  // // generate a salt
+  // bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+  //   if (err) return next(err);
+  //   // update it with hash
+  //   bcrypt.hash(password, salt, function(err, hash) {
+  //     if (err) return next(err);
 
-      // override the cleartext password with the hashed one
-      req.body.password = hash;
-      console.log(req.body.password);
+  //     // override the cleartext password with the hashed one
+  //     req.body.password = hash;
+  //     //console.log(req.body.password);
 
       // Find user and update it with the request body
       Users.findByIdAndUpdate(req.params.userId, {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password
       }, {new: true})
       .then(user => {
         if(!user) {
@@ -114,8 +113,8 @@ exports.update = (req, res) => {
           message: "Error updating user with id " + req.params.userId
         });
       });
-    });
-  });
+    //});
+  //});
 };
 
   // Delete a user with the specified noteId in the request
@@ -150,13 +149,13 @@ exports.update = (req, res) => {
         message: "User not found with email " + req.params.email
       });
     }
-    bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+    return user.comparePassword(req.body.password, (err, isMatch) => {
       if(err) throw err;
       //console.log(isMatch);
       if(isMatch){
         const token = jwt.sign(user.toJSON(), config.secret, {
-        expiresIn: 1h 
-      });
+          expiresIn: 3600
+        });
 
         res.json({
           success: true,
@@ -166,7 +165,9 @@ exports.update = (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
+            userAccessRole: user.userAccessRole
             //password: user.password
+
           }
         });
       } else{
@@ -176,8 +177,14 @@ exports.update = (req, res) => {
   });
 };
 
-// Login Authorized
-exports.login = (req, res, next) => {
-  passport.authenticate('jwt', {session:false})
-  res.json({user: req.users})
+// Retrieve and return all users from the database.
+exports.findAll = (req, res) => {
+  Users.find()
+  .then(users => {
+    res.send(users);
+  }).catch(err => {
+    res.status(500).send({
+      message: err.message || "Some error occurred while retrieving user."
+    });
+  });
 };
