@@ -31,7 +31,7 @@ class UserInfo extends Component {
     axios
       .delete(`http://localhost:3000/api/users/${userId}`)
       .then(response => {
-        this.props.history.push("/");
+        this.props.history.push("/users");
       })
       .catch(err => console.log(err));
   }
@@ -40,7 +40,7 @@ class UserInfo extends Component {
     return (
       <div>
         <br />
-        <Link className="btn" to="/home">
+        <Link className="btn" to="/users">
           Back
         </Link>
         <h3>User Info</h3>

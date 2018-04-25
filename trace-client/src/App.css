@@ -4,7 +4,7 @@
 
 
 .navbar-light {
-	background-color: #D8D8D8
+	background-color: lightgrey
 }
 
 .navbar-brand {
@@ -20,7 +20,7 @@
 	color: black!important;
 	margin: 0px 10px;
 	text-align: center;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 }
 
 .navbar-nav li.nav-item.active{
@@ -44,11 +44,12 @@ html, body, .container-fluid, .row {
 
 }
 
+
 /******** LoginPage.js *********/
 
 #section{
 	padding: 30px 30px;
-	margin: 100px 0;
+	margin: 50px 0;
 	border: 2px solid lightgrey;
 	border-radius: 10px;
 }
@@ -74,3 +75,9 @@ html, body, .container-fluid, .row {
 
 /********** adminAccess.js ***********/
 
+
+/********** Bootstrap Errors**********/
+.has-danger, .help-block{
+	color: #d9534f;
+	border-color: #d9534f;
+}

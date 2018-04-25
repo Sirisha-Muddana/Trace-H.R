@@ -3,15 +3,6 @@ import React, { Component } from "react";
 
 class Sidebar extends Component{
 
-    // constructor(){
-    //     super();
-    //     //this.Auth = new AuthService();
-    // }
-    // handleLogout() {
-    //     //this.Auth.logout();
-    //     //this.props.history.replace("/users/login");
-    // }
-
     render() {
         return (
                         <div className="sidebar-sticky">
@@ -74,12 +65,6 @@ class Sidebar extends Component{
                                         Year-end sale
                                     </a>
                                 </li>
-                                {/*<li className="nav-item">*/}
-                                    {/*<a className="nav-link" href="/users/login"*/}
-                                        {/*onClick={this.handleLogout.bind(this)}>*/}
-                                        {/*Logout*/}
-                                    {/*</a>*/}
-                                {/*</li>*/}
                             </ul>
                         </div>
         )

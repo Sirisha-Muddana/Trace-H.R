@@ -47,7 +47,7 @@ class EditUser extends Component {
         data: newUser
       })
       .then(response => {
-        this.props.history.push("/");
+        this.props.history.push(`/users/${this.state.id}`);
       })
       .catch(err => console.log(err));
   }
