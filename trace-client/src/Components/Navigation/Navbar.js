@@ -1,64 +1,26 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from 'react-redux';
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { logout } from '../../actions/authActions';
+import * as actions from '../../actions/authActions';
+import {Menu, Icon} from 'semantic-ui-react';
 
-class Navbar extends Component {
+const Navbar = ({logout}) => (
+    <Menu secondary pointing>
+        <Menu.Item as={Link} to="/dashboard">
+            Dashboard
+        </Menu.Item>
+        <Menu.Menu position="right">
+            <Menu.Item as={Link} to="/"> Homepage </Menu.Item>
+            <Menu.Item as={Link} to="/login"> Login </Menu.Item>
+            <Menu.Item as={Link} to="/signup"> Sign Up </Menu.Item>
+            <Menu.Item onClick={() => logout()}>Logout</Menu.Item>
 
-  logout(e) {
-    e.preventDefault();
-    this.props.logout()
-        // .then(
-        // (res) => this.context.router.history.push('/login'),
-
-  // );
-  }
-
-  render() {
-    const { isAuthenticated } = this.props.auth
-
-    const userLinks = (
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <a className="nav-link" href="/" onClick={this.logout.bind(this)}>Logout</a>
-          </li>
-        </ul>
-
-    );
-
-    const guestLinks = (
-        <ul className="navbar-nav">
-          <li className="nav-item active">
-            <Link className="nav-link" to="/">Home</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/login">Login</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/signup">Sign up</Link>
-          </li>
-        </ul>
-    );
-
-    return (
-      <nav className="navbar navbar-expand-lg navbar-light">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            Trace H.R
-          </Link>
-          <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-              { isAuthenticated ? userLinks : guestLinks }
-          </div>
-        </div>
-      </nav>
-    );
-  }
-}
-
+        </Menu.Menu>
+    </Menu>
+);
 Navbar.propTypes = {
-  auth: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired
 }
 
 Navbar.contextTypes = {
@@ -66,9 +28,9 @@ Navbar.contextTypes = {
 }
 
 function mapStateToProps(state) {
-  return {
-    auth: state.auth
-  }
+    return {
+        //isAuthenticated: !!state.user.token
+    }
 }
 
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps, {logout: actions.logout})(Navbar);

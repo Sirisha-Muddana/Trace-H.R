@@ -4,29 +4,34 @@ import {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import App from './App';
+import 'semantic-ui-css/semantic.min.css';
 import setAuthorizationToken from './utils/setAuthorizationToken'
 import rootReducer from './rootReducer';
 import decode from 'jwt-decode';
-import { setCurrentUser } from './actions/authActions';
+import { userLoggedIn } from './actions/authActions';
 
 const store = createStore(
     rootReducer,
-    compose(
-        applyMiddleware(thunk),
-        window.devToolsExtension ? window.devToolsExtension() : f => f
-    )
+    composeWithDevTools(applyMiddleware(thunk))
 );
 
-if(localStorage.jwtToken) {
+if (localStorage.jwtToken) {
+    const payload = decode(localStorage.jwtToken);
+    const user = {
+        token: localStorage.jwtToken,
+        email: payload.email,
+        confirmed: payload.confirmed
+    };
     setAuthorizationToken(localStorage.jwtToken);
-    store.dispatch(setCurrentUser(decode(localStorage.jwtToken)));
+    store.dispatch(userLoggedIn(user));
 }
 
 ReactDOM.render(
-    <Provider store={store}>
-        <BrowserRouter>
+    <BrowserRouter>
+        <Provider store={store}>
             <App/>
-        </BrowserRouter>
-    </Provider>
+        </Provider>
+    </BrowserRouter>
     , document.getElementById('root'));

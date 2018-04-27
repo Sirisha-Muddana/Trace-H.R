@@ -1,28 +1,27 @@
 import React, {Component} from 'react';
 import SignupForm from './SignupForm';
 import {connect} from 'react-redux';
-import {userSignupRequest} from '../ReduxActions/userSignupRequest'
+import { signup } from '../../actions/signupActions'
 import PropTypes from 'prop-types';
-import { addFlashMessage } from '../../actions/flashMessages'
 
 class SignupPage extends Component {
+    submit = (data) =>
+        this.props.signup(data).then(() => this.props.history.push('/dashboard'));
+
     render() {
-        const {userSignupRequest, addFlashMessage} = this.props;
         return (
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div id="section" className="col-md-6">
-                        <SignupForm userSignupRequest={userSignupRequest} addFlashMessage={addFlashMessage}/>
-                    </div>
-                </div>
+            <div>
+              <SignupForm submit={this.submit} />
             </div>
         );
     }
 }
 
 SignupPage.propTypes = {
-    userSignupRequest: PropTypes.func.isRequired,
-    addFlashMessage: PropTypes.func.isRequired
-}
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired,
+    signup: PropTypes.func.isRequired
+};
 
-export default connect(null, {userSignupRequest, addFlashMessage})(SignupPage);
+export default connect(null, {signup})(SignupPage);

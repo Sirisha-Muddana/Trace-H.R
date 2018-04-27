@@ -1,30 +1,31 @@
-import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
-import decode from 'jwt-decode';
-import { SET_CURRENT_USER } from './types';
+import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../actions/types';
+import api from '../api';
 
-export function setCurrentUser(user) {
-    return {
-        type: SET_CURRENT_USER,
-        user
-    }
-}
+export const userLoggedIn = user => ({
+    type: USER_LOGGED_IN,
+    user
+});
 
-export function logout() {
-    return dispatch => {
-        localStorage.removeItem('jwtToken');
-        setAuthorizationToken(false);
-        dispatch(setCurrentUser({}));
-    }
-}
+export const userLoggedOut = () => ({
+    type: USER_LOGGED_OUT
+});
 
-export function login(data) {
-    return dispatch => {
-        return axios.post('http://localhost:3000/api/authenticate', data).then(res => {
-            const token = res.data.token;
-            localStorage.setItem('jwtToken', token);
-            setAuthorizationToken(token);
-            dispatch(setCurrentUser(decode(token)));
-        });
-    }
-}
+export const login = credentials => dispatch =>
+    api.user.login(credentials).then(user => {
+        localStorage.jwtToken = user.token;
+        setAuthorizationToken(user.token);
+        dispatch(userLoggedIn(user));
+    });
+
+export const logout = () => dispatch => {
+        localStorage.removeItem("jwtToken");
+        setAuthorizationToken();
+        dispatch(userLoggedOut());
+};
+
+export const confirm = token => dispatch =>
+    api.user.confirm(token).then(user => {
+        localStorage.jwtToken = user.token;
+        dispatch(userLoggedIn(user));
+    });
