@@ -20,4 +20,6 @@ module.exports = (app) => {
 
     app.post('/api/authenticate', users.authenticate);
 
+    app.post('/api/confirmation', users.confirmation);
+
 }

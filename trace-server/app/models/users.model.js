@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
-SALT_WORK_FACTOR = 10;
+const jwt = require('jsonwebtoken');
+import uniqueValidator from 'mongoose-unique-validator';
 
 // User Schema
 const UserSchema = mongoose.Schema({
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
 
   lastName: {
@@ -16,17 +17,30 @@ const UserSchema = mongoose.Schema({
 
   email: {
     type: String,
-    required: true
+    required: true,
+    index: true,
+    lowercase: true,
+    unique: true
   },
 
-  password: {
+  passwordHash: {
     type: String,
     required: true
   }, 
 
   userAccessRole: {
-    type: String,
+    type: String
   },
+
+  confirmed: {
+    type: Boolean,
+    default: false
+  },
+
+  confirmationToken: { 
+    type: String,
+    default: ''
+  }
 }, 
 {
   timestamps: true
@@ -38,30 +52,42 @@ const UserSchema = mongoose.Schema({
  * @param {string} password
  * @returns {object} callback
  */
-UserSchema.methods.comparePassword = function comparePassword(password, callback) {
-  bcrypt.compare(password, this.password, callback);
+ UserSchema.methods.comparePassword = function comparePassword(password) {
+  return bcrypt.compareSync(password, this.passwordHash);
 };
 
+UserSchema.methods.generateJWT = function generateJWT() {
+  return jwt.sign(
+  {
+    email: this.email,
+    confirmed: this.confirmed
+  }, 
+  'secret');
+}
+
+UserSchema.methods.toAuthJSON = function toAuthJSON() {
+  return {
+    email: this.email,
+    confirmed: this.confirmed,
+    token: this.generateJWT()
+  }
+}
 
 //Hashing a password before saving it to the database
-UserSchema.pre('save', function(next){
-  var user = this;
-  // only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) return next();
+UserSchema.methods.setPassword = function setPassword(password) {
+  // generate a salt
+  this.passwordHash = bcrypt.hashSync(password, 10);
+};
 
-    // generate a salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) return next(err);
+UserSchema.methods.setConfirmationToken = function setConfirmationToken() {
+  // generate a salt
+  this.confirmationToken = this.generateJWT();
+};
 
-        // hash the password using our new salt
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) return next(err);
+UserSchema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
+  return `${process.env.HOST}/confirmation/${this.confirmationToken}`;
+}
 
-            // override the cleartext password with the hashed one
-            user.password = hash;
-            next();
-        });
-    });
-});
+UserSchema.plugin(uniqueValidator, {message: "This email is already in use!"});
 
 module.exports = mongoose.model('users', UserSchema);

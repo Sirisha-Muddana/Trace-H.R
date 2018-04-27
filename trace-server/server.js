@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 var cors = require('cors');
+import dotenv from 'dotenv';
 
+dotenv.config();
 // create express app
 const app = express();
 
@@ -15,13 +17,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
-
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url)
+mongoose.connect(process.env.MONGODB_URL)
 .then(() => {
     console.log("Successfully connected to the database");
 }).catch(err => {
