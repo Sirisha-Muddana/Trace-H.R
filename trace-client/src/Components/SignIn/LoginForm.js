@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Validator from 'validator';
-import classnames from 'classnames';
 import {Form, Button, Message} from 'semantic-ui-react';
 import InlineError from '../messages/InlineError';
 
@@ -57,7 +56,7 @@ render() {
                     name="email"
                     value={data.email}
                     onChange={this.onChange}
-                    width={6}
+                    width={10}
                 />
                 {errors.email && <InlineError text={errors.email}/>}
             </Form.Field>
@@ -68,7 +67,7 @@ render() {
                     name="password"
                     value={data.password}
                     onChange={this.onChange}
-                    width={6}
+                    width={10}
                 />
                 {errors.password && <InlineError text={errors.password}/>}
             </Form.Field>

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Message, Icon} from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { confirm } from '../../actions/authActions';
+import {confirm} from '../../actions/authActions';
 
 class ConfirmationPage extends Component {
     state = {
@@ -13,12 +13,12 @@ class ConfirmationPage extends Component {
 
     componentDidMount() {
         this.props.confirm(this.props.match.params.token)
-            .then(() => this.setState({ loading: false, success: true }))
-            .catch(() => this.setState({ loading: false, success: false }));
+            .then(() => this.setState({loading: false, success: true}))
+            .catch(() => this.setState({loading: false, success: false}));
     }
 
     render() {
-        const { loading, success } = this.state;
+        const {loading, success} = this.state;
         return (
             <div>
 
@@ -32,23 +32,23 @@ class ConfirmationPage extends Component {
                 {!loading && success &&
                 (
                     <Message success icon>
-                    <Icon name="checkmark" />
-                    <Message.Content>
-                    <Message.Header>Thank you. Your accound has been verified</Message.Header>
-                        <Link to='/dashboard'> Go to dashboard</Link>
-                    </Message.Content>
-                </Message>
+                        <Icon name="checkmark"/>
+                        <Message.Content>
+                            <Message.Header>Thank you. Your account has been verified</Message.Header>
+                            <Link to='/dashboard'> Go to dashboard</Link>
+                        </Message.Content>
+                    </Message>
                 )}
 
                 {!loading && !success && (
                     <Message negative icon>
-                        <Icon name="warning sign" />
+                        <Icon name="warning sign"/>
                         <Message.Content>
-                            <Message.Header>You're already verified. Invalid token!</Message.Header>
+                            <Message.Header>You're already verified. Please continue.</Message.Header>
                             <Link to='/dashboard'> Go to dashboard</Link>
                         </Message.Content>
                     </Message>
-                )} }
+                )}
 
             </div>
         );
@@ -64,4 +64,4 @@ ConfirmationPage.propTypes = {
     }).isRequired
 }
 
-export default connect(null, { confirm })(ConfirmationPage);
+export default connect(null, {confirm})(ConfirmationPage);

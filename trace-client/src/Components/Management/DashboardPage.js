@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 const DashboardPage = ({ isConfirmed }) => (
     <div>
         {!isConfirmed && <ConfirmEmailMessage />}
+        <h1> Hello </h1>
     </div>
 )
 

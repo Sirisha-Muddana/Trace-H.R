@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import LoginForm from "./LoginForm";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { login } from '../../actions/authActions';
+import { Divider } from 'semantic-ui-react';
 
 class LoginPage extends Component {
 
@@ -13,6 +15,8 @@ class LoginPage extends Component {
         return (
             <div>
                 <LoginForm submit={this.submit}/>
+                <Divider hidden></Divider>
+                <Link to="/forgot_password">Forgot Password </Link>
             </div>
         )
     }

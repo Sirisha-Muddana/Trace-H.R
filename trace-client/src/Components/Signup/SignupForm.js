@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types';
 import Validator from 'validator';
-import {Form, Button, Message} from 'semantic-ui-react';
+import {Form, Button} from 'semantic-ui-react';
 import InlineError from '../messages/InlineError';
 
 class SignupForm extends Component {
@@ -59,7 +59,7 @@ class SignupForm extends Component {
                         name="firstName"
                         value={data.firstName}
                         onChange={this.onChange}
-                        width={6}
+                        width={10}
                     />
                     {errors.firstName && <InlineError text={errors.firstName}/>}
                 </Form.Field>
@@ -70,7 +70,7 @@ class SignupForm extends Component {
                         name="lastName"
                         value={data.lastName}
                         onChange={this.onChange}
-                        width={6}
+                        width={10}
                     />
                     {errors.lastName && <InlineError text={errors.lastName}/>}
                 </Form.Field>
@@ -81,7 +81,7 @@ class SignupForm extends Component {
                         name="email"
                         value={data.email}
                         onChange={this.onChange}
-                        width={6}
+                        width={10}
                     />
                     {errors.email && <InlineError text={errors.email}/>}
                 </Form.Field>
@@ -92,7 +92,7 @@ class SignupForm extends Component {
                         name="password"
                         value={data.password}
                         onChange={this.onChange}
-                        width={6}
+                        width={10}
                     />
                     {errors.password && <InlineError text={errors.password}/>}
                 </Form.Field>
