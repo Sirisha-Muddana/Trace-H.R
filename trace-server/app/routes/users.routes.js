@@ -22,4 +22,10 @@ module.exports = (app) => {
 
     app.post('/api/confirmation', users.confirmation);
 
+    app.post('/api/reset_password_request', users.resetPasswordRequest);
+
+    app.post('/api/validate_token', users.validateToken);
+
+    app.post('/api/reset_password', users.resetPassword);
+
 }

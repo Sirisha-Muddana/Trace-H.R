@@ -59,11 +59,21 @@ const UserSchema = mongoose.Schema({
 UserSchema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
   {
+    _id: this.id,
     email: this.email,
     confirmed: this.confirmed
   }, 
-  'secret');
-}
+  process.env.JWT_SECRET
+  );
+};
+
+UserSchema.methods.generateResetPasswordToken = function generateResetPasswordToken() {
+  return jwt.sign(
+  {
+    _id: this._id,
+  }, 
+  process.env.JWT_SECRET, { expiresIn: '1h' });
+};
 
 UserSchema.methods.toAuthJSON = function toAuthJSON() {
   return {
@@ -75,12 +85,10 @@ UserSchema.methods.toAuthJSON = function toAuthJSON() {
 
 //Hashing a password before saving it to the database
 UserSchema.methods.setPassword = function setPassword(password) {
-  // generate a salt
   this.passwordHash = bcrypt.hashSync(password, 10);
 };
 
 UserSchema.methods.setConfirmationToken = function setConfirmationToken() {
-  // generate a salt
   this.confirmationToken = this.generateJWT();
 };
 
@@ -89,5 +97,10 @@ UserSchema.methods.generateConfirmationUrl = function generateConfirmationUrl() 
 }
 
 UserSchema.plugin(uniqueValidator, {message: "This email is already in use!"});
+
+UserSchema.methods.generateResetPasswordLink = function generateResetPasswordLink() {
+  return `${process.env.HOST}/reset_password/${this.generateResetPasswordToken()}`;
+}
+
 
 module.exports = mongoose.model('users', UserSchema);

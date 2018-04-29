@@ -20,9 +20,26 @@ export function sendConfirmationEmail(user) {
 		to: user.email,
 		subject: "Welcome to Trace",
 		text: `
-		Welcome to Trace H.R. Please, confirm your email.
+		Welcome to Trace H.R. 
+		Please, confirm your email.
 
 		${user.generateConfirmationUrl()}
+		`
+	}
+
+	transport.sendMail(email);
+}
+
+export function sendResetPasswordEmail(user) {
+	const transport = setup();
+	const email = {
+		from,
+		to: user.email,
+		subject: "Reset Password",
+		text: `
+		To reset password follow this link:
+
+		${user.generateResetPasswordLink()}
 		`
 	}
 

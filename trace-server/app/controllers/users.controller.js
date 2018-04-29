@@ -1,8 +1,9 @@
 var bcrypt = require('bcryptjs');
 const Users = require('../models/users.model');
-const passport = require('passport');
 import parseErrors from '../utils/parseErrors';
 import { sendConfirmationEmail } from '../mailer';
+import { sendResetPasswordEmail } from '../mailer';
+import jwt from 'jsonwebtoken';
 
 // Create and Save a new Note
 exports.create = (req, res) => {
@@ -31,6 +32,45 @@ exports.confirmation = (req, res) => {
     user ? res.json({ user: user.toAuthJSON() }) : res.status(400).json({})
     );
   }
+
+exports.resetPasswordRequest = (req, res) => {
+  Users.findOne({ email: req.body.email }).then(user => {
+    if(user) {
+      sendResetPasswordEmail(user);
+      res.json({});
+    } else {
+      res.status(400).json({ errors: { global: "Please check your email again" }});
+    }
+  });
+};
+
+exports.validateToken = (req, res) => {
+  jwt.verify(req.body.token, process.env.JWT_SECRET, err => {
+    if(err) {
+      res.status(401).json({});
+    } else {
+      res.json({});
+    }
+  })
+};
+
+exports.resetPassword = (req, res) => {
+  const { password, token } = req.body.data;
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if(err) {
+      res.status(401).json({ errors: { global: "Invalid token" }});
+    } else {
+      Users.findOne({ _id: decoded._id }).then(user => {
+        if(user) {
+          user.setPassword(password);
+          user.save().then(() => res.json({}));
+        } else {
+          res.status(404).json({ errors: { global: "Invalid token" }});
+        }
+      })
+    }
+  })
+};
 
 // Find a single user with a userId
 exports.findOne = (req, res) => {
@@ -101,7 +141,7 @@ exports.update = (req, res) => {
   //});
 };
 
-  // Delete a user with the specified noteId in the request
+  // Delete a user with the specified userId in the request
   exports.delete = (req, res) => {
     Users.findByIdAndRemove(req.params.userId)
     .then(user => {
@@ -139,7 +179,7 @@ exports.update = (req, res) => {
 exports.findAll = (req, res) => {
   Users.find()
   .then(users => {
-    res.send(users);
+    res.json(users);
   }).catch(err => {
     res.status(500).send({
       message: err.message || "Some error occurred while retrieving user."
