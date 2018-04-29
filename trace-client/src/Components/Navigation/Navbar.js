@@ -16,8 +16,8 @@ const Navbar = ({isAuthenticated, logout}) => (
                     <Menu.Menu position="right">
                         <Dropdown item text='Account Settings'>
                             <Dropdown.Menu>
-                                <Dropdown.Item>Account Settings</Dropdown.Item>
-                                <Dropdown.Item onClick={() => logout()}>Logout</Dropdown.Item>
+                                <Dropdown.Item icon='settings' text='Account Settings' />
+                                <Dropdown.Item onClick={() => logout()} icon='sign out' text='Logout' />
                             </Dropdown.Menu>
                         </Dropdown>
                     </Menu.Menu>

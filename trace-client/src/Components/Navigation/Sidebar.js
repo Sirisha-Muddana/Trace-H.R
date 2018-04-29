@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Menu, Grid} from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import {Menu} from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 
 export default class Sidebar extends Component {
-    state = {activeItem: 'home'}
+    state = {activeItem: 'users'}
 
     handleItemClick = (e, {name}) => this.setState({activeItem: name})
 
@@ -11,13 +11,14 @@ export default class Sidebar extends Component {
         const {activeItem} = this.state
 
         return (
-
-                    <Menu fluid vertical tabular>
-                        <Menu.Item as={Link} to="/users" name='Users' active={activeItem === 'users'} onClick={this.handleItemClick}/>
-                        <Menu.Item name='pics' active={activeItem === 'pics'} onClick={this.handleItemClick}/>
-                        <Menu.Item name='companies' active={activeItem === 'companies'} onClick={this.handleItemClick}/>
-                        <Menu.Item name='links' active={activeItem === 'links'} onClick={this.handleItemClick}/>
-                    </Menu>
+            <Menu pointing secondary vertical >
+                <Menu.Item as={Link} to="/sales" name='daily sales' active={activeItem === 'daily sales'}
+                           onClick={this.handleItemClick}/>
+                <Menu.Item as={Link} to="/users" name='consultant list' active={activeItem === 'consultant list'}
+                           onClick={this.handleItemClick}/>
+                <Menu.Item name='companies' active={activeItem === 'companies'} onClick={this.handleItemClick}/>
+                <Menu.Item name='links' active={activeItem === 'links'} onClick={this.handleItemClick}/>
+            </Menu>
         )
     }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Main from './Components/Routes/Main';
-import AuthenticatedMain from './Components/Routes/AuthenticatedMain';
 import Navbar from './Components/Navigation/Navbar';
 import {Grid, Divider, Segment} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -14,19 +13,21 @@ const App = ({isAuthenticated}) => (
         <Navbar/>
         {!isAuthenticated ? (
             <Grid centered columns={2}>
-                <Grid.Column>
+                <Grid.Column style={{ maxWidth: 450 }}>
                     <Divider section hidden/>
                     <Main/>
                 </Grid.Column>
             </Grid>
         ) : (
             <Grid>
-                <Grid.Column width={4}>
+                <Grid.Column width={3}>
                     <Sidebar/>
                 </Grid.Column>
-                <Grid.Column width={12}>
+                <Grid.Column width={13}>
+                    <Segment>
                     <Divider section hidden/>
-                    <AuthenticatedMain/>
+                    <Main/>
+                    </Segment>
                 </Grid.Column>
             </Grid>
         )}
