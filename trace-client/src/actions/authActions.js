@@ -1,40 +1,38 @@
 import setAuthorizationToken from '../utils/setAuthorizationToken';
-import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../actions/types';
+import { USER_LOGGED_IN } from '../actions/types';
 import api from '../api';
+import decode from 'jwt-decode';
 
-export const userLoggedIn = user => ({
+export const userLoggedIn = decoded => ({
     type: USER_LOGGED_IN,
-    user
-});
-
-export const userLoggedOut = () => ({
-    type: USER_LOGGED_OUT
+    payload: decoded
 });
 
 export const login = credentials => dispatch =>
-    api.user.login(credentials).then(user => {
+    api.auth.login(credentials).then(user => {
         localStorage.jwtToken = user.token;
         setAuthorizationToken(user.token);
-        dispatch(userLoggedIn(user));
+        const decoded = decode(user.token);
+        dispatch(userLoggedIn(decoded));
     });
 
 export const logout = () => dispatch => {
         localStorage.removeItem("jwtToken");
-        setAuthorizationToken();
-        dispatch(userLoggedOut());
+        setAuthorizationToken(false);
+        dispatch(userLoggedIn({}));
 };
 
 export const confirm = token => dispatch =>
-    api.user.confirm(token).then(user => {
+    api.auth.confirm(token).then(user => {
         localStorage.jwtToken = user.token;
         dispatch(userLoggedIn(user));
     });
 
 export const resetPasswordRequest = ({ email }) => () =>
-    api.user.resetPasswordRequest(email);
+    api.auth.resetPasswordRequest(email);
 
 export const validateToken = ( token ) => () =>
-    api.user.validateToken(token);
+    api.auth.validateToken(token);
 
 export const resetPassword = ( data ) => () =>
-    api.user.resetPassword(data);
+    api.auth.resetPassword(data);

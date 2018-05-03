@@ -3,36 +3,27 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import * as actions from "../../actions/authActions";
-import {Segment, Menu, Icon, Dropdown} from 'semantic-ui-react';
+import {Segment, Menu, Icon} from 'semantic-ui-react';
 
 const Navbar = ({isAuthenticated, logout}) => (
 
-        <Segment inverted>
-            <Menu inverted secondary size='tiny'>
-                <Menu.Item as={Link} to="/dashboard">
-                    Trace H.R
-                </Menu.Item>
-                {isAuthenticated ? (
-                    <Menu.Menu position="right">
-                        <Dropdown item text='Account Settings'>
-                            <Dropdown.Menu>
-                                <Dropdown.Item icon='settings' text='Account Settings' />
-                                <Dropdown.Item onClick={() => logout()} icon='sign out' text='Logout' />
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Menu.Menu>
-                ) : (
-                    <Menu.Menu position="right">
-                        <Menu.Item as={Link} to="/login">
-                            <Icon name="sign in" />
-                            Sign In </Menu.Item>
-                        <Menu.Item as={Link} to="/signup">
-                            <Icon name="signup" />
-                            Sign Up </Menu.Item>
-                    </Menu.Menu>
-                )}
-            </Menu>
-        </Segment>
+    <Segment>
+        <Menu secondary size='tiny'>
+            <Menu.Item as={Link} to="/dashboard">
+                Trace H.R
+            </Menu.Item>
+            {!isAuthenticated &&
+            <Menu.Menu position="right">
+                <Menu.Item as={Link} to="/login">
+                    <Icon name="sign in"/>
+                    Sign In </Menu.Item>
+                <Menu.Item as={Link} to="/signup">
+                    <Icon name="signup"/>
+                    Sign Up </Menu.Item>
+            </Menu.Menu>
+            }
+        </Menu>
+    </Segment>
 );
 
 Navbar.propTypes = {
@@ -42,7 +33,7 @@ Navbar.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        isAuthenticated: !!state.user.token
+        isAuthenticated: !!state.auth.token
     };
 }
 

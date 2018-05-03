@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Validator from 'validator';
-import {Form, Button, Message} from 'semantic-ui-react';
-import InlineError from '../messages/InlineError';
+import {Form, Message} from 'semantic-ui-react';
+import TextFieldGroup from '../common/TextFieldGroup';
 
 class ForgotPasswordForm extends Component {
     state = {
@@ -39,21 +39,27 @@ class ForgotPasswordForm extends Component {
     render() {
         const {data, errors, loading} = this.state;
         return (
-            <Form onSubmit={this.onSubmit} loading={loading}>
-                {!!errors.global && <Message negative>{errors.global}</Message>}
-                <Form.Field required error={!!errors.email}>
-                    <label htmlFor="email">Email Address</label>
-                    <Form.Input
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        onChange={this.onChange}
-                        width={10}
-                    />
-                    {errors.email && <InlineError text={errors.email}/>}
-                </Form.Field>
-                <Button primary>Forgot Password</Button>
-            </Form>
+            <div className="container h-100">
+                <div className="row justify-content-md-center h-100">
+                    <div className="col-md-6">
+                        <h4 className="text-center">Please enter your email address to recover your password</h4>
+                        <Form onSubmit={this.onSubmit} loading={loading}>
+                            {!!errors.global && <Message negative>{errors.global}</Message>}
+                            <TextFieldGroup
+                                type="email"
+                                name="email"
+                                value={data.email}
+                                onChange={this.onChange}
+                                label={"Email Address"}
+                                error={errors.email}
+                            />
+                            <div className="text-center">
+                                <button className="btn btn-secondary">Forgot Password</button>
+                            </div>
+                        </Form>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

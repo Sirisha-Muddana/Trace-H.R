@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import LoginForm from "./LoginForm";
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { login } from '../../actions/authActions';
-import { Divider } from 'semantic-ui-react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {login} from '../../actions/authActions';
 
 class LoginPage extends Component {
 
@@ -13,10 +12,17 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <div>
-                <LoginForm submit={this.submit}/>
-                <Divider hidden></Divider>
-                <Link to="/forgot_password">Forgot Password </Link>
+            <div className="container h-100">
+                <div className="row justify-content-md-center h-100">
+                    <div className="card-wrapper">
+                        <div className="card">
+                            <div className="card-body">
+                                <LoginForm submit={this.submit}/>
+                                <Link className="float-right" to="/forgot_password">Forgot Password?</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -26,7 +32,12 @@ LoginPage.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired
     }).isRequired,
-    login: PropTypes.func.isRequired
+    login: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
 };
 
-export default connect(null, { login })(LoginPage)
+const mapStateToProps = (state) => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, {login})(LoginPage)

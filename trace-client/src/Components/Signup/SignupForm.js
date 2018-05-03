@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types';
 import Validator from 'validator';
-import {Form, Button} from 'semantic-ui-react';
-import InlineError from '../messages/InlineError';
+import {Form} from 'semantic-ui-react';
+import {signup} from '../../actions/signupActions';
+import TextFieldGroup from '../common/TextFieldGroup';
 
 class SignupForm extends Component {
     state = {
@@ -25,9 +26,9 @@ class SignupForm extends Component {
     onSubmit = e => {
         e.preventDefault();
         const errors = this.validate(this.state.data);
-        this.setState({ errors });
+        this.setState({errors});
         if (Object.keys(errors).length === 0) {
-            this.setState({ loading: true });
+            this.setState({loading: true});
             this.props
                 .submit(this.state.data)
                 .catch(err =>
@@ -39,7 +40,7 @@ class SignupForm extends Component {
         const errors = {};
 
         if (!data.firstName) errors.firstName = "Please enter your First name";
-        if (!data.lastName) errors.lastName = "Please enter your Last Name";
+        if (!data.lastName) errors.lastName = "Please enter your Last name";
         if (!Validator.isEmail(data.email)) errors.email = "Please enter a valid email";
         if (!data.password) errors.password = "Please enter a password";
 
@@ -51,58 +52,52 @@ class SignupForm extends Component {
 
         return (
             <Form onSubmit={this.onSubmit} loading={loading}>
-                <h3 id="heading">Sign up </h3>
-                <Form.Field required error={!!errors.firstName}>
-                    <label htmlFor="firstName">First name</label>
-                    <Form.Input
-                        type="text"
-                        name="firstName"
-                        value={data.firstName}
-                        onChange={this.onChange}
-                        width={10}
-                    />
-                    {errors.firstName && <InlineError text={errors.firstName}/>}
-                </Form.Field>
-                <Form.Field required error={!!errors.lastName}>
-                    <label htmlFor="lastName">Last Name</label>
-                    <Form.Input
-                        type="text"
-                        name="lastName"
-                        value={data.lastName}
-                        onChange={this.onChange}
-                        width={10}
-                    />
-                    {errors.lastName && <InlineError text={errors.lastName}/>}
-                </Form.Field>
-                <Form.Field required error={!!errors.email}>
-                    <label htmlFor="email">Email Address</label>
-                    <Form.Input
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        onChange={this.onChange}
-                        width={10}
-                    />
-                    {errors.email && <InlineError text={errors.email}/>}
-                </Form.Field>
-                <Form.Field required error={!!errors.password}>
-                    <label htmlFor="password">Password</label>
-                    <Form.Input
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        onChange={this.onChange}
-                        width={10}
-                    />
-                    {errors.password && <InlineError text={errors.password}/>}
-                </Form.Field>
-                <Button primary>Sign up</Button>
+                <h1 id="heading" className="text-center">Sign Up </h1>
+                <h4 className="text-center">Please sign up for your Trace account</h4>
+                <TextFieldGroup
+                    type="firstName"
+                    name="firstName"
+                    value={data.firstName}
+                    label="First Name"
+                    onChange={this.onChange}
+                    error={errors.firstName}
+                />
+                <TextFieldGroup
+                    type="lastName"
+                    name="lastName"
+                    value={data.lastName}
+                    label="Last Name"
+                    onChange={this.onChange}
+                    error={errors.lastName}
+                />
+                <TextFieldGroup
+                    type="email"
+                    name="email"
+                    value={data.email}
+                    label="Email Address"
+                    onChange={this.onChange}
+                    error={errors.email}
+                />
+                <TextFieldGroup
+                    type="password"
+                    name="password"
+                    value={data.password}
+                    label="Password"
+                    onChange={this.onChange}
+                    error={errors.password}
+                />
+                <button className="btn btn-secondary btn-lg btn-block">Sign up</button>
             </Form>
+
         );
     }
 }
+
 SignupForm.propTypes = {
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired,
     submit: PropTypes.func.isRequired
 }
 
-export default SignupForm;
+export default SignupForm

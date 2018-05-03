@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import Validator from 'validator';
-import {Form, Button, Message} from 'semantic-ui-react';
-import InlineError from '../messages/InlineError';
+import {Form, Message} from 'semantic-ui-react';
+import {login} from '../../actions/authActions';
+import TextFieldGroup from '../common/TextFieldGroup';
 
 class LoginForm extends Component {
     state = {
@@ -15,70 +17,76 @@ class LoginForm extends Component {
         errors: {}
     };
 
-onChange = e =>
-    this.setState({
-        data: {...this.state.data, [e.target.name]: e.target.value}
-    });
+    onChange = e =>
+        this.setState({
+            data: {...this.state.data, [e.target.name]: e.target.value}
+        });
 
-onSubmit = () => {
-    const errors = this.validate(this.state.data);
-    this.setState({errors});
-    if (Object.keys(errors).length === 0) {
-        this.setState({loading: true});
-        this.props.submit(this.state.data)
-            .catch(err => this.setState({errors: err.response.data.errors, loading: false})
-            );
+    onSubmit = (e) => {
+        e.preventDefault();
+        const errors = this.validate(this.state.data);
+        this.setState({errors});
+        if (Object.keys(errors).length === 0) {
+            this.setState({loading: true});
+            this.props.submit(this.state.data)
+                .catch(err => this.setState({errors: err.response.data.errors, loading: false})
+                );
+        }
+    };
+
+    validate = data => {
+        const errors = {};
+        if (!Validator.isEmail(data.email)) errors.email = "Please enter a valid email";
+        if (!data.password) errors.password = "Please enter a password";
+        return errors;
+    };
+
+    render() {
+        const {data, errors, loading} = this.state;
+        return (
+            <Form className="form-signin" onSubmit={this.onSubmit} loading={loading}>
+                                    {errors.global && (
+                                        <Message negative>
+                                            <Message.Header>Something went wrong</Message.Header>
+                                            <p>{errors.global}</p>
+                                        </Message>
+                                    )}
+                                    <h1 id="heading" className="text-center">Sign In </h1>
+                                    <h4 className="text-center">Please sign into your Trace account</h4>
+                                    <TextFieldGroup
+                                        type="email"
+                                        name="email"
+                                        value={data.email}
+                                        label="Email Address"
+                                        onChange={this.onChange}
+                                        error={errors.email}
+                                    />
+                                    <TextFieldGroup
+                                        type="password"
+                                        name="password"
+                                        value={data.password}
+                                        label="Password"
+                                        onChange={this.onChange}
+                                        error={errors.password}
+                                    />
+                                    <div className="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="remember-me"/> Remember me
+                                        </label>
+                                    </div>
+                                    <button className="btn btn-secondary btn-lg btn-block">Login</button>
+                                </Form>
+
+        );
     }
-};
-
-validate = data => {
-    const errors = {};
-    if (!Validator.isEmail(data.email)) errors.email = "Please enter a valid email";
-    if (!data.password) errors.password = "Please enter a password";
-    return errors;
-};
-
-render() {
-    const {data, errors, loading} = this.state;
-    return (
-        <Form onSubmit={this.onSubmit} loading={loading}>
-            {errors.global && (
-                <Message negative>
-                    <Message.Header>Something went wrong</Message.Header>
-                    <p>{errors.global}</p>
-                </Message>
-            )}
-            <h3 id="heading">Sign in </h3>
-            <Form.Field required error={!!errors.email}>
-                <label htmlFor="email">Email Address</label>
-                <Form.Input
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    onChange={this.onChange}
-                    width={10}
-                />
-                {errors.email && <InlineError text={errors.email}/>}
-            </Form.Field>
-            <Form.Field required error={!!errors.password}>
-                <label htmlFor="password">Password</label>
-                <Form.Input
-                    type="password"
-                    name="password"
-                    value={data.password}
-                    onChange={this.onChange}
-                    width={10}
-                />
-                {errors.password && <InlineError text={errors.password}/>}
-            </Form.Field>
-            <Button primary>Login</Button>
-        </Form>
-    );
-}
 }
 
 LoginForm.propTypes = {
-    submit: PropTypes.func.isRequired
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired,
+    login: PropTypes.func.isRequired
 };
 
-export default LoginForm
+
+export default LoginForm;

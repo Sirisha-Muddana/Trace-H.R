@@ -1,35 +1,32 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
+import './App.css';
 import Main from './Components/Routes/Main';
 import Navbar from './Components/Navigation/Navbar';
-import {Grid, Divider, Segment} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Sidebar from './Components/Navigation/Sidebar';
 
-
 const App = ({isAuthenticated}) => (
-    <div>
-        <Navbar/>
+    <div className="App">
         {!isAuthenticated ? (
-            <Grid centered columns={2}>
-                <Grid.Column style={{ maxWidth: 450 }}>
-                    <Divider section hidden/>
-                    <Main/>
-                </Grid.Column>
-            </Grid>
+            <div>
+                <Navbar/>
+                <Main/>
+            </div>
         ) : (
-            <Grid>
-                <Grid.Column width={3}>
-                    <Sidebar/>
-                </Grid.Column>
-                <Grid.Column width={13}>
-                    <Segment>
-                    <Divider section hidden/>
-                    <Main/>
-                    </Segment>
-                </Grid.Column>
-            </Grid>
+            <div>
+                <div className="row">
+                    <div className="col-md-2">
+                        <Sidebar/>
+                    </div>
+                    <div className="col-md-10">
+                        <div className="container-fluid">
+                            <Main/>
+                        </div>
+                    </div>
+                </div>
+            </div>
         )}
     </div>
 )
@@ -40,7 +37,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        isAuthenticated: !!state.user.token
+        isAuthenticated: !!state.auth.isAuthenticated
     };
 }
 
