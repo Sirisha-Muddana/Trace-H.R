@@ -7,7 +7,7 @@ import uniqueValidator from 'mongoose-unique-validator';
 const UserSchema = mongoose.Schema({
   firstName: {
     type: String,
-    required: true,
+    required: true
   },
 
   lastName: {
@@ -61,9 +61,10 @@ UserSchema.methods.generateJWT = function generateJWT() {
   {
     _id: this.id,
     email: this.email,
+    userAccessRole: this.userAccessRole,
     confirmed: this.confirmed
   }, 
-  process.env.JWT_SECRET
+  process.env.JWT_SECRET, { expiresIn: 600}
   );
 };
 
@@ -78,6 +79,7 @@ UserSchema.methods.generateResetPasswordToken = function generateResetPasswordTo
 UserSchema.methods.toAuthJSON = function toAuthJSON() {
   return {
     email: this.email,
+    userAccessRole: this.userAccessRole,
     confirmed: this.confirmed,
     token: this.generateJWT()
   }

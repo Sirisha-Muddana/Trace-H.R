@@ -1,31 +1,37 @@
 const passport = require('passport');
 
 module.exports = (app) => {
-    const users = require('../controllers/users.controller.js');
+    const auth = require('../controllers/auth.controller.js');
+    const sales = require('../controllers/sales.controller.js');
 
-    // Create a new user
-    app.post('/api/signup', users.create);
+    // AUTH ROUTES
+    app.post('/api/signup', auth.create);
 
+    app.post('/api/authenticate', auth.authenticate);
+
+    app.post('/api/confirmation', auth.confirmation);
+
+    app.post('/api/reset_password_request', auth.resetPasswordRequest);
+
+    app.post('/api/validate_token', auth.validateToken);
+
+    app.post('/api/reset_password', auth.resetPassword);
+
+
+    //USER ROUTES
     // Retrieve all users
-    app.get('/api/users', passport.authenticate('jwt', { session: false }), users.findAll);
+    app.get('/api/users', passport.authenticate('jwt', { session: false }), sales.findAll);
 
     // Retrieve a single user with userId
-    app.get('/api/users/:userId', users.findOne);
+    app.get('/api/users/:userId', sales.findOne);
 
     // Update a user with userId
-    app.put('/api/users/:userId', users.update);
+    app.put('/api/users/:userId', sales.update);
 
     // Delete a user with userId
-    app.delete('/api/users/:userId', users.delete);
+    app.delete('/api/users/:userId', sales.delete);
 
-    app.post('/api/authenticate', users.authenticate);
+    app.get('/api/sales_list', passport.authenticate('jwt', {session: false}), sales.salesList);
 
-    app.post('/api/confirmation', users.confirmation);
-
-    app.post('/api/reset_password_request', users.resetPasswordRequest);
-
-    app.post('/api/validate_token', users.validateToken);
-
-    app.post('/api/reset_password', users.resetPassword);
-
+    app.post('/api/post_sales', passport.authenticate('jwt', {session: false}),sales.postSales);
 }
