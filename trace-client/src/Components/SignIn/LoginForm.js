@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
 import Validator from 'validator';
 import {Form, Message} from 'semantic-ui-react';
-import {login} from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class LoginForm extends Component {
@@ -82,10 +80,7 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired
-    }).isRequired,
-    login: PropTypes.func.isRequired
+    submit: PropTypes.func.isRequired
 };
 
 
