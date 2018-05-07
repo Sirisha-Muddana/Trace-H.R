@@ -8,12 +8,12 @@ module.exports = function(passport) {
   opts.secretOrKey = process.env.JWT_SECRET;
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
-      Users.findById(jwt_payload._id, (err, user) => {
+      Users.findById(jwt_payload.id, (err, user) => {
         if (err) {
           return done(err, false);
         }
         if (user) {
-          return done(null, user.email);
+          return done(null, user);
         } else {
           return done(null, false);
         }

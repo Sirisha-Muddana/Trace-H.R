@@ -81,10 +81,10 @@ exports.resetPassword = (req, res) => {
 
 // Authenticate Login
 exports.authenticate = (req, res) => {
-  const { credentials } = req.body;
-  //console.log(JSON.stringify(credentials.email));
-  Users.findOne({ email: credentials.email }).then(user => {
-    if (user && user.comparePassword(credentials.password)) {
+  const email = req.body.email;
+  const password = req.body.password;
+  Users.findOne({ email }).then(user => {
+    if (user && user.comparePassword(password)) {
       res.json({ user: user.toAuthJSON() });
     } else res.status(404).json({ errors: { global: "Invalid credentials" } });
   });

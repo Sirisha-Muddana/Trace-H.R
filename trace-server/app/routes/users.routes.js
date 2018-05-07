@@ -2,7 +2,8 @@ const passport = require("passport");
 
 module.exports = app => {
   const auth = require("../controllers/auth.controller.js");
-  const sales = require("../controllers/sales.controller.js");
+  const submissions = require("../controllers/submissions.controller.js");
+  const users = require("../controllers/users.controller.js");
 
   // AUTH ROUTES
   app.post("/api/signup", auth.create);
@@ -22,27 +23,33 @@ module.exports = app => {
   app.get(
     "/api/users",
     passport.authenticate("jwt", { session: false }),
-    sales.findAll
+    users.findAll
   );
 
-  // Retrieve a single user with userId
+  /*// Retrieve a single user with userId
   app.get("/api/users/:userId", sales.findOne);
 
   // Update a user with userId
   app.put("/api/users/:userId", sales.update);
 
   // Delete a user with userId
-  app.delete("/api/users/:userId", sales.delete);
+  app.delete("/api/users/:userId", sales.delete);*/
 
   app.get(
-    "/api/sales_list",
+    "/api/submissions_list",
     passport.authenticate("jwt", { session: false }),
-    sales.salesList
+    submissions.submissionsList
+  );
+
+  app.get(
+    "/api/get_submission/:id",
+    passport.authenticate("jwt", { session: false }),
+    submissions.getSubmission
   );
 
   app.post(
-    "/api/post_sales",
+    "/api/post_submission",
     passport.authenticate("jwt", { session: false }),
-    sales.postSales
+    submissions.postSubmission
   );
 };
