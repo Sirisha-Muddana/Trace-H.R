@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import InlineError from "../messages/InlineError";
+import InlineError from "../../messages/InlineError";
 import { Form, Message, Label, Input } from "semantic-ui-react";
-import TextFieldGroup from "../common/TextFieldGroup";
+import TextFieldGroup from "../../common/TextFieldGroup";
 
-class PostSalesForm extends Component {
+class PostSubmissionForm extends Component {
   state = {
     data: {
       consultantName: "",
@@ -66,9 +66,9 @@ class PostSalesForm extends Component {
         )}
 
         <div className="row">
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <TextFieldGroup
-              type="consultantName"
+              type="text"
               name="consultantName"
               value={data.consultantName}
               label="Consultant name"
@@ -76,9 +76,9 @@ class PostSalesForm extends Component {
               error={errors.consultantName}
             />
           </div>
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <TextFieldGroup
-              type="skillset"
+              type="text"
               name="skillset"
               value={data.skillset}
               label="Skillet"
@@ -89,9 +89,9 @@ class PostSalesForm extends Component {
         </div>
 
         <div className="row">
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <TextFieldGroup
-              type="location"
+              type="text"
               name="location"
               value={data.location}
               label="Location"
@@ -99,13 +99,13 @@ class PostSalesForm extends Component {
               error={errors.location}
             />
           </div>
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <Form.Field required error={!!errors.billingRate}>
               <label htmlFor="billingRate">Billing Rate</label>
               <Input labelPosition="right" type="text">
                 <Label basic>$</Label>
                 <input
-                  type="text"
+                  type="number"
                   name="billingRate"
                   value={data.billingRate}
                   onChange={this.onChange}
@@ -118,9 +118,9 @@ class PostSalesForm extends Component {
         </div>
 
         <div className="row">
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <TextFieldGroup
-              type="vendor"
+              type="text"
               name="vendor"
               value={data.vendor}
               label="Vendor name"
@@ -128,9 +128,9 @@ class PostSalesForm extends Component {
               error={errors.vendor}
             />
           </div>
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <TextFieldGroup
-              type="client"
+              type="text"
               name="client"
               value={data.client}
               label="Client name"
@@ -141,9 +141,9 @@ class PostSalesForm extends Component {
         </div>
 
         <div className="row">
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <TextFieldGroup
-              type="interviewDate"
+              type="date"
               name="interviewDate"
               value={data.interviewDate}
               label="Interview date"
@@ -151,9 +151,9 @@ class PostSalesForm extends Component {
               error={errors.interviewDate}
             />
           </div>
-          <div className="col-md-6 submission-form">
+          <div className="col-md-6 form">
             <TextFieldGroup
-              type="interviewType"
+              type="text"
               name="interviewType"
               value={data.interviewType}
               label="Interview type"
@@ -164,14 +164,14 @@ class PostSalesForm extends Component {
         </div>
 
         <br />
-        <button className="btn btn-lg btn-primary btn-block">Submit</button>
+        <button className="btn btn-lg btn-secondary btn-block">Submit</button>
       </Form>
     );
   }
 }
 
-PostSalesForm.propTypes = {
+PostSubmissionForm.propTypes = {
   submit: PropTypes.func.isRequired
 };
 
-export default PostSalesForm;
+export default PostSubmissionForm;

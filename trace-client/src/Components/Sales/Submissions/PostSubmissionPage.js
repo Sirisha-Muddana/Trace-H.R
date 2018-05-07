@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import PostSalesForm from "./PostSalesForm";
+import PostSubmissionForm from "./PostSubmissionForm";
 import { connect } from "react-redux";
-import { salesForm } from "../../actions/salesListActions";
+import { submissionForm } from "../../../actions/submissionListActions";
 import PropTypes from "prop-types";
 import { Header, Divider } from "semantic-ui-react";
 
-class PostSalesPage extends Component {
+class PostSubmissionPage extends Component {
   submit = data =>
     this.props
-      .salesForm(data)
-      .then(() => this.props.history.push("/markettingSales"));
+      .submissionForm(data)
+      .then(() => this.props.history.push("/dashboard"));
 
   render() {
     return (
@@ -22,7 +22,7 @@ class PostSalesPage extends Component {
           <div className="card-wrapper" id="salesForm">
             <div className="card">
               <div className="card-body">
-                <PostSalesForm submit={this.submit} />
+                <PostSubmissionForm submit={this.submit} />
               </div>
             </div>
           </div>
@@ -32,11 +32,11 @@ class PostSalesPage extends Component {
   }
 }
 
-PostSalesPage.propTypes = {
+PostSubmissionPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
-  salesForm: PropTypes.func.isRequired
+  submissionForm: PropTypes.func.isRequired
 };
 
-export default connect(null, { salesForm })(PostSalesPage);
+export default connect(null, { submissionForm })(PostSubmissionPage);

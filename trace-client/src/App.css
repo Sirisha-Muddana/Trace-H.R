@@ -8,7 +8,7 @@ body {
 }
 .navbar-light .navbar-brand,
 .nav-link {
-  color: white;
+  color: black;
 }
 
 .navbar-brand {
@@ -129,6 +129,14 @@ h4 {
   background-color: #768493;
 }
 
-.submission-form {
+.form {
   margin-top: 15px;
 }
+
+/************Table ***********/
+.ui.fixed.table th,
+.ui.fixed.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

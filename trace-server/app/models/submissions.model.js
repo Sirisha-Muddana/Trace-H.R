@@ -4,9 +4,16 @@ const jwt = require("jsonwebtoken");
 import uniqueValidator from "mongoose-unique-validator";
 const moment = require("moment");
 
+const Schema = mongoose.Schema;
+
 // User Schema
-const SalesSchema = mongoose.Schema(
+const SubmissionsSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "users"
+    },
+
     consultantName: {
       type: String,
       required: true
@@ -67,4 +74,4 @@ const SalesSchema = mongoose.Schema(
 }*/
 );
 
-module.exports = mongoose.model("sales", SalesSchema);
+module.exports = mongoose.model("submissions", SubmissionsSchema);

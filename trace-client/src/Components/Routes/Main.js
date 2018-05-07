@@ -11,8 +11,9 @@ import GuestRoute from "./GuestRoute";
 import Users from "../Sales/Users";
 import UserAccess from "../Consultants/UserAccess";
 import Dashboard from "../DashboardPage";
-import MarkettingSales from "../Sales/MarkettingSales";
-import PostSalesPage from "../Sales/PostSalesPage";
+import SubmissionsPage from "../Sales/Submissions/SubmissionsPage";
+import PostSubmissionPage from "../Sales/Submissions/PostSubmissionPage";
+import EditSubmissionForm from "../Sales/Submissions/EditSubmissionForm";
 import UserInfo from "../Sales/UserInfo";
 import EditUser from "../Sales/EditUser";
 import UserRoute from "./UserRoute";
@@ -21,6 +22,9 @@ import RecruiterRoute from "./RecruiterRoute";
 const Main = ({ isAuthenticated }) => (
   <div>
     <Switch>
+      {/*
+      <GuestRoute exact path="/" component={}
+*/}
       <GuestRoute exact path="/signup" component={SignupPage} />
       <GuestRoute exact path="/login" component={LoginPage} />
       <GuestRoute
@@ -44,14 +48,27 @@ const Main = ({ isAuthenticated }) => (
       {isAuthenticated ? (
         <RecruiterRoute
           exact
-          path="/markettingSales"
-          component={MarkettingSales}
+          path="/submissionPage"
+          component={SubmissionsPage}
         />
       ) : (
         <Redirect to="/login" />
       )}
       {isAuthenticated ? (
-        <RecruiterRoute exact path="/newSales" component={PostSalesPage} />
+        <RecruiterRoute
+          exact
+          path="/newSubmission"
+          component={PostSubmissionPage}
+        />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <RecruiterRoute
+          exact
+          path="/editSubmission/:id"
+          component={EditSubmissionForm}
+        />
       ) : (
         <Redirect to="/login" />
       )}
