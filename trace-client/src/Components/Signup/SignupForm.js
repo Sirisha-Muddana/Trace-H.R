@@ -56,55 +56,39 @@ class SignupForm extends Component {
           Sign Up{" "}
         </h1>
         <h4 className="text-center">Please sign up for your Trace account</h4>
-        <div className="row">
-          <div className="col-md-6 form">
-            <TextFieldGroup
-              type="firstName"
-              name="firstName"
-              value={data.firstName}
-              label="First Name"
-              onChange={this.onChange}
-              error={errors.firstName}
-            />
-          </div>
-          <div className="col-md-6 form">
-            <TextFieldGroup
-              type="lastName"
-              name="lastName"
-              value={data.lastName}
-              label="Last Name"
-              onChange={this.onChange}
-              error={errors.lastName}
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col form">
-            <TextFieldGroup
-              type="email"
-              name="email"
-              value={data.email}
-              label="Email Address"
-              onChange={this.onChange}
-              error={errors.email}
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col form">
-            <TextFieldGroup
-              type="password"
-              name="password"
-              value={data.password}
-              label="Password"
-              onChange={this.onChange}
-              error={errors.password}
-            />
-          </div>
-        </div>
-        <button className="btn btn-secondary btn-lg btn-block form">
-          Sign up
-        </button>
+        <TextFieldGroup
+          type="firstName"
+          name="firstName"
+          value={data.firstName}
+          label="First Name"
+          onChange={this.onChange}
+          error={errors.firstName}
+        />
+        <TextFieldGroup
+          type="lastName"
+          name="lastName"
+          value={data.lastName}
+          label="Last Name"
+          onChange={this.onChange}
+          error={errors.lastName}
+        />
+        <TextFieldGroup
+          type="email"
+          name="email"
+          value={data.email}
+          label="Email Address"
+          onChange={this.onChange}
+          error={errors.email}
+        />
+        <TextFieldGroup
+          type="password"
+          name="password"
+          value={data.password}
+          label="Password"
+          onChange={this.onChange}
+          error={errors.password}
+        />
+        <button className="btn btn-secondary btn-lg btn-block">Sign up</button>
       </Form>
     );
   }
