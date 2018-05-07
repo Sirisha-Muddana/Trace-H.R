@@ -1,3 +1,3 @@
-export const USER_LOGGED_IN = "USER_LOGGED_IN";
-export const SUBMISSION_LIST = "SUBMISSION_LIST";
-export const GET_SUBMISSION = "GET_SUBMISSION";
+export const USER_LOGGED_IN = 'USER_LOGGED_IN';
+export const SALES_LIST = 'SALES_LIST';
+export const POST_SALES = 'POST_SALES';

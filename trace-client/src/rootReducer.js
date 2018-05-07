@@ -1,8 +1,8 @@
-import { combineReducers } from "redux";
-import authReducer from "./reducers/authReducer";
-import submissionReducer from "./reducers/submissionReducer";
+import { combineReducers } from 'redux';
+import authReducer from './reducers/authReducer';
+import salesReducer from './reducers/salesReducer';
 
 export default combineReducers({
-  auth: authReducer,
-  submission: submissionReducer
+    auth: authReducer,
+    sales: salesReducer
 });
