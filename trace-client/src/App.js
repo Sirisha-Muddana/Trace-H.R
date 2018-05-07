@@ -6,6 +6,7 @@ import Navbar from "./Components/Navigation/Navbar";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Sidebar from "./Components/Navigation/Sidebar";
+import AuthNav from "./Components/Navigation/AuthNav";
 
 const App = ({ isAuthenticated }) => (
   <div className="App">
@@ -22,6 +23,7 @@ const App = ({ isAuthenticated }) => (
           </div>
           <div className="col-md-10">
             <div className="container-fluid">
+              <AuthNav />
               <Main />
             </div>
           </div>
