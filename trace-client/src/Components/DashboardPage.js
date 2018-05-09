@@ -4,13 +4,13 @@ import { withRouter } from "react-router-dom";
 import ConfirmEmailMessage from "./messages/ConfirmEmailMessage";
 import PropTypes from "prop-types";
 import SubmissionsPage from "./Sales/Submissions/SubmissionsPage";
-import UserAccess from "./Consultants/UserAccess";
+import Profile from "./Consultants/Profile";
 
 const DashboardPage = ({ isConfirmed, userAccessRole }) => (
   <div>
     {!isConfirmed && <ConfirmEmailMessage />}
+    {userAccessRole === "ACCESS LEVEL 1" && <Profile />}
     {userAccessRole === "ACCESS LEVEL 2" && <SubmissionsPage />}
-    {userAccessRole === "ACCESS LEVEL 1" && <UserAccess />}
   </div>
 );
 DashboardPage.propTypes = {

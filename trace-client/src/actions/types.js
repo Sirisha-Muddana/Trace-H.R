@@ -1,3 +1,5 @@
 export const USER_LOGGED_IN = "USER_LOGGED_IN";
 export const SUBMISSION_LIST = "SUBMISSION_LIST";
 export const GET_SUBMISSION = "GET_SUBMISSION";
+export const GET_USERS = "GET_USERS";
+export const GET_PROFILE = "GET_PROFILE";

@@ -4,7 +4,9 @@ import SubmissionsForm from "./SubmissionsForm";
 import { connect } from "react-redux";
 import { fetchSubmissions } from "../../../actions/submissionListActions";
 import { Link } from "react-router-dom";
-import { Table, Button, Header, Divider, Menu, Input } from "semantic-ui-react";
+import { Table, Button, Menu, Input } from "semantic-ui-react";
+
+const color = "teal";
 
 class SubmissionsPage extends Component {
   componentDidMount() {
@@ -14,7 +16,7 @@ class SubmissionsPage extends Component {
   render() {
     const { submissionList } = this.props.submission;
     let allSubmissions;
-
+    console.log(submissionList);
     if (submissionList.length > 0) {
       allSubmissions = submissionList.map(submissions => (
         <SubmissionsForm key={submissions._id} submissions={submissions} />
@@ -31,13 +33,10 @@ class SubmissionsPage extends Component {
 
     return (
       <div>
-        <Divider hidden />
-        <Header textAlign="center" as="h1">
-          Marketting Sales
-        </Header>
-        <Menu borderless>
+        <h3 className="display-4 text-center">Submission List</h3>
+        <Menu secondary>
           <Menu.Item>
-            <Button as={Link} to="/newSubmission" primary>
+            <Button as={Link} to="/newSubmission" secondary>
               Add new entry
             </Button>
           </Menu.Item>
@@ -45,7 +44,7 @@ class SubmissionsPage extends Component {
             <Input className="icon" icon="search" placeholder="Search..." />
           </Menu.Item>
         </Menu>
-        <Table celled fixed singleLine>
+        <Table color={color} key={color} size="small" celled singleLine>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell textAlign="center">

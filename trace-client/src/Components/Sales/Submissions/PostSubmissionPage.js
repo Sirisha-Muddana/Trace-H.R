@@ -3,7 +3,6 @@ import PostSubmissionForm from "./PostSubmissionForm";
 import { connect } from "react-redux";
 import { submissionForm } from "../../../actions/submissionListActions";
 import PropTypes from "prop-types";
-import { Header, Divider } from "semantic-ui-react";
 
 class PostSubmissionPage extends Component {
   submit = data =>
@@ -14,17 +13,10 @@ class PostSubmissionPage extends Component {
   render() {
     return (
       <div className="container h-100">
-        <Divider hidden />
-        <Header className="border-bottom pb-2 mb-3" textAlign="center" as="h2">
-          Add submission
-        </Header>
+        <h3 className="display-4 text-center">Add submission</h3>
         <div className="row justify-content-md-center h-100">
           <div className="card-wrapper" id="salesForm">
-            <div className="card">
-              <div className="card-body">
-                <PostSubmissionForm submit={this.submit} />
-              </div>
-            </div>
+            <PostSubmissionForm submit={this.submit} />
           </div>
         </div>
       </div>

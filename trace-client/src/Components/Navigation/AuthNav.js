@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 class AuthNav extends Component {
   render() {
+    const firstName = this.props.firstName;
+    const lastName = this.props.lastName;
     return (
       <nav className="navbar navbar-expand-lg">
         <div className="container">
@@ -57,7 +62,9 @@ class AuthNav extends Component {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  <span className="no-icon">Dropdown</span>
+                  <span className="no-icon">
+                    {firstName} {lastName}
+                  </span>
                 </a>
                 <div
                   className="dropdown-menu"
@@ -88,4 +95,15 @@ class AuthNav extends Component {
     );
   }
 }
-export default AuthNav;
+
+AuthNav.propTypes = {
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired
+};
+
+const mapStateToProps = state => ({
+  firstName: state.auth.user.firstName,
+  lastName: state.auth.user.lastName
+});
+
+export default withRouter(connect(mapStateToProps)(AuthNav));

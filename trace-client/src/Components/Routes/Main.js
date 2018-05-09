@@ -2,19 +2,26 @@ import React from "react";
 import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+
 import LoginPage from "../SignIn/LoginPage";
 import ForgotPasswordPage from "../SignIn/ForgotPasswordPage";
 import ResetPasswordPage from "../SignIn/ResetPasswordPage";
 import SignupPage from "../Signup/SignupPage";
 import ConfirmationPage from "../SignIn/ConfirmationPage";
 import GuestRoute from "./GuestRoute";
-import Users from "../Sales/Users";
-import UserAccess from "../Consultants/UserAccess";
+
+import Profile from "../Consultants/Profile";
+import CreateProfilePage from "../Consultants/CreateProfilePage";
+import EditProfile from "../Consultants/EditProfile";
+import AddImmigrationInfo from "../Consultants/AddImmigrationInfo";
+import AddExperiencePage from "../Consultants/AddExperiencePage";
+import AddEducationPage from "../Consultants/AddEducationPage";
+
 import Dashboard from "../DashboardPage";
 import SubmissionsPage from "../Sales/Submissions/SubmissionsPage";
 import PostSubmissionPage from "../Sales/Submissions/PostSubmissionPage";
 import EditSubmissionForm from "../Sales/Submissions/EditSubmissionForm";
-import UserInfo from "../Sales/UserInfo";
+import UsersPage from "../Users/UsersPage";
 import EditUser from "../Sales/EditUser";
 import UserRoute from "./UserRoute";
 import RecruiterRoute from "./RecruiterRoute";
@@ -37,14 +44,54 @@ const Main = ({ isAuthenticated }) => (
         path="/reset_password/:token"
         component={ResetPasswordPage}
       />
-      <Route exact path="/confirmation/:token" component={ConfirmationPage} />
+      {isAuthenticated ? (
+        <Route exact path="/confirmation/:token" component={ConfirmationPage} />
+      ) : (
+        <Redirect to="/login" />
+      )}
 
-      <UserRoute exact path="/userAccess" component={UserAccess} />
+      {/*CONSULTANT ROUTES*/}
+      {isAuthenticated ? (
+        <UserRoute exact path="/profile" component={Profile} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <UserRoute exact path="/createProfile" component={CreateProfilePage} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <UserRoute exact path="/editProfile" component={EditProfile} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <UserRoute
+          exact
+          path="/addImmigrationInfo"
+          component={AddImmigrationInfo}
+        />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <UserRoute exact path="/addExperience" component={AddExperiencePage} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <UserRoute exact path="/addEducation" component={AddEducationPage} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {/*COMMON DASHBOARD*/}
       {isAuthenticated ? (
         <Route exact path="/dashboard" component={Dashboard} />
       ) : (
         <Redirect to="/login" />
       )}
+      {/*RECRUITER ROUTES*/}
       {isAuthenticated ? (
         <RecruiterRoute
           exact
@@ -73,15 +120,15 @@ const Main = ({ isAuthenticated }) => (
         <Redirect to="/login" />
       )}
       {isAuthenticated ? (
-        <RecruiterRoute exact path="/users" component={Users} />
+        <RecruiterRoute exact path="/users" component={UsersPage} />
       ) : (
         <Redirect to="/login" />
       )}
-      {isAuthenticated ? (
+      {/*{isAuthenticated ? (
         <RecruiterRoute exact path="/users/:_id" component={UserInfo} />
       ) : (
         <Redirect to="/login" />
-      )}
+      )}*/}
       {isAuthenticated ? (
         <RecruiterRoute exact path="/users/edit/:id" component={EditUser} />
       ) : (

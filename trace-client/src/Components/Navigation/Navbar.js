@@ -6,18 +6,18 @@ import * as actions from "../../actions/authActions";
 import { Segment, Menu, Icon } from "semantic-ui-react";
 
 const Navbar = ({ isAuthenticated, logout }) => (
-  <Segment>
+  <Segment inverted style={{ background: "#343a40" }}>
     <Menu secondary size="tiny">
-      <Menu.Item as={Link} to="/dashboard">
+      <Menu.Item as={Link} to="/dashboard" style={{ color: "white" }}>
         Trace H.R
       </Menu.Item>
       {!isAuthenticated && (
         <Menu.Menu position="right">
-          <Menu.Item as={Link} to="/login">
+          <Menu.Item as={Link} to="/login" style={{ color: "white" }}>
             <Icon name="sign in" />
             Sign In{" "}
           </Menu.Item>
-          <Menu.Item as={Link} to="/signup">
+          <Menu.Item as={Link} to="/signup" style={{ color: "white" }}>
             <Icon name="signup" />
             Sign Up{" "}
           </Menu.Item>

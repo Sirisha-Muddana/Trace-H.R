@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Message, Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { confirm } from "../../actions/authActions";
 
@@ -68,4 +68,4 @@ ConfirmationPage.propTypes = {
   }).isRequired
 };
 
-export default connect(null, { confirm })(ConfirmationPage);
+export default withRouter(connect(null, { confirm })(ConfirmationPage));

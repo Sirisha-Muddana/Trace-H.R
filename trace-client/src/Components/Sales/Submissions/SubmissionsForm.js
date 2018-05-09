@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Dropdown } from "semantic-ui-react";
-import { feedback } from "../../common/common";
+import { feedback, recruiters } from "../../common/common";
 import { Link } from "react-router-dom";
 
 class SubmissionsForm extends Component {
@@ -19,11 +19,18 @@ class SubmissionsForm extends Component {
           <Table.Cell textAlign="center">
             {submissions.interviewDate}
           </Table.Cell>
-          <Table.Cell textAlign="center">
+          <Table.Cell textAlign="center" width={3}>
             <Dropdown placeholder="Status" fluid selection options={feedback} />
           </Table.Cell>
-          <Table.Cell>{submissions.recruiter}</Table.Cell>
-          <Table.Cell>
+          <Table.Cell textAlign="center" width={3}>
+            <Dropdown
+              placeholder="Status"
+              fluid
+              selection
+              options={recruiters}
+            />
+          </Table.Cell>
+          <Table.Cell textAlign="center">
             <Button.Group>
               <Button
                 as={Link}

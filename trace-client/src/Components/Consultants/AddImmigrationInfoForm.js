@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Validator from "validator";
 import { Form } from "semantic-ui-react";
 import TextFieldGroup from "../common/TextFieldGroup";
 
-class SignupForm extends Component {
+class AddImmigrationInfoForm extends Component {
   state = {
     data: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: ""
+      visaStatus: "",
+      dateOfHire: "",
+      visaExp: "",
+      i94Exp: "",
+      OrganizationTitle: "",
+      jobTitle: "",
+      lcaSalary>: ""
     },
 
     loading: false,
@@ -38,11 +40,10 @@ class SignupForm extends Component {
   validate = data => {
     const errors = {};
 
-    if (!data.firstName) errors.firstName = "Please enter your First name";
-    if (!data.lastName) errors.lastName = "Please enter your Last name";
-    if (!Validator.isEmail(data.email))
-      errors.email = "Please enter a valid email";
-    if (!data.password) errors.password = "Please enter a password";
+    if (!data.title) errors.title = "Please enter your Job title";
+    if (!data.company) errors.company = "Please enter your Client name";
+    if (!data.from) errors.from = "Please enter the from date";
+    if (!data.to) errors.to = "Please enter your to date";
 
     return errors;
   };
@@ -52,50 +53,54 @@ class SignupForm extends Component {
 
     return (
       <Form onSubmit={this.onSubmit} loading={loading}>
-        <h1 id="heading" className="text-center">
-          Sign Up{" "}
-        </h1>
-        <h4 className="text-center">Please sign up for your Trace account</h4>
         <TextFieldGroup
           type="text"
-          name="firstName"
-          value={data.firstName}
-          label="First Name"
+          name="title"
+          value={data.title}
+          label="Job Title"
           onChange={this.onChange}
-          error={errors.firstName}
+          error={errors.title}
         />
         <TextFieldGroup
           type="text"
-          name="lastName"
-          value={data.lastName}
-          label="Last Name"
+          name="company"
+          value={data.company}
+          label="Client name"
           onChange={this.onChange}
-          error={errors.lastName}
+          error={errors.company}
         />
         <TextFieldGroup
-          type="email"
-          name="email"
-          value={data.email}
-          label="Email Address"
+          type="text"
+          name="location"
+          value={data.location}
+          label="Job Location"
           onChange={this.onChange}
-          error={errors.email}
         />
         <TextFieldGroup
-          type="password"
-          name="password"
-          value={data.password}
-          label="Password"
+          type="date"
+          name="from"
+          value={data.from}
+          label="From date"
           onChange={this.onChange}
-          error={errors.password}
+          error={errors.from}
         />
-        <button className="btn btn-secondary btn-lg btn-block">Sign up</button>
+        <TextFieldGroup
+          type="date"
+          name="to"
+          value={data.to}
+          label="To date"
+          onChange={this.onChange}
+          error={errors.to}
+        />
+
+        <button className="btn btn-secondary btn-lg btn-block">Submit</button>
       </Form>
     );
   }
 }
 
-SignupForm.propTypes = {
+AddImmigrationInfoForm.propTypes = {
   submit: PropTypes.func.isRequired
 };
 
-export default SignupForm;
+export default AddImmigrationInfoForm;

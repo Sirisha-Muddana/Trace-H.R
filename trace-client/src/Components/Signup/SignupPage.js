@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 class SignupPage extends Component {
   submit = data =>
-    this.props.signup(data).then(() => this.props.history.push("/dashboard"));
+    this.props.signup(data).then(() => this.props.history.push("/login"));
 
   render() {
     return (

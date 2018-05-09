@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import InlineError from "../../messages/InlineError";
-import { Form, Message, Label, Input, Header } from "semantic-ui-react";
+import { Form, Message, Label, Input } from "semantic-ui-react";
 import TextFieldGroup from "../../common/TextFieldGroup";
 import {
   submissionForm,
@@ -102,9 +102,7 @@ class EditSubmissionForm extends Component {
     const { errors, loading } = this.state;
     return (
       <div className="container h-100">
-        <Header className="border-bottom pb-2 mb-3" textAlign="center" as="h2">
-          Edit submission
-        </Header>
+        <h1 className="display-4 text-center">Edit Submission</h1>
         <div className="row justify-content-md-center h-100">
           <div className="card-wrapper" id="salesForm">
             <Form onSubmit={this.onSubmit} loading={loading}>

@@ -1,0 +1,26 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+const ProfileActions = () => {
+  return (
+    <div className="btn-group mb-4" role="group">
+      <Link to="/editProfile" className="btn btn-light">
+        <i className="fas fa-user-circle text-info mr-1" /> Edit Profile
+      </Link>
+      <Link to="/addImmigrationInfo" className="btn btn-light">
+        <i className="fab fa-avianex text-info mr-1" />
+        Add Immigration Info
+      </Link>
+      <Link to="/addExperience" className="btn btn-light">
+        <i className="fab fa-black-tie text-info mr-1" />
+        Add Experience
+      </Link>
+      <Link to="/addEducation" className="btn btn-light">
+        <i className="fas fa-graduation-cap text-info mr-1" />
+        Add Education
+      </Link>
+    </div>
+  );
+};
+
+export default ProfileActions;

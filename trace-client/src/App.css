@@ -17,11 +17,11 @@ body {
   background-color: transparent !important;
 }
 
-/*.btn {
-    background-color: #b4afb8;
-    color: black;
+.btn {
+    background-color: #343a40!important;
+    color: white;
     border: none;
-}*/
+}
 
 #heading {
   font-size: 30px;
@@ -79,7 +79,9 @@ h4 {
 /*
  * Navbar
  */
-
+.ui .segment{
+  background-color: #2a2f3a!important;
+}
 .navbar-brand {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -117,7 +119,6 @@ h4 {
 }
 
 .card {
-  padding: 15px;
   border: transparent;
 }
 
@@ -134,9 +135,8 @@ h4 {
 }
 
 /************Table ***********/
-.ui.fixed.table th,
-.ui.fixed.table td {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
+.thead-color {
+  background-color: #343a40!important;
+  color: white!important;
+}

@@ -13,7 +13,7 @@ export const fetchSubmissions = () => dispatch =>
     .catch(err =>
       dispatch({
         type: SUBMISSION_LIST,
-        payload: null
+        payload: []
       })
     );
 

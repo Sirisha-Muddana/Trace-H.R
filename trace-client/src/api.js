@@ -25,5 +25,19 @@ export default {
 
     getSubmission: id =>
       axios.get(`/get_submission/${id}`).then(res => res.data)
+  },
+
+  users: {
+    usersList: () => axios.get("/users_list").then(res => res.data),
+
+    currentUser: () => axios.get("/current_user").then(res => res.data),
+
+    createProfile: data => axios.post("/user_profile", { data }),
+
+    addImmigrationInfo: data => axios.post("/immigration_info", { data }),
+
+    addExperience: data => axios.post("/add_experience", { data }),
+
+    addEducation: data => axios.post("/add_education", { data })
   }
 };
