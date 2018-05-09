@@ -62,6 +62,8 @@ UserSchema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
       id: this.id,
+      firstName: this.firstName,
+      lastName: this.lastName,
       email: this.email,
       userAccessRole: this.userAccessRole,
       confirmed: this.confirmed

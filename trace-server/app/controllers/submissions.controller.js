@@ -54,7 +54,6 @@ exports.postSubmission = (req, res) => {
     submissionsList.interviewDate = req.body.data.interviewDate;
   if (req.body.data.interviewType)
     submissionsList.interviewType = req.body.data.interviewType;
-
   Submissions.findOne({ user: req.user.id }).then(submissions => {
     if (submissions) {
       // Update sales list
@@ -72,6 +71,7 @@ exports.postSubmission = (req, res) => {
         } else {
           //Create sales list
           new Submissions(submissionsList)
+
             .save()
             .then(submission => res.json(submission))
             .catch(err =>
@@ -79,9 +79,15 @@ exports.postSubmission = (req, res) => {
             );
         }
       });
+    } else {
+      //Create sales list
+      new Submissions(submissionsList)
+
+        .save()
+        .then(submission => res.json(submission))
+        .catch(err =>
+          res.status(404).json({ errors: parseErrors(err.errors) })
+        );
     }
   });
 };
-/*});
-};
-*/

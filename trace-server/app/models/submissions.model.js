@@ -55,13 +55,11 @@ const SubmissionsSchema = new Schema(
     },
 
     feedback: {
-      type: String,
-      required: false
+      type: String
     },
 
     recruiter: {
-      type: String,
-      required: false
+      type: String
     },
 
     createdAt: {
