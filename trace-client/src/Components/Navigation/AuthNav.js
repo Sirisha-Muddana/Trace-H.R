@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
 
 class AuthNav extends Component {
   render() {
@@ -31,7 +32,7 @@ class AuthNav extends Component {
                   className="dropdown-toggle nav-link"
                   data-toggle="dropdown"
                 >
-                  <i className="fa fa-globe" />
+                  <Icon color="teal" name="globe" />
                   <span className="notification">5</span>
                   <span className="d-lg-none">Notification</span>
                 </a>
@@ -62,6 +63,7 @@ class AuthNav extends Component {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
+                  <Icon circular color="teal" name="user" />
                   <span className="no-icon">
                     {firstName} {lastName}
                   </span>

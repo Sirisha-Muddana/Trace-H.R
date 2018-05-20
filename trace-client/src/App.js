@@ -2,7 +2,6 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import "./App.css";
 import Main from "./Components/Routes/Main";
-import Navbar from "./Components/Navigation/Navbar";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Sidebar from "./Components/Navigation/Sidebar";
@@ -12,7 +11,6 @@ const App = ({ isAuthenticated }) => (
   <div className="App">
     {!isAuthenticated ? (
       <div>
-        <Navbar />
         <Main />
       </div>
     ) : (

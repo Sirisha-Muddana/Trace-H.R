@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SignupForm from "./SignupForm";
 import { connect } from "react-redux";
+import Navbar from "../Navigation/Navbar";
 import { signup } from "../../actions/signupActions";
 import PropTypes from "prop-types";
 
@@ -10,12 +11,15 @@ class SignupPage extends Component {
 
   render() {
     return (
-      <div className="container h-100">
-        <div className="row justify-content-md-center h-100">
-          <div className="card-wrapper">
-            <div className="card">
-              <div className="card-body">
-                <SignupForm submit={this.submit} />
+      <div>
+        <Navbar />
+        <div className="container h-100">
+          <div className="row justify-content-md-center h-100">
+            <div className="card-wrapper">
+              <div className="card">
+                <div className="card-body">
+                  <SignupForm submit={this.submit} />
+                </div>
               </div>
             </div>
           </div>

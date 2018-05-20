@@ -8,7 +8,7 @@ import { Segment, Menu, Icon } from "semantic-ui-react";
 const Navbar = ({ isAuthenticated, logout }) => (
   <Segment inverted style={{ background: "#343a40" }}>
     <Menu secondary size="tiny">
-      <Menu.Item as={Link} to="/dashboard" style={{ color: "white" }}>
+      <Menu.Item as={Link} to="/" style={{ color: "white" }}>
         Trace H.R
       </Menu.Item>
       {!isAuthenticated && (

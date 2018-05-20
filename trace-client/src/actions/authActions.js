@@ -1,5 +1,5 @@
 import setAuthorizationToken from "../utils/setAuthorizationToken";
-import { USER_LOGGED_IN } from "../actions/types";
+import { USER_LOGGED_IN } from "./types";
 import api from "../api";
 import decode from "jwt-decode";
 

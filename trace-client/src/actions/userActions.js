@@ -1,13 +1,20 @@
-import { GET_USERS, GET_PROFILE } from "./types";
+import {
+  GET_USERS,
+  GET_PROFILE,
+  GET_RECRUITERS,
+  USERS_LOADING,
+  ALL_USERS
+} from "./types";
 import api from "../api";
 
-export const fetchUsers = () => dispatch =>
+export const fetchUsers = () => dispatch => {
+  dispatch(setUsersLoading());
   api.users
     .usersList()
-    .then(users => {
+    .then(usersList => {
       dispatch({
         type: GET_USERS,
-        payload: users
+        payload: usersList
       });
     })
     .catch(err =>
@@ -16,8 +23,9 @@ export const fetchUsers = () => dispatch =>
         payload: []
       })
     );
-
-export const getCurrentProfile = () => dispatch =>
+};
+export const getCurrentProfile = () => dispatch => {
+  dispatch(setUsersLoading());
   api.users
     .currentUser()
     .then(profile => {
@@ -32,6 +40,43 @@ export const getCurrentProfile = () => dispatch =>
         payload: {}
       })
     );
+};
+
+export const getRecruiterList = () => dispatch => {
+  dispatch(setUsersLoading());
+  api.users
+    .recruiterList()
+    .then(recruiterList => {
+      dispatch({
+        type: GET_RECRUITERS,
+        payload: recruiterList
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_RECRUITERS,
+        payload: []
+      })
+    );
+};
+
+export const getAllUsers = () => dispatch => {
+  dispatch(setUsersLoading());
+  api.users
+    .allUsers()
+    .then(allUsers => {
+      dispatch({
+        type: ALL_USERS,
+        payload: allUsers
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: ALL_USERS,
+        payload: []
+      })
+    );
+};
 
 export const createProfile = data => dispatch => api.users.createProfile(data);
 
@@ -41,3 +86,10 @@ export const addImmigrationInfo = data => dispatch =>
 export const addExperience = data => dispatch => api.users.addExperience(data);
 
 export const addEducation = data => dispatch => api.users.addEducation(data);
+
+// users loading
+export const setUsersLoading = () => {
+  return {
+    type: USERS_LOADING
+  };
+};

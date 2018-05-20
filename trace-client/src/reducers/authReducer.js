@@ -1,9 +1,10 @@
-import { USER_LOGGED_IN } from "../actions/types";
+import { USER_LOGGED_IN, SUCCESS_MESSAGE } from "../actions/types";
 import isEmpty from "lodash/isEmpty";
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  success: false
 };
 
 export default function authReducer(state = initialState, action = {}) {
@@ -12,7 +13,14 @@ export default function authReducer(state = initialState, action = {}) {
       return {
         ...state,
         isAuthenticated: !isEmpty(action.payload),
-        user: action.payload
+        user: action.payload,
+        success: false
+      };
+
+    case SUCCESS_MESSAGE:
+      return {
+        ...state,
+        success: true
       };
     default:
       return state;

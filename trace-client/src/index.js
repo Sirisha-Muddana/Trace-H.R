@@ -11,6 +11,8 @@ import rootReducer from "./rootReducer";
 import decode from "jwt-decode";
 import { userLoggedIn, logout } from "./actions/authActions";
 import "semantic-ui-css/semantic.min.css";
+import "../node_modules/dropzone/dist/min/dropzone.min.css";
+import "../node_modules/react-dropzone-component/styles/filepicker.css";
 
 const store = createStore(
   rootReducer,

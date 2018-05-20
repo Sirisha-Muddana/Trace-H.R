@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { post } from "axios";
 
 export default {
   auth: {
@@ -24,7 +24,10 @@ export default {
     postSubmission: data => axios.post("/post_submission", { data }),
 
     getSubmission: id =>
-      axios.get(`/get_submission/${id}`).then(res => res.data)
+      axios.get(`/get_submission/${id}`).then(res => res.data),
+
+    getSubmissions: id =>
+      axios.get(`/get_submissions/${id}`).then(res => res.data)
   },
 
   users: {
@@ -32,12 +35,30 @@ export default {
 
     currentUser: () => axios.get("/current_user").then(res => res.data),
 
-    createProfile: data => axios.post("/user_profile", { data }),
+    recruiterList: () => axios.get("/recruiter_list").then(res => res.data),
+
+    allUsers: () => axios.get("/all_users").then(res => res.data),
+
+    createProfile: data => axios.post("/create_profile", { data }),
 
     addImmigrationInfo: data => axios.post("/immigration_info", { data }),
 
     addExperience: data => axios.post("/add_experience", { data }),
 
     addEducation: data => axios.post("/add_education", { data })
+  },
+
+  timesheets: {
+    timesheets: () => axios.get("/timesheets").then(res => res.data),
+
+    allTimesheets: () => axios.get("/allTimesheets").then(res => res.data),
+
+    getTimesheets: id =>
+      axios.get(`/get_timesheets/${id}`).then(res => res.data),
+
+    getImage: filename => axios.get(`/image/${filename}`).then(res => res.data),
+
+    uploadTimesheet: (formData, config) =>
+      post("/uploadTimesheet", formData, config)
   }
 };
