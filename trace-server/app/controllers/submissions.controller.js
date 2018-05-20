@@ -4,26 +4,16 @@ const Submissions = require("../models/submissions.model");
 const mongoose = require("mongoose");
 import parseErrors from "../utils/parseErrors";
 
-// Retrieve and return all users from the database.
-exports.findAll = (req, res) => {
-  Users.find()
-    .then(users => {
-      res.json(users);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving user."
-      });
-    });
-};
-
+// @route   GET api/submissions_list
+// @desc    Get all submissions for current user
+// @access  Private
 exports.submissionsList = (req, res) => {
   Submissions.find({ user: req.user.id })
-    .sort({ date: -1 })
+    .sort([["createdAt", -1]])
     .then(submissionsList => {
       if (!submissionsList) {
         return res.json({
-          errors: { global: "No profile for this user" }
+          errors: { global: "No submissions for this user" }
         });
       }
       res.json(submissionsList);
@@ -31,12 +21,34 @@ exports.submissionsList = (req, res) => {
     .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
 };
 
+// @route   GET api/get_submission/:id
+// @desc    Get submission by ID
+// @access  Private
 exports.getSubmission = (req, res) => {
   Submissions.findById(req.params.id)
     .then(submission => res.json(submission))
     .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
 };
 
+// @route   GET api/get_submissions/:id
+// @desc    Get all submissions by ID
+// @access  Private
+exports.getSubmissions = (req, res) => {
+  Submissions.find({ user: req.params.id })
+    .then(getSubmissions => {
+      if (!getSubmissions) {
+        return res.json({
+          errors: { global: "No submissions for this user" }
+        });
+      }
+      res.json(getSubmissions);
+    })
+    .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
+};
+
+// @route   POST api/post_submission
+// @desc    Create or edit new submission
+// @access  Private
 exports.postSubmission = (req, res) => {
   //Create or Edit sales list
   const submissionsList = {};

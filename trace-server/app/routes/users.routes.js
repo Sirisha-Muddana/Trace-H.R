@@ -1,9 +1,47 @@
 const passport = require("passport");
+const mongoose = require("mongoose");
+const crypto = require("crypto");
+const path = require("path");
+const multer = require("multer");
+const GridFsStorage = require("multer-gridfs-storage");
+const Grid = require("gridfs-stream");
+const moment = require("moment");
+
+// Create storage engine
+
+const storage = new GridFsStorage({
+  url: process.env.MONGODB_URL,
+  file: (req, file) => {
+    //Profile.findOne({ user: req.user.id }).then(profile => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename =
+          moment(Date.now()).format("YYYY-MM-DD") +
+          "_" +
+          req.user.firstName +
+          "_" +
+          req.user.lastName +
+          path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          metadata: { user: req.user.id },
+          bucketName: "timesheets"
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+const upload = multer({ storage });
 
 module.exports = app => {
   const auth = require("../controllers/auth.controller.js");
   const submissions = require("../controllers/submissions.controller.js");
   const users = require("../controllers/users.controller.js");
+  const file = require("../controllers/fileUpload.controller.js");
 
   // AUTH ROUTES
   app.post("/api/signup", auth.create);
@@ -18,7 +56,47 @@ module.exports = app => {
 
   app.post("/api/reset_password", auth.resetPassword);
 
-  //USER ROUTES
+  // TIMESHEET UPLOAD ROUTES
+  // Route to upload file
+  app.post(
+    "/api/uploadTimesheet",
+    passport.authenticate("jwt", { session: false }),
+    upload.single("file"),
+    file.uploadTimesheet
+  );
+
+  // Route to display all files
+  app.get(
+    "/api/allTimesheets",
+    passport.authenticate("jwt", { session: false }),
+    file.getAllTimesheets
+  );
+
+  // Route to display all files by user id
+  app.get(
+    "/api/timesheets",
+    passport.authenticate("jwt", { session: false }),
+    file.getTimesheets
+  );
+  app.get(
+    "/api/get_timesheets/:id",
+    passport.authenticate("jwt", { session: false }),
+    file.getTimesheet
+  );
+
+  /*// Route to get file by name
+  app.get(
+    "/api/timesheets/:filename",
+    passport.authenticate("jwt", { session: false }),
+    file.getTimesheet
+  );*/
+
+  // Get image by filename
+  app.get(
+    "/api/image/:filename",
+    passport.authenticate("jwt", { session: false }),
+    file.getImage
+  );
 
   // Retrieve all users
   app.get(
@@ -27,6 +105,13 @@ module.exports = app => {
     users.usersList
   );
 
+  app.get(
+    "/api/all_users",
+    passport.authenticate("jwt", { session: false }),
+    users.allUsers
+  );
+
+  //USER ROUTES
   // Get current user profile
   app.get(
     "/api/current_user",
@@ -36,9 +121,9 @@ module.exports = app => {
 
   // Create profile
   app.post(
-    "/api/user_profile",
+    "/api/create_profile",
     passport.authenticate("jwt", { session: false }),
-    users.userProfile
+    users.createProfile
   );
 
   // Add immigration info
@@ -87,10 +172,25 @@ module.exports = app => {
     submissions.getSubmission
   );
 
+  app.get(
+    "/api/get_submissions/:id",
+    passport.authenticate("jwt", { session: false }),
+    submissions.getSubmissions
+  );
+
   // Edit or Create submission
   app.post(
     "/api/post_submission",
     passport.authenticate("jwt", { session: false }),
     submissions.postSubmission
+  );
+
+  // MANAGEMENT ROUTES
+
+  // Get all recriters
+  app.get(
+    "/api/recruiter_list",
+    passport.authenticate("jwt", { session: false }),
+    users.recruiterList
   );
 };

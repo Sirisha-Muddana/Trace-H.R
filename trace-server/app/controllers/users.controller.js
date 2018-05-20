@@ -3,7 +3,9 @@ const Users = require("../models/users.model");
 const Profile = require("../models/profile.model");
 import parseErrors from "../utils/parseErrors";
 
-// GET ALL USERS
+// @route   GET api/users_list
+// @desc    Get all users profile
+// @access  Private
 exports.usersList = (req, res) => {
   Profile.find()
     .populate("user", ["firstName", "lastName", "email"])
@@ -18,7 +20,9 @@ exports.usersList = (req, res) => {
     .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
 };
 
-// GET CURRENT USER PROFILE
+// @route   GET api/current_user
+// @desc    Get current user profile
+// @access  Private
 exports.currentUser = (req, res) => {
   Profile.findOne({ user: req.user.id })
     .populate("user", ["firstName", "lastName", "email"])
@@ -33,8 +37,44 @@ exports.currentUser = (req, res) => {
     .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
 };
 
-//Create or Edit user profile
-exports.userProfile = (req, res) => {
+// @route   GET api/all_users
+// @desc    Get list of all users
+// @access  Private
+exports.allUsers = (req, res) => {
+  Users.find({ userAccessRole: "ACCESS LEVEL 1" }, ["firstName", "lastName"])
+    .then(allUsers => {
+      if (allUsers) {
+        res.json(allUsers);
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving user."
+      });
+    });
+};
+
+// @route   GET api/recruiter_list
+// @desc    Get list of all recruiters
+// @access  Private
+exports.recruiterList = (req, res) => {
+  Users.find({ userAccessRole: "ACCESS LEVEL 2" }, ["firstName", "lastName"])
+    .then(allRecruiters => {
+      if (allRecruiters) {
+        res.json(allRecruiters);
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving user."
+      });
+    });
+};
+
+// @route   POST api/create_profile
+// @desc    Create or edit user profile
+// @access  Private
+exports.createProfile = (req, res) => {
   // Get fields
   const profileFields = {};
   profileFields.user = req.user.id;
@@ -44,7 +84,7 @@ exports.userProfile = (req, res) => {
     profileFields.onProject = req.body.data.onProject;
   if (req.body.data.endDate) profileFields.endDate = req.body.data.endDate;
   if (req.body.data.relocation)
-    profileFields.relocation = req.data.body.data.relocation;
+    profileFields.relocation = req.body.data.relocation;
 
   // Skillset - Split into array
   if (typeof req.body.data.skillset !== "undefined") {

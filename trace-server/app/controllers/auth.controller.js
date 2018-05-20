@@ -4,17 +4,28 @@ import parseErrors from "../utils/parseErrors";
 import { sendConfirmationEmail } from "../mailer";
 import { sendResetPasswordEmail } from "../mailer";
 import jwt from "jsonwebtoken";
+import isEmpty from "lodash/isEmpty";
 
 // Create and Save a new Note
 exports.create = (req, res) => {
   // Validate request
-  const { firstName, lastName, email, password } = req.body.user;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    userAccessRole
+  } = req.body.user;
   const user = new Users({
     firstName,
     lastName,
     email,
-    userAccessRole: "ACCESS LEVEL 1"
+    userAccessRole
   });
+
+  if (isEmpty(userAccessRole)) {
+    user.userAccessRole = "ACCESS LEVEL 1";
+  } else user.userAccessRole = userAccessRole;
   user.setPassword(password);
   user.setConfirmationToken();
   user

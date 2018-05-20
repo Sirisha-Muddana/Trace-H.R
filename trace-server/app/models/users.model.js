@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 var bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 import uniqueValidator from "mongoose-unique-validator";
+const Schema = mongoose.Schema;
 
 // User Schema
-const UserSchema = mongoose.Schema(
+const UserSchema = new Schema(
   {
     firstName: {
       type: String,
@@ -41,6 +42,11 @@ const UserSchema = mongoose.Schema(
     confirmationToken: {
       type: String,
       default: ""
+    },
+
+    file: {
+      type: Schema.Types.ObjectId,
+      ref: "timesheets"
     }
   },
   {
