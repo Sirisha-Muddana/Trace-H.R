@@ -44,7 +44,7 @@ module.exports = app => {
   const file = require("../controllers/fileUpload.controller.js");
 
   // AUTH ROUTES
-  app.post("/api/signup", auth.create);
+  app.post("/api/register", auth.register);
 
   app.post("/api/authenticate", auth.authenticate);
 

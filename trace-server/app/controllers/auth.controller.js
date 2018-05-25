@@ -7,32 +7,27 @@ import jwt from "jsonwebtoken";
 import isEmpty from "lodash/isEmpty";
 
 // Create and Save a new Note
-exports.create = (req, res) => {
+exports.register = (req, res) => {
   // Validate request
-  const {
+  const { firstName, lastName, email, password, userAccessRole } = req.body;
+
+  const newUser = new Users({
     firstName,
     lastName,
-    email,
-    password,
-    userAccessRole
-  } = req.body.user;
-  const user = new Users({
-    firstName,
-    lastName,
-    email,
-    userAccessRole
+    email
   });
 
   if (isEmpty(userAccessRole)) {
-    user.userAccessRole = "ACCESS LEVEL 1";
-  } else user.userAccessRole = userAccessRole;
-  user.setPassword(password);
-  user.setConfirmationToken();
-  user
+    newUser.userAccessRole = "ACCESS LEVEL 1";
+  } else newUser.userAccessRole = userAccessRole;
+
+  newUser.setPassword(password);
+  newUser.setConfirmationToken();
+  new Users(newUser)
     .save()
     .then(userData => {
       sendConfirmationEmail(userData);
-      res.json({ user: userData.toAuthJSON() });
+      res.json(userData);
     })
     .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
 };

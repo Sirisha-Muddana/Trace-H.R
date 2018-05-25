@@ -78,27 +78,23 @@ exports.createProfile = (req, res) => {
   // Get fields
   const profileFields = {};
   profileFields.user = req.user.id;
-  if (req.body.data.cellphone)
-    profileFields.cellphone = req.body.data.cellphone;
-  if (req.body.data.onProject)
-    profileFields.onProject = req.body.data.onProject;
-  if (req.body.data.endDate) profileFields.endDate = req.body.data.endDate;
-  if (req.body.data.relocation)
-    profileFields.relocation = req.body.data.relocation;
+  if (req.body.cellphone) profileFields.cellphone = req.body.cellphone;
+  if (req.body.onProject) profileFields.onProject = req.body.onProject;
+  if (req.body.endDate) profileFields.endDate = req.body.endDate;
+  if (req.body.relocation) profileFields.relocation = req.body.relocation;
 
   // Skillset - Split into array
-  if (typeof req.body.data.skillset !== "undefined") {
-    profileFields.skillset = req.body.data.skillset.split(",");
+  if (typeof req.body.skillset !== "undefined") {
+    profileFields.skillset = req.body.skillset.split(",");
   }
 
   // Address
   profileFields.address = {};
-  if (req.body.data.street) profileFields.address.street = req.body.data.street;
-  if (req.body.data.apartment)
-    profileFields.address.apartment = req.body.data.apartment;
-  if (req.body.data.city) profileFields.address.city = req.body.data.city;
-  if (req.body.data.state) profileFields.address.state = req.body.data.state;
-  if (req.body.data.zip) profileFields.address.zip = req.body.data.zip;
+  if (req.body.street) profileFields.address.street = req.body.street;
+  if (req.body.apartment) profileFields.address.apartment = req.body.apartment;
+  if (req.body.city) profileFields.address.city = req.body.city;
+  if (req.body.state) profileFields.address.state = req.body.state;
+  if (req.body.zip) profileFields.address.zip = req.body.zip;
 
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
