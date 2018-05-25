@@ -14,7 +14,7 @@ class AllSubmissionsPage extends Component {
     const { recruiterList, loading } = this.props.users;
     let allRecruiters;
     if (loading) {
-      allRecruiters = <Loader />;
+      allRecruiters = <Loader active inline="centered" />;
     } else {
       if (Object.keys(recruiterList).length > 0) {
         allRecruiters = <AllSubmissionsForm recruiterList={recruiterList} />;

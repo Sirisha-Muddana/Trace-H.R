@@ -1,28 +1,62 @@
 import React, { Component } from "react";
-import axios from "axios";
+import PropTypes from "prop-types";
+import ViewTimesheetImage from "./ViewTimesheetImage";
+import { connect } from "react-redux";
+import { getImage } from "../../../actions/timesheetsActions";
+import { Loader } from "semantic-ui-react";
+import PDFViewer from "mgr-pdf-viewer-react";
 
 class ViewTimesheet extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      image: []
-    };
-  }
-
   componentDidMount() {
-    axios.get(`/image/${this.props.match.params.filename}`).then(res => {
-      this.setState({ image: res.data });
-      console.log(res);
-    });
+    this.props.getImage(this.props.match.params.filename);
   }
 
   render() {
-    return (
-      <div>
-        <img src={`data:image/jpeg;base64,${this.state.image}`} alt="" />
-      </div>
-    );
+    const { image, loading } = this.props.timesheets;
+    var base64String = JSON.stringify(image).charAt(1);
+    let extension;
+    if (base64String === "/") extension = "jpg";
+    else if (base64String === "i") extension = "png";
+    else extension = "pdf";
+    let getImage;
+    if (loading) {
+      getImage = <Loader active inline="centered" />;
+    } else {
+      if (Object.keys(image).length > 0) {
+        if (extension === "jpg" || extension === "png") {
+          getImage = <ViewTimesheetImage image={image} extension={extension} />;
+        } else {
+          getImage = (
+            <PDFViewer
+              document={{ url: `data:application/pdf;base64,${image}` }}
+              css="customViewer"
+              navigation={{
+                css: {
+                  previousPageBtn: "customPrevBtn",
+                  nextPageBtn: "customNextBtn",
+                  pages: "customPages",
+                  wrapper: "customWrapper"
+                }
+              }}
+            />
+          );
+        }
+      } else {
+        getImage = <h4> No Timesheets found</h4>;
+      }
+    }
+
+    return <div>{getImage}</div>;
   }
 }
 
-export default ViewTimesheet;
+ViewTimesheet.propTypes = {
+  getImage: PropTypes.func.isRequired,
+  timesheets: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  timesheets: state.timesheets
+});
+
+export default connect(mapStateToProps, { getImage })(ViewTimesheet);

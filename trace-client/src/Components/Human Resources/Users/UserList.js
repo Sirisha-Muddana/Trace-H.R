@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import UsersInfo from "./UsersInfo";
+import UserRecord from "./UserRecord";
 import { connect } from "react-redux";
-import { fetchUsers } from "../../actions/userActions";
+import { fetchUsers } from "../../../actions/userActions";
 import { Menu, Input, Loader } from "semantic-ui-react";
 
-class UsersPage extends Component {
+class UserList extends Component {
   componentDidMount() {
     this.props.fetchUsers();
   }
@@ -18,7 +18,7 @@ class UsersPage extends Component {
       allUsers = <Loader active inline="centered" />;
     } else {
       if (Object.keys(usersList).length > 0) {
-        allUsers = <UsersInfo usersList={usersList} />;
+        allUsers = <UserRecord usersList={usersList} />;
       } else {
         allUsers = <h4> No Candidates registered </h4>;
       }
@@ -37,7 +37,7 @@ class UsersPage extends Component {
   }
 }
 
-UsersPage.propTypes = {
+UserList.propTypes = {
   fetchUsers: PropTypes.func.isRequired,
   users: PropTypes.object.isRequired
 };
@@ -46,4 +46,4 @@ const mapStateToProps = state => ({
   users: state.users
 });
 
-export default connect(mapStateToProps, { fetchUsers })(UsersPage);
+export default connect(mapStateToProps, { fetchUsers })(UserList);

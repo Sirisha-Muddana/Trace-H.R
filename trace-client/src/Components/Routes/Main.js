@@ -16,9 +16,13 @@ import AllTimesheetsPage from "../Management/Timesheets/AllTimesheetsPage";
 import GetTimesheetPage from "../Management/Timesheets/GetTimesheetPage";
 
 import CreateUserPage from "../Management/Employee Management/CreateUserPage";
+import DashboardCalendar from "../Human Resources/DashboardCalendar";
+import UserList from "../Human Resources/Users/UserList";
+import HRRoute from "./HRRoute";
 
 import Profile from "../Consultants/Dashboard/Profile";
 import TimesheetsPage from "../Consultants/Timesheets/TimesheetsPage";
+import TimesheetsForm from "../Consultants/Timesheets/TimesheetsForm";
 import UploadTimesheet from "../Consultants/Timesheets/UploadTimesheet";
 import CreateProfilePage from "../Consultants/Profile/CreateProfilePage";
 import EditProfile from "../Consultants/Profile/EditProfile";
@@ -91,7 +95,7 @@ const Main = ({ isAuthenticated }) => (
       )}
 
       {isAuthenticated ? (
-        <ManagementRoute
+        <Route
           exact
           path="/viewTimesheet/:filename"
           component={ViewTimesheet}
@@ -115,6 +119,24 @@ const Main = ({ isAuthenticated }) => (
       ) : (
         <Redirect to="/login" />
       )}
+
+      {/*********************HR ROUTES*********************************/}
+      {isAuthenticated ? (
+        <HRRoute
+          exact
+          path="/dashboardCalendar"
+          component={DashboardCalendar}
+        />
+      ) : (
+        <Redirect to="/login" />
+      )}
+
+      {isAuthenticated ? (
+        <HRRoute exact path="/userlist" component={UserList} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+
       {/*********************CONSULTANT ROUTES*********************************/}
       {isAuthenticated ? (
         <UserRoute exact path="/profile" component={Profile} />
@@ -123,6 +145,15 @@ const Main = ({ isAuthenticated }) => (
       )}
       {isAuthenticated ? (
         <UserRoute exact path="/timesheetsPage" component={TimesheetsPage} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <UserRoute
+          exact
+          path="/timesheetsForm/:date"
+          component={TimesheetsForm}
+        />
       ) : (
         <Redirect to="/login" />
       )}
@@ -201,11 +232,16 @@ const Main = ({ isAuthenticated }) => (
       ) : (
         <Redirect to="/login" />
       )}
-      {/*{isAuthenticated ? (
-        <RecruiterRoute exact path="/users/:_id" component={UserInfo} />
+      {isAuthenticated ? (
+        <Route exact path="/users" component={UsersPage} />
       ) : (
         <Redirect to="/login" />
-      )}*/}
+      )}
+      {isAuthenticated ? (
+        <Route exact path="/users" component={UsersPage} />
+      ) : (
+        <Redirect to="/login" />
+      )}
     </Switch>
   </div>
 );

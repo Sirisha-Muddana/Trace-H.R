@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import TimesheetsForm from "./TimesheetsForm";
+import TimesheetsFolder from "./TimesheetsFolder";
 import { connect } from "react-redux";
 import { fetchTimesheets } from "../../../actions/timesheetsActions";
 import { Link } from "react-router-dom";
@@ -15,10 +15,10 @@ class TimesheetsPage extends Component {
     const { timesheetsList, loading } = this.props.timesheets;
     let allTimesheets;
     if (loading) {
-      allTimesheets = <Loader />;
+      allTimesheets = <Loader active inline="centered" />;
     } else {
       if (Object.keys(timesheetsList).length > 0) {
-        allTimesheets = <TimesheetsForm timesheetsList={timesheetsList} />;
+        allTimesheets = <TimesheetsFolder timesheetsList={timesheetsList} />;
       } else {
         allTimesheets = <h4> No Timesheets found</h4>;
       }
