@@ -133,7 +133,7 @@ exports.immigrationInfo = (req, res) => {
       lcaSalary: req.body.lcaSalary
     };
     // Add to immigration array
-    profile.experience.unshift(newImmigrationInfo);
+    profile.immigrationInfo.unshift(newImmigrationInfo);
 
     profile.save().then(profile => res.json(profile));
   });
