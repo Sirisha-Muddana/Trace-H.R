@@ -31,7 +31,6 @@ import SubmissionsPage from "../Recruiters/Submissions/SubmissionsPage";
 import PostSubmissionPage from "../Recruiters/Submissions/PostSubmissionPage";
 import EditSubmissionForm from "../Recruiters/Submissions/EditSubmissionForm";
 import UsersPage from "../Users/UsersPage";
-import EditUser from "../Sales/EditUser";
 
 import GuestRoute from "./GuestRoute";
 import UserRoute from "./UserRoute";
@@ -207,11 +206,6 @@ const Main = ({ isAuthenticated }) => (
       ) : (
         <Redirect to="/login" />
       )}*/}
-      {isAuthenticated ? (
-        <RecruiterRoute exact path="/users/edit/:id" component={EditUser} />
-      ) : (
-        <Redirect to="/login" />
-      )}
     </Switch>
   </div>
 );
