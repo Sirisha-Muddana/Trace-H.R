@@ -5,6 +5,7 @@ import ConfirmEmailMessage from "./messages/ConfirmEmailMessage";
 import PropTypes from "prop-types";
 import SubmissionsPage from "./Recruiters/Submissions/SubmissionsPage";
 import AllSubmissionsPage from "./Management/All Submissions/AllSubmissionsPage";
+import DashboardCalendar from "./Human Resources/DashboardCalendar";
 import Profile from "./Consultants/Dashboard/Profile";
 
 const DashboardPage = ({ isConfirmed, userAccessRole }) => (
@@ -12,7 +13,7 @@ const DashboardPage = ({ isConfirmed, userAccessRole }) => (
     {!isConfirmed && <ConfirmEmailMessage />}
     {userAccessRole === "ACCESS LEVEL 1" && <Profile />}
     {userAccessRole === "ACCESS LEVEL 2" && <SubmissionsPage />}
-    {/*{userAccessRole === "ACCESS LEVEL 3" && }*/}
+    {userAccessRole === "ACCESS LEVEL 3" && <DashboardCalendar />}
     {userAccessRole === "ACCESS LEVEL 4" && <AllSubmissionsPage />}
   </div>
 );

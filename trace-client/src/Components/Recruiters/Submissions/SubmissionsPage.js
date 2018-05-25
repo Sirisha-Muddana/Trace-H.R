@@ -15,7 +15,7 @@ class SubmissionsPage extends Component {
     const { submissionList, loading } = this.props.submission;
     let allSubmissions;
     if (loading) {
-      allSubmissions = <Loader />;
+      allSubmissions = <Loader active inline="centered" />;
     } else {
       if (Object.keys(submissionList).length > 0) {
         allSubmissions = <SubmissionsForm submissionList={submissionList} />;

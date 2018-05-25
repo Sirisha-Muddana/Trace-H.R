@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import UserDetails from "./UserDetails";
+import UserDetails from "./ConsultantsList/UserDetails";
 import PropTypes from "prop-types";
 
 class Users extends Component {
@@ -15,18 +15,18 @@ class Users extends Component {
     this.getUsers();
   }
 
-    getUsers(){
-        axios.get('http://localhost:3000/api/users')
-            .then(response => {
-                this.setState({users: response.data}, () => {
-                    //console.log(this.state);
-                })
-            })
-            .catch(err => console.log(err));
-    }
+  getUsers() {
+    axios
+      .get("http://localhost:3000/api/users")
+      .then(response => {
+        this.setState({ users: response.data }, () => {
+          //console.log(this.state);
+        });
+      })
+      .catch(err => console.log(err));
+  }
 
-
-    render() {
+  render() {
     const userInfo = this.state.users.map((user, i) => {
       return <UserDetails key={user._id} user={user} />;
     });

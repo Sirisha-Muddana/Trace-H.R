@@ -2,12 +2,15 @@ import {
   GET_TIMESHEETS,
   GET_ALL_TIMESHEETS,
   TIMESHEETS_LIST,
-  GET_IMAGE
+  TIMESHEET_LOADING,
+  GET_IMAGE,
+  NEW_ITEM,
+  TIMESHEETS_LIST_BY_DATE
 } from "./types";
 import api from "../api";
 
 export const fetchTimesheets = () => dispatch => {
-  //dispatch(setSubmissionLoading());
+  dispatch(setTimesheetLoading());
   api.timesheets
     .timesheets()
     .then(timesheets => {
@@ -25,7 +28,7 @@ export const fetchTimesheets = () => dispatch => {
 };
 
 export const fetchAllTimesheets = () => dispatch => {
-  //dispatch(setSubmissionLoading());
+  dispatch(setTimesheetLoading());
   api.timesheets
     .allTimesheets()
     .then(allTimesheets => {
@@ -43,7 +46,7 @@ export const fetchAllTimesheets = () => dispatch => {
 };
 
 export const getTimesheets = id => dispatch => {
-  //dispatch(setSubmissionLoading());
+  dispatch(setTimesheetLoading());
   api.timesheets
     .getTimesheets(id)
     .then(timesheets => {
@@ -55,13 +58,31 @@ export const getTimesheets = id => dispatch => {
     .catch(err =>
       dispatch({
         type: TIMESHEETS_LIST,
-        payload: null
+        payload: {}
+      })
+    );
+};
+
+export const getTimesheetsByDate = date => dispatch => {
+  dispatch(setTimesheetLoading());
+  api.timesheets
+    .getTimesheetsByDate(date)
+    .then(timesheets => {
+      dispatch({
+        type: TIMESHEETS_LIST_BY_DATE,
+        payload: timesheets
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: TIMESHEETS_LIST_BY_DATE,
+        payload: {}
       })
     );
 };
 
 export const getImage = filename => dispatch => {
-  //dispatch(setSubmissionLoading());
+  dispatch(setTimesheetLoading());
   api.timesheets
     .getImage(filename)
     .then(image => {
@@ -73,10 +94,26 @@ export const getImage = filename => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_IMAGE,
-        payload: null
+        payload: {}
       })
     );
 };
 
 export const uploadTimesheets = (formData, config) => dispatch =>
-  api.timesheets.uploadTimesheet(formData, config);
+  api.timesheets.uploadTimesheet(formData, config).then(data => {
+    dispatch(setNewItem());
+  });
+
+// submission loading
+export const setTimesheetLoading = () => {
+  return {
+    type: TIMESHEET_LOADING
+  };
+};
+
+// submission loading
+export const setNewItem = () => {
+  return {
+    type: NEW_ITEM
+  };
+};

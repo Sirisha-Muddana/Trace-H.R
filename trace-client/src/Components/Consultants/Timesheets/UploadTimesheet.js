@@ -8,28 +8,34 @@ import DropzoneComponent from "react-dropzone-component";
 class UploadTimesheet extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      file: null
-    };
-    //this.onFormSubmit = this.onFormSubmit.bind(this);
+
     this.onDrop = this.onDrop.bind(this);
+    this.onProgress = this.onProgress.bind(this);
 
     // For a full list of possible configurations,
     // please consult http://www.dropzonejs.com/#configuration
     this.djsConfig = {
-      acceptedFiles: "image/jpeg,image/png",
+      acceptedFiles:
+        "image/jpeg,image/png, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       autoProcessQueue: false,
       uploadMultiple: false,
-      maxFiles: 1
+      maxFiles: 1,
+      dictDefaultMessage: "Click to browse or Drop files here to upload"
     };
 
     this.componentConfig = {
-      iconFiletypes: [".jpg", ".png"],
+      iconFiletypes: [".jpg", ".png", ".pdf", ".xslx"],
       showFiletypeIcon: true,
       postUrl: "no-url"
     };
   }
 
+  onProgress = file => {
+    var progressElement = file.previewElement.querySelector(
+      "[data-dz-uploadprogress]"
+    );
+    progressElement.style.width = "100%";
+  };
   onDrop = file => {
     const formData = new FormData();
     formData.append("file", file);
@@ -42,18 +48,14 @@ class UploadTimesheet extends Component {
       this.props.history.push("/timesheetsPage");
     });
   };
-
-  /*onChange(e) {
-    this.setState({ file: e.target.files[0] });
-  }*/
-
   render() {
     const config = this.componentConfig;
     const djsConfig = this.djsConfig;
 
     // For a list of all possible events (there are many), see README.md!
     const eventHandlers = {
-      addedfile: this.onDrop
+      addedfile: this.onDrop,
+      thumbnail: this.onProgress
     };
 
     return (

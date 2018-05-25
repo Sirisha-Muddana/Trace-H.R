@@ -7,6 +7,7 @@ import ProfileActions from "./ProfileActions";
 import Experience from "./Experience";
 import Education from "./Education";
 import { withRouter } from "react-router-dom";
+import { Loader } from "semantic-ui-react";
 
 class Profile extends Component {
   componentDidMount() {
@@ -15,34 +16,38 @@ class Profile extends Component {
 
   render() {
     const { user } = this.props.auth;
-    const { profile } = this.props.users;
-
+    const { profile, loading } = this.props.users;
     let profileContent;
-    if (Object.keys(profile).length > 1) {
-      profileContent = (
-        <div>
-          <p className="lead text-muted">
-            Welcome {user.firstName} {user.lastName}
-          </p>
-          <ProfileActions />
-          <Experience experience={profile.experience} />
-          <Education education={profile.education} />
-          <div style={{ marginBottom: "60px" }} />
-        </div>
-      );
+
+    if (loading) {
+      profileContent = <Loader active inline="centered" />;
     } else {
-      // User is logged in but has no profile
-      profileContent = (
-        <div>
-          <p className="lead text-muted">
-            Welcome {user.firstName} {user.lastName}
-          </p>
-          <p>You have not yet setup a profile, please add some info</p>
-          <Link to="/createProfile" className="btn btn-lg btn-info">
-            Create Profile
-          </Link>
-        </div>
-      );
+      if (Object.keys(profile).length > 1) {
+        profileContent = (
+          <div>
+            <p className="lead text-muted">
+              Welcome {user.firstName} {user.lastName}
+            </p>
+            <ProfileActions />
+            <Experience experience={profile.experience} />
+            <Education education={profile.education} />
+            <div style={{ marginBottom: "60px" }} />
+          </div>
+        );
+      } else {
+        // User is logged in but has no profile
+        profileContent = (
+          <div>
+            <p className="lead text-muted">
+              Welcome {user.firstName} {user.lastName}
+            </p>
+            <p>You have not yet setup a profile, please add some info</p>
+            <Link to="/createProfile" className="btn btn-lg btn-info">
+              Create Profile
+            </Link>
+          </div>
+        );
+      }
     }
 
     return (

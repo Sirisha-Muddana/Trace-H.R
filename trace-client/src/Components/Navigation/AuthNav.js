@@ -10,49 +10,45 @@ class AuthNav extends Component {
     const lastName = this.props.lastName;
     return (
       <nav className="navbar navbar-expand-lg">
-        <div className="container">
-          <button
-            className="navbar-toggler navbar-toggler-right"
-            type="button"
-            data-toggle="collapse"
-            aria-controls="navigation-index"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-bar burger-lines" />
-            <span className="navbar-toggler-bar burger-lines" />
-            <span className="navbar-toggler-bar burger-lines" />
-          </button>
-
-          <div className="collapse navbar-collapse justify-content-end">
-            <ul className="navbar-nav ml-auto">
-              <li className="dropdown nav-item">
+        <div className="container-fluid">
+          <div className="navbar-collapse collapse justify-content-end ">
+            <ul className="navbar-nav ">
+              <li className="nav-item dropdown">
                 <a
-                  href=""
-                  className="dropdown-toggle nav-link"
+                  className="nav-link dropdown-toggle"
+                  href="http://example.com"
+                  id="navbarDropdownMenuLink"
                   data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                 >
-                  <Icon color="teal" name="globe" />
-                  <span className="notification">5</span>
-                  <span className="d-lg-none">Notification</span>
+                  <div className="button">
+                    <i className="fa fa-globe" />
+                    <span className="button-badge">5</span>
+                    <p className="hidden-lg hidden-md hidden-sm" />
+                  </div>
                 </a>
-                <ul className="dropdown-menu">
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby="navbarDropdownMenuLink"
+                >
                   <a className="dropdown-item" href="">
-                    Notification 1
+                    Action
                   </a>
                   <a className="dropdown-item" href="">
-                    Notification 2
+                    Another action
                   </a>
                   <a className="dropdown-item" href="">
-                    Notification 3
+                    Something
                   </a>
                   <a className="dropdown-item" href="">
-                    Notification 4
+                    Something else here
                   </a>
+                  <div className="divider" />
                   <a className="dropdown-item" href="">
-                    Another notification
+                    Separated link
                   </a>
-                </ul>
+                </div>
               </li>
               <li className="nav-item dropdown">
                 <a
@@ -63,7 +59,7 @@ class AuthNav extends Component {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  <Icon circular color="teal" name="user" />
+                  <Icon circular color="brown" name="user" />
                   <span className="no-icon">
                     {firstName} {lastName}
                   </span>

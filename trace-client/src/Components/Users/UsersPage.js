@@ -15,7 +15,7 @@ class UsersPage extends Component {
     let allUsers;
 
     if (loading) {
-      allUsers = <Loader />;
+      allUsers = <Loader active inline="centered" />;
     } else {
       if (Object.keys(usersList).length > 0) {
         allUsers = <UsersInfo usersList={usersList} />;

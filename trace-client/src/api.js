@@ -56,6 +56,9 @@ export default {
     getTimesheets: id =>
       axios.get(`/get_timesheets/${id}`).then(res => res.data),
 
+    getTimesheetsByDate: date =>
+      axios.get(`/get_timesheets_by_date/${date}`).then(res => res.data),
+
     getImage: filename => axios.get(`/image/${filename}`).then(res => res.data),
 
     uploadTimesheet: (formData, config) =>

@@ -15,7 +15,7 @@ class AllTimesheetsPage extends Component {
     let users;
 
     if (loading) {
-      users = <Loader />;
+      users = <Loader active inline="centered" />;
     } else {
       if (Object.keys(allUsers).length > 0) {
         users = <AllTimesheetsForm allUsers={allUsers} />;

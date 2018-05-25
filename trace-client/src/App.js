@@ -15,15 +15,11 @@ const App = ({ isAuthenticated }) => (
       </div>
     ) : (
       <div>
-        <div className="row">
-          <div className="col-md-2">
-            <Sidebar />
-          </div>
-          <div className="col-md-10">
-            <div className="container-fluid">
-              <AuthNav />
-              <Main />
-            </div>
+        <div className="wrapper">
+          <Sidebar />
+          <div id="main-panel" className="main-panel">
+            <AuthNav />
+            <Main />
           </div>
         </div>
       </div>
