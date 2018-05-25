@@ -27,7 +27,10 @@ const storage = new GridFsStorage({
           path.extname(file.originalname);
         const fileInfo = {
           filename: filename,
-          metadata: { user: req.user.id },
+          metadata: {
+            user: req.user.id,
+            date: moment(Date.now()).format("YYYY-MM-DD")
+          },
           bucketName: "timesheets"
         };
         resolve(fileInfo);
@@ -82,6 +85,11 @@ module.exports = app => {
     "/api/get_timesheets/:id",
     passport.authenticate("jwt", { session: false }),
     file.getTimesheet
+  );
+  app.get(
+    "/api/get_timesheets_by_date/:date",
+    passport.authenticate("jwt", { session: false }),
+    file.getTimesheetsByDate
   );
 
   /*// Route to get file by name
