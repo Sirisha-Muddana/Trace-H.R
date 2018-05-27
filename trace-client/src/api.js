@@ -1,70 +1,76 @@
 import axios, { post } from "axios";
 
+// Running on local machine
+let serverhost = "http://localhost:3000/api/";
+
+// Running on Dev(EC2) server
+//let serverhost = "http://13.57.38.55:3000/api/";
+
 export default {
   auth: {
     login: credentials =>
-      axios.post("/api/authenticate", credentials).then(res => res.data.user),
+      axios.post(serverhost + "authenticate", credentials).then(res => res.data.user),
 
     signup: user =>
-      axios.post("/api/register", user).then(res => res.data.user),
+      axios.post(serverhost + "register", user).then(res => res.data.user),
 
     confirm: token =>
-      axios.post("/api/confirmation", token).then(res => res.data.user),
+      axios.post(serverhost + "confirmation", token).then(res => res.data.user),
 
     resetPasswordRequest: email =>
-      axios.post("/api/reset_password_request", email),
+      axios.post(serverhost + "reset_password_request", email),
 
-    validateToken: token => axios.post("/api/validate_token", token),
+    validateToken: token => axios.post(serverhost + "validate_token", token),
 
-    resetPassword: data => axios.post("/api/reset_password", data)
+    resetPassword: data => axios.post(serverhost + "reset_password", data)
   },
 
   submissions: {
     submissionList: () =>
-      axios.get("/api/submissions_list").then(res => res.data),
+      axios.get(serverhost + "submissions_list").then(res => res.data),
 
-    postSubmission: data => axios.post("/api/post_submission", data),
+    postSubmission: data => axios.post(serverhost + "post_submission", data),
 
     getSubmission: id =>
-      axios.get(`/api/get_submission/${id}`).then(res => res.data),
+      axios.get(serverhost + `get_submission/${id}`).then(res => res.data),
 
     getSubmissions: id =>
-      axios.get(`/api/get_submissions/${id}`).then(res => res.data)
+      axios.get(serverhost + `get_submissions/${id}`).then(res => res.data)
   },
 
   users: {
-    usersList: () => axios.get("/api/users_list").then(res => res.data),
+    usersList: () => axios.get(serverhost + "users_list").then(res => res.data),
 
-    currentUser: () => axios.get("/api/current_user").then(res => res.data),
+    currentUser: () => axios.get(serverhost + "current_user").then(res => res.data),
 
-    recruiterList: () => axios.get("/api/recruiter_list").then(res => res.data),
+    recruiterList: () => axios.get(serverhost + "recruiter_list").then(res => res.data),
 
-    allUsers: () => axios.get("/api/all_users").then(res => res.data),
+    allUsers: () => axios.get(serverhost + "all_users").then(res => res.data),
 
-    createProfile: data => axios.post("/api/create_profile", { data }),
+    createProfile: data => axios.post(serverhost + "create_profile", { data }),
 
-    addImmigrationInfo: data => axios.post("/api/immigration_info", { data }),
+    addImmigrationInfo: data => axios.post(serverhost + "immigration_info", { data }),
 
-    addExperience: data => axios.post("/api/add_experience", { data }),
+    addExperience: data => axios.post(serverhost + "add_experience", { data }),
 
-    addEducation: data => axios.post("/api/add_education", { data })
+    addEducation: data => axios.post(serverhost + "add_education", { data })
   },
 
   timesheets: {
-    timesheets: () => axios.get("/api/timesheets").then(res => res.data),
+    timesheets: () => axios.get(serverhost + "timesheets").then(res => res.data),
 
-    allTimesheets: () => axios.get("/api/allTimesheets").then(res => res.data),
+    allTimesheets: () => axios.get(serverhost + "allTimesheets").then(res => res.data),
 
     getTimesheets: id =>
-      axios.get(`/api/get_timesheets/${id}`).then(res => res.data),
+      axios.get(serverhost + `get_timesheets/${id}`).then(res => res.data),
 
     getTimesheetsByDate: date =>
-      axios.get(`/api/get_timesheets_by_date/${date}`).then(res => res.data),
+      axios.get(serverhost + `get_timesheets_by_date/${date}`).then(res => res.data),
 
     getImage: filename =>
-      axios.get(`/api/image/${filename}`).then(res => res.data),
+      axios.get(serverhost + `image/${filename}`).then(res => res.data),
 
     uploadTimesheet: (formData, config) =>
-      post("/api/uploadTimesheet", formData, config)
+      post(serverhost + "uploadTimesheet", formData, config)
   }
 };

@@ -40,6 +40,5 @@
   },
   "devDependencies": {
     "prop-types": "^15.6.1"
-  },
-  "proxy": "http://localhost:3000"
+  }
 }
