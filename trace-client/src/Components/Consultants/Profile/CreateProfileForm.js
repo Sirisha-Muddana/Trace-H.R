@@ -44,14 +44,14 @@ class CreateProfileForm extends Component {
 
   validate = data => {
     const errors = {};
-    if (!data.street) errors.street = "Please enter an apartment street";
-    if (!data.apartment) errors.apartment = "Please enter a apartment";
+    if (!data.street) errors.street = "Please enter an street";
+    if (!data.apartment) errors.apartment = "Please enter an apartment";
     if (!data.city) errors.city = "Please enter a city";
     if (!data.state) errors.state = "Please enter a state";
     if (!data.zip) errors.zip = "Please enter a zip code";
     if (!data.cellphone) errors.cellphone = "Please enter a cellphone";
     if (!data.skillset) errors.skillset = "Please enter a skillset";
-    if (!data.onProject) errors.onProject = "Please enter ";
+    if (!data.onProject) errors.onProject = "Please select Yes or No ";
 
     return errors;
   };

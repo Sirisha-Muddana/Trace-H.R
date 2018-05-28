@@ -47,13 +47,13 @@ export default {
 
     allUsers: () => axios.get(serverhost + "all_users").then(res => res.data),
 
-    createProfile: data => axios.post(serverhost + "create_profile", { data }),
+    createProfile: data => axios.post(serverhost + "create_profile", data ),
 
-    addImmigrationInfo: data => axios.post(serverhost + "immigration_info", { data }),
+    addImmigrationInfo: data => axios.post(serverhost + "immigration_info", data),
 
-    addExperience: data => axios.post(serverhost + "add_experience", { data }),
+    addExperience: data => axios.post(serverhost + "add_experience", data),
 
-    addEducation: data => axios.post(serverhost + "add_education", { data })
+    addEducation: data => axios.post(serverhost + "add_education", data)
   },
 
   timesheets: {
