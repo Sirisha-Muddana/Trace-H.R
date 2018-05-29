@@ -1,13 +1,30 @@
 import React, { Component } from "react";
-import { Table } from "semantic-ui-react";
+import { Table, Menu, Input } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 const color = "teal";
 
 class AllSubmissionsForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: false,
+            searchTerm: '',
+            searchList: this.props.recruiterList
+        };
+    }
+    onChange = e => {
+        e.preventDefault();
+        this.setState({search: true});
+        this.setState({searchTerm: e.target.value.toLowerCase()}, () => {
+            let recruiters;
+            recruiters = _.filter(this.props.recruiterList, recruiters => recruiters.firstName.toLowerCase().includes(this.state.searchTerm) || recruiters.lastName.toLowerCase().includes(this.state.searchTerm));
+            this.setState({searchList: recruiters})
+        });
+    };
   render() {
-    console.log(this.props.recruiterList);
-    const recruiterList = this.props.recruiterList.map(recruiters => (
+    const recruiterList = this.state.searchList.map(recruiters => (
       <Table.Row key={recruiters._id}>
         <Table.Cell textAlign="center">
           <Link to={`/getSubmissions/${recruiters._id}`}>
@@ -17,6 +34,12 @@ class AllSubmissionsForm extends Component {
       </Table.Row>
     ));
     return (
+        <div>
+            <Menu secondary>
+                <Menu.Item>
+                    <Input className="icon" icon="search" placeholder="Search..." onChange={this.onChange.bind(this)} />
+                </Menu.Item>
+            </Menu>
       <Table color={color} key={color} size="small" celled singleLine>
         <Table.Header>
           <Table.Row>
@@ -30,6 +53,7 @@ class AllSubmissionsForm extends Component {
           {recruiterList}
         </Table.Header>
       </Table>
+        </div>
     );
   }
 }

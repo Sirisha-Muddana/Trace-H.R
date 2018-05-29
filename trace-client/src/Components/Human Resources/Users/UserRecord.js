@@ -1,12 +1,37 @@
 import React, { Component } from "react";
-import { Table } from "semantic-ui-react";
+import { Menu, Input, Table } from "semantic-ui-react";
+import _ from "lodash";
 //import { recruiters } from "../common/common";
 
 const color = "teal";
 
 class UserRecord extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: false,
+      searchTerm: "",
+      searchList: this.props.usersList
+    };
+  }
+  onChange = e => {
+    e.preventDefault();
+    this.setState({ search: true });
+    this.setState({ searchTerm: e.target.value.toLowerCase() }, () => {
+      let users;
+      users = _.filter(
+        this.props.usersList,
+        users =>
+          users.user.firstName.toLowerCase().includes(this.state.searchTerm) ||
+          users.user.lastName.toLowerCase().includes(this.state.searchTerm)
+      );
+      this.setState({ searchList: users });
+    });
+  };
+
   render() {
-    const usersList = this.props.usersList.map(users => (
+    let usersList;
+    usersList = this.state.searchList.map(users => (
       <Table.Row key={users._id}>
         <Table.Cell textAlign="center" className="text-capitalize">
           {users.user.firstName} {users.user.lastName}
@@ -32,6 +57,16 @@ class UserRecord extends Component {
     ));
     return (
       <div>
+        <Menu secondary>
+          <Menu.Item>
+            <Input
+              className="icon"
+              icon="search"
+              placeholder="Search..."
+              onChange={this.onChange.bind(this)}
+            />
+          </Menu.Item>
+        </Menu>
         <Table color={color} key={color} size="small" celled fixed singleLine>
           <Table.Header>
             <Table.Row>

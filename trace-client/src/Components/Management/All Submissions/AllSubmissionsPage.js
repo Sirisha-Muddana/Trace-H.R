@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import AllSubmissionsForm from "./AllSubmissionsForm";
 import { connect } from "react-redux";
 import { getRecruiterList } from "../../../actions/userActions";
-import { Menu, Input, Loader } from "semantic-ui-react";
+import { Loader } from "semantic-ui-react";
 
 class AllSubmissionsPage extends Component {
   componentDidMount() {
@@ -25,11 +25,6 @@ class AllSubmissionsPage extends Component {
     return (
       <div>
         <h3 className="display-4 text-center">Submission List</h3>
-        <Menu secondary>
-          <Menu.Item>
-            <Input className="icon" icon="search" placeholder="Search..." />
-          </Menu.Item>
-        </Menu>
         {allRecruiters}
       </div>
     );
