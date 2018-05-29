@@ -87,7 +87,6 @@ exports.createProfile = (req, res) => {
   if (typeof req.body.skillset !== "undefined") {
     profileFields.skillset = req.body.skillset.split(",");
   }
-
   // Address
   profileFields.address = {};
   if (req.body.street) profileFields.address.street = req.body.street;
@@ -117,7 +116,8 @@ exports.createProfile = (req, res) => {
           res.status(404).json({ errors: parseErrors(err.errors) })
         );
     }
-  });
+  })
+      .catch(err => res.status(500).json({ errors: parseErrors(err.errors) }));
 };
 
 // Immigration Info
