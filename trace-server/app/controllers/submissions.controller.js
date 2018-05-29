@@ -35,6 +35,7 @@ exports.getSubmission = (req, res) => {
 // @access  Private
 exports.getSubmissions = (req, res) => {
   Submissions.find({ user: req.params.id })
+    .sort([["createdAt", -1]])
     .then(getSubmissions => {
       if (!getSubmissions) {
         return res.json({
@@ -54,25 +55,25 @@ exports.postSubmission = (req, res) => {
   const submissionsList = {};
   submissionsList.user = req.user.id;
 
-  if (req.body.data.consultantName)
-    submissionsList.consultantName = req.body.data.consultantName;
-  if (req.body.data.skillset) submissionsList.skillset = req.body.data.skillset;
-  if (req.body.data.location) submissionsList.location = req.body.data.location;
-  if (req.body.data.billingRate)
-    submissionsList.billingRate = req.body.data.billingRate;
-  if (req.body.data.vendor) submissionsList.vendor = req.body.data.vendor;
-  if (req.body.data.client) submissionsList.client = req.body.data.client;
-  if (req.body.data.interviewDate)
-    submissionsList.interviewDate = req.body.data.interviewDate;
-  if (req.body.data.interviewType)
-    submissionsList.interviewType = req.body.data.interviewType;
+  if (req.body.consultantName)
+    submissionsList.consultantName = req.body.consultantName;
+  if (req.body.skillset) submissionsList.skillset = req.body.skillset;
+  if (req.body.location) submissionsList.location = req.body.location;
+  if (req.body.billingRate)
+    submissionsList.billingRate = req.body.billingRate;
+  if (req.body.vendor) submissionsList.vendor = req.body.vendor;
+  if (req.body.client) submissionsList.client = req.body.client;
+  if (req.body.interviewDate)
+    submissionsList.interviewDate = req.body.interviewDate;
+  if (req.body.interviewType)
+    submissionsList.interviewType = req.body.interviewType;
   Submissions.findOne({ user: req.user.id }).then(submissions => {
     if (submissions) {
       // Update sales list
-      Submissions.findById(req.body.data.id).then(submission => {
+      Submissions.findById(req.body.id).then(submission => {
         if (submission) {
           Submissions.findByIdAndUpdate(
-            req.body.data.id,
+            req.body.id,
             { $set: submissionsList },
             { new: true }
           )
