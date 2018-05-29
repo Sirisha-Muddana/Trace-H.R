@@ -29,7 +29,7 @@ exports.register = (req, res) => {
       sendConfirmationEmail(userData);
       res.json(userData);
     })
-    .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
+    .catch(err => res.status(400).json({ errors: parseErrors(err.errors) }));
 };
 
 exports.confirmation = (req, res) => {
@@ -93,5 +93,6 @@ exports.authenticate = (req, res) => {
     if (user && user.comparePassword(password)) {
       res.json({ user: user.toAuthJSON() });
     } else res.status(404).json({ errors: { global: "Invalid credentials" } });
-  });
+  })
+      .catch(err => res.status(500).json({ errors: parseErrors(err.errors) }));
 };
