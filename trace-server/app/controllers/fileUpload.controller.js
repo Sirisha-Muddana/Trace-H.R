@@ -56,11 +56,17 @@ exports.getTimesheets = (req, res) => {
       else {
         var timesheetsByDate = [];
         for (var i = 0; i < timesheets.length; i++) {
-          //console.log(timesheets[i + 1].metadata.date);
-          if (timesheets[i].metadata.date !== timesheets[i + 1].metadata.date) {
-            timesheetsByDate.push;
+          for (var j = 1; j < timesheets.length; j++) {
+            if (timesheets[i].metadata.date !== timesheets[j].metadata.date) {
+              if (!timesheetsByDate.includes(timesheets[i].metadata.date)) {
+                //console.log(timesheets[i].metadata.date);
+                timesheetsByDate.push(timesheets[i].metadata.date);
+                break;
+              }
+            }
           }
         }
+        //console.log(timesheetsByDate);
         return res.json(timesheetsByDate);
       }
     });
@@ -73,15 +79,30 @@ exports.getTimesheet = (req, res) => {
   gfs.files
     .find({ "metadata.user": req.params.id })
     .sort([["uploadDate", -1]])
-    .toArray((err, timesheet) => {
-      // Check if timesheet
-      if (!timesheet || timesheet.length === 0) {
+    .toArray((err, timesheets) => {
+      // Check if timesheets
+      if (!timesheets || timesheets.length === 0) {
         return res.status(404).json({
           err: "No timesheets exist"
         });
       }
       // Files exist
-      return res.json(timesheet);
+      else {
+        var timesheetsByDate = [];
+        for (var i = 0; i < timesheets.length; i++) {
+          for (var j = 1; j < timesheets.length; j++) {
+            if (timesheets[i].metadata.date !== timesheets[j].metadata.date) {
+              if (!timesheetsByDate.includes(timesheets[i].metadata.date)) {
+                //console.log(timesheets[i].metadata.date);
+                timesheetsByDate.push(timesheets[i].metadata.date);
+                break;
+              }
+            }
+          }
+        }
+        //console.log(timesheetsByDate);
+        return res.json(timesheetsByDate);
+      }
     });
 };
 
