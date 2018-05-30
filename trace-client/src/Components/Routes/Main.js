@@ -22,7 +22,7 @@ import HRRoute from "./HRRoute";
 
 import Profile from "../Consultants/Dashboard/Profile";
 import TimesheetsPage from "../Consultants/Timesheets/TimesheetsPage";
-import TimesheetsForm from "../Consultants/Timesheets/TimesheetsForm";
+import TimesheetsDisplay from "../Consultants/Timesheets/TimesheetsDisplay";
 import UploadTimesheet from "../Consultants/Timesheets/UploadTimesheet";
 import CreateProfilePage from "../Consultants/Profile/CreateProfilePage";
 import EditProfile from "../Consultants/Profile/EditProfile";
@@ -149,10 +149,10 @@ const Main = ({ isAuthenticated }) => (
         <Redirect to="/login" />
       )}
       {isAuthenticated ? (
-        <UserRoute
+        <Route
           exact
-          path="/timesheetsForm/:date"
-          component={TimesheetsForm}
+          path="/timesheetsDisplay/:date"
+          component={TimesheetsDisplay}
         />
       ) : (
         <Redirect to="/login" />

@@ -2,20 +2,17 @@ import React, { Component } from "react";
 import { Table, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { getTimesheetsByDate } from "../../../actions/timesheetsActions";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 const color = "teal";
 
 class TimesheetsFolder extends Component {
   render() {
     const timesheetsList = this.props.timesheetsList.map(timesheets => (
-      <Table.Row key={timesheets._id}>
+      <Table.Row key={timesheets}>
         <Table.Cell textAlign="left">
           <Icon name="folder" />
-          <Link to={`/timesheetsForm/${timesheets.metadata.date}`}>
-            <Moment format="YYYY-MMM-DD">{timesheets.metadata.date}</Moment>
+          <Link to={`/timesheetsDisplay/${timesheets}`}>
+            <Moment format="YYYY-MMM-DD">{timesheets}</Moment>
           </Link>
         </Table.Cell>
       </Table.Row>
@@ -37,8 +34,4 @@ class TimesheetsFolder extends Component {
   }
 }
 
-TimesheetsFolder.propTypes = {
-  getTimesheetsByDate: PropTypes.func.isRequired
-};
-
-export default connect(null, { getTimesheetsByDate })(TimesheetsFolder);
+export default TimesheetsFolder;
