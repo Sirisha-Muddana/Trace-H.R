@@ -9,7 +9,9 @@ let serverhost = "http://localhost:3000/api/";
 export default {
   auth: {
     login: credentials =>
-      axios.post(serverhost + "authenticate", credentials).then(res => res.data.user),
+      axios
+        .post(serverhost + "authenticate", credentials)
+        .then(res => res.data.user),
 
     signup: user =>
       axios.post(serverhost + "register", user).then(res => res.data.user),
@@ -41,31 +43,52 @@ export default {
   users: {
     usersList: () => axios.get(serverhost + "users_list").then(res => res.data),
 
-    currentUser: () => axios.get(serverhost + "current_user").then(res => res.data),
+    currentUser: () =>
+      axios.get(serverhost + "current_user").then(res => res.data),
 
-    recruiterList: () => axios.get(serverhost + "recruiter_list").then(res => res.data),
+    recruiterList: () =>
+      axios.get(serverhost + "recruiter_list").then(res => res.data),
 
     allUsers: () => axios.get(serverhost + "all_users").then(res => res.data),
 
-    createProfile: data => axios.post(serverhost + "create_profile", data ),
+    createProfile: data => axios.post(serverhost + "create_profile", data),
 
-    addImmigrationInfo: data => axios.post(serverhost + "immigration_info", data),
+    addImmigrationInfo: data =>
+      axios.post(serverhost + "immigration_info", data),
 
     addExperience: data => axios.post(serverhost + "add_experience", data),
 
-    addEducation: data => axios.post(serverhost + "add_education", data)
+    addEducation: data => axios.post(serverhost + "add_education", data),
+
+    getEducation: id =>
+      axios.get(serverhost + `get_education/${id}`).then(res => res.data),
+
+    getExperience: id =>
+      axios.get(serverhost + `get_experience/${id}`).then(res => res.data),
+
+    deleteExperience: id =>
+      axios
+        .delete(serverhost + `delete_experience/${id}`)
+        .then(res => res.data),
+
+    deleteEducation: id =>
+      axios.delete(serverhost + `delete_education/${id}`).then(res => res.data)
   },
 
   timesheets: {
-    timesheets: () => axios.get(serverhost + "timesheets").then(res => res.data),
+    timesheets: () =>
+      axios.get(serverhost + "timesheets").then(res => res.data),
 
-    allTimesheets: () => axios.get(serverhost + "allTimesheets").then(res => res.data),
+    allTimesheets: () =>
+      axios.get(serverhost + "allTimesheets").then(res => res.data),
 
     getTimesheets: id =>
       axios.get(serverhost + `get_timesheets/${id}`).then(res => res.data),
 
     getTimesheetsByDate: date =>
-      axios.get(serverhost + `get_timesheets_by_date/${date}`).then(res => res.data),
+      axios
+        .get(serverhost + `get_timesheets_by_date/${date}`)
+        .then(res => res.data),
 
     getImage: filename =>
       axios.get(serverhost + `image/${filename}`).then(res => res.data),
