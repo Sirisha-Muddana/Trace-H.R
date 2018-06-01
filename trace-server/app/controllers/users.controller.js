@@ -2,6 +2,10 @@ var bcrypt = require("bcryptjs");
 const Users = require("../models/users.model");
 const Profile = require("../models/profile.model");
 import parseErrors from "../utils/parseErrors";
+const mongoose = require("mongoose");
+import isEmpty from "lodash/isEmpty";
+
+var db = mongoose.connection;
 
 // @route   GET api/users_list
 // @desc    Get all users profile
@@ -95,29 +99,30 @@ exports.createProfile = (req, res) => {
   if (req.body.state) profileFields.address.state = req.body.state;
   if (req.body.zip) profileFields.address.zip = req.body.zip;
 
-  Profile.findOne({ user: req.user.id }).then(profile => {
-    if (profile) {
-      // Update user profile
-      Profile.findOneAndUpdate(
-        { user: req.user.id },
-        { $set: profileFields },
-        { new: true }
-      )
-        .then(profile => res.json(profile))
-        .catch(err =>
-          res.status(404).json({ errors: parseErrors(err.errors) })
-        );
-    } else {
-      //Create user profile
-      new Profile(profileFields)
-        .save()
-        .then(profile => res.json(profile))
-        .catch(err =>
-          res.status(404).json({ errors: parseErrors(err.errors) })
-        );
-    }
-  })
-      .catch(err => res.status(500).json({ errors: parseErrors(err.errors) }));
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      if (profile) {
+        // Update user profile
+        Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        )
+          .then(profile => res.json(profile))
+          .catch(err =>
+            res.status(404).json({ errors: parseErrors(err.errors) })
+          );
+      } else {
+        //Create user profile
+        new Profile(profileFields)
+          .save()
+          .then(profile => res.json(profile))
+          .catch(err =>
+            res.status(404).json({ errors: parseErrors(err.errors) })
+          );
+      }
+    })
+    .catch(err => res.status(500).json({ errors: parseErrors(err.errors) }));
 };
 
 // Immigration Info
@@ -141,35 +146,148 @@ exports.immigrationInfo = (req, res) => {
 
 exports.addExperience = (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
-    const newExp = {
-      title: req.body.data.title,
-      company: req.body.data.company,
-      location: req.body.data.location,
-      from: req.body.data.from,
-      to: req.body.data.to,
-      description: req.body.data.description
-    };
+    const newExp = {};
+    newExp.title = req.body.title;
+    newExp.company = req.body.company;
+    newExp.location = req.body.location;
+    newExp.from = req.body.from;
+    newExp.to = req.body.to;
+    newExp.description = req.body.description;
 
-    // Add to exp array
-    profile.experience.unshift(newExp);
+    if (profile) {
+      console.log(req.body.id);
+      if (!isEmpty(req.body.id)) {
+        //console.log(req.body.id);
+        Profile.updateOne(
+          { "experience._id": req.body.id },
+          { $set: { "experience.$[exp]": newExp } },
+          {
+            arrayFilters: [{ "exp._id": mongoose.Types.ObjectId(req.body.id) }]
+          }
+        )
+          .then(profile => {
+            res.json(profile);
+            //console.log(profile);
+          })
+          .catch(err =>
+            res.status(404).json({ errors: parseErrors(err.errors) })
+          );
+      } else {
+        // Add to exp array
+        profile.experience.unshift(newExp);
 
-    profile.save().then(profile => res.json(profile));
+        profile.save().then(profile => res.json(profile));
+      }
+      //});
+    }
   });
 };
 
 exports.addEducation = (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
-    const newEdu = {
-      school: req.body.data.school,
-      degree: req.body.data.degree,
-      fieldOfStudy: req.body.data.fieldOfStudy,
-      from: req.body.data.from,
-      to: req.body.data.to
-    };
+    const newEdu = {};
+    newEdu.from = req.body.from;
+    newEdu.to = req.body.to;
+    newEdu.school = req.body.school;
+    newEdu.degree = req.body.degree;
+    newEdu.fieldOfStudy = req.body.fieldOfStudy;
 
-    // Add to edu array
-    profile.education.unshift(newEdu);
+    if (profile) {
+      if (!isEmpty(req.body.id)) {
+        //console.log(req.body.id);
+        Profile.updateOne(
+          { "education._id": req.body.id },
+          { $set: { "education.$[edu]": newEdu } },
+          {
+            arrayFilters: [{ "edu._id": mongoose.Types.ObjectId(req.body.id) }]
+          }
+        )
+          .then(profile => {
+            res.json(profile);
+            //console.log(profile);
+          })
+          .catch(err =>
+            res.status(404).json({ errors: parseErrors(err.errors) })
+          );
+      } else {
+        // Add to edu array
+        profile.education.unshift(newEdu);
 
-    profile.save().then(profile => res.json(profile));
+        profile.save().then(profile => res.json(profile));
+      }
+      //});
+    }
   });
+};
+
+// @route   GET api/get_education/:id
+// @desc    Get education by ID
+// @access  Private
+exports.getEducation = (req, res) => {
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      //console.log(profile.education);
+      profile.education.map(education => {
+        if (education._id == req.params.id) {
+          res.json(education);
+        }
+      });
+    })
+    .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
+};
+
+// @route   GET api/get_experience/:id
+// @desc    Get experience by ID
+// @access  Private
+exports.getExperience = (req, res) => {
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      //console.log(profile.education);
+      profile.experience.map(experience => {
+        if (experience._id == req.params.id) {
+          res.json(experience);
+        }
+      });
+    })
+    .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
+};
+
+// @route   DELETE api/get_experience/:id
+// @desc    Delete experience by ID
+// @access  Private
+exports.deleteExperience = (req, res) => {
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      // Get remove index
+      const removeIndex = profile.experience
+        .map(item => item.id)
+        .indexOf(req.params.exp_id);
+
+      // Splice out of array
+      profile.experience.splice(removeIndex, 1);
+
+      // Save
+      profile.save().then(profile => res.json(profile));
+    })
+    .catch(err => res.status(404).json(err));
+};
+
+// @route   DELETE api/get_education/:id
+// @desc    Delete education by ID
+// @access  Private
+exports.deleteEducation = (req, res) => {
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      // Get remove index
+      const removeIndex = profile.education
+        .map(item => item.id)
+        .indexOf(req.params.edu_id);
+
+      // Splice out of array
+      profile.education.splice(removeIndex, 1);
+
+      // Save
+      profile.save().then(profile => res.json(profile));
+    })
+    .catch(err => res.status(404).json(err));
 };

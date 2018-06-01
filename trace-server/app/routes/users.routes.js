@@ -155,12 +155,29 @@ module.exports = app => {
     users.addEducation
   );
 
-  /*// Retrieve a single user with userId
-  app.get("/api/users/:userId", sales.findOne);
-  // Update a user with userId
-  app.put("/api/users/:userId", sales.update);
-  // Delete a user with userId
-  app.delete("/api/users/:userId", sales.delete);*/
+  app.get(
+    "/api/get_education/:id",
+    passport.authenticate("jwt", { session: false }),
+    users.getEducation
+  );
+
+  app.get(
+    "/api/get_experience/:id",
+    passport.authenticate("jwt", { session: false }),
+    users.getExperience
+  );
+
+  app.delete(
+    "/api/delete_experience/:exp_id",
+    passport.authenticate("jwt", { session: false }),
+    users.deleteExperience
+  );
+
+  app.delete(
+    "/api/delete_education/:edu_id",
+    passport.authenticate("jwt", { session: false }),
+    users.deleteEducation
+  );
 
   // RECRUITER ROUTES
 
