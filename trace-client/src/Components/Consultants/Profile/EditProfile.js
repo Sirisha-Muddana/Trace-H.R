@@ -34,7 +34,7 @@ class EditProfile extends Component {
     if (nextProps.users.profile) {
       const profile = nextProps.users.profile;
 
-      const skillset = profile.skillset.join(",");
+      const skillset = profile.skillset.join(", ");
       this.setState({
         street: profile.address.street,
         apartment: profile.address.apartment,

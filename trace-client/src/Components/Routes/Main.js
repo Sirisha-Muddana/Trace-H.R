@@ -29,6 +29,8 @@ import EditProfile from "../Consultants/Profile/EditProfile";
 import AddImmigrationInfoPage from "../Consultants/Immigration/AddImmigrationInfoPage";
 import AddExperiencePage from "../Consultants/Experience/AddExperiencePage";
 import AddEducationPage from "../Consultants/Education/AddEducationPage";
+import EditEducation from "../Consultants/Education/EditEducation";
+import EditExperience from "../Consultants/Experience/EditExperience";
 
 import Dashboard from "../DashboardPage";
 import SubmissionsPage from "../Recruiters/Submissions/SubmissionsPage";
@@ -193,6 +195,21 @@ const Main = ({ isAuthenticated }) => (
       ) : (
         <Redirect to="/login" />
       )}
+      {isAuthenticated ? (
+        <UserRoute exact path="/editEducation/:id" component={EditEducation} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {isAuthenticated ? (
+        <UserRoute
+          exact
+          path="/editExperience/:id"
+          component={EditExperience}
+        />
+      ) : (
+        <Redirect to="/login" />
+      )}
+
       {/************************COMMON DASHBOARD*******************************/}
       {isAuthenticated ? (
         <Route exact path="/dashboard" component={Dashboard} />

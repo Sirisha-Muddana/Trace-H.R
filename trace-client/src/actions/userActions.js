@@ -3,7 +3,9 @@ import {
   GET_PROFILE,
   GET_RECRUITERS,
   USERS_LOADING,
-  ALL_USERS
+  ALL_USERS,
+  GET_EDUCATION,
+  GET_EXPERIENCE
 } from "./types";
 import api from "../api";
 
@@ -76,6 +78,60 @@ export const getAllUsers = () => dispatch => {
         payload: []
       })
     );
+};
+
+export const getEducation = id => dispatch => {
+  dispatch(setUsersLoading());
+  api.users
+    .getEducation(id)
+    .then(education => {
+      dispatch({
+        type: GET_EDUCATION,
+        payload: education
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_EDUCATION,
+        payload: null
+      })
+    );
+};
+
+export const getExperience = id => dispatch => {
+  dispatch(setUsersLoading());
+  api.users
+    .getExperience(id)
+    .then(experience => {
+      dispatch({
+        type: GET_EXPERIENCE,
+        payload: experience
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_EXPERIENCE,
+        payload: null
+      })
+    );
+};
+
+export const deleteExperience = id => dispatch => {
+  api.users.deleteExperience(id).then(res => {
+    dispatch({
+      type: GET_PROFILE,
+      payload: res
+    });
+  });
+};
+
+export const deleteEducation = id => dispatch => {
+  api.users.deleteEducation(id).then(res => {
+    dispatch({
+      type: GET_PROFILE,
+      payload: res
+    });
+  });
 };
 
 export const createProfile = data => dispatch => api.users.createProfile(data);

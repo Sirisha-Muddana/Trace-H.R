@@ -1,9 +1,16 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { Table, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { deleteExperience } from "../../../actions/userActions";
 
 class Experience extends Component {
+  onDeleteClick(id) {
+    this.props.deleteExperience(id);
+  }
+
   render() {
     const experience = this.props.experience.map(exp => (
       <Table.Body key={exp._id}>
@@ -24,11 +31,15 @@ class Experience extends Component {
           </Table.Cell>
           <Table.Cell width={3}>
             <Button.Group>
-              <Button as={Link} to={`/editSubmission/${exp._id}`} size="mini">
+              <Button as={Link} to={`/editExperience/${exp._id}`} size="mini">
                 Edit
               </Button>
               <Button.Or />
-              <Button color="red" size="mini">
+              <Button
+                color="red"
+                size="mini"
+                onClick={this.onDeleteClick.bind(this, exp._id)}
+              >
                 Delete
               </Button>
             </Button.Group>
@@ -55,4 +66,8 @@ class Experience extends Component {
   }
 }
 
-export default Experience;
+Experience.propTypes = {
+  deleteExperience: PropTypes.func.isRequired
+};
+
+export default connect(null, { deleteExperience })(Experience);
