@@ -5,7 +5,8 @@ import {
   USERS_LOADING,
   ALL_USERS,
   GET_EDUCATION,
-  GET_EXPERIENCE
+  GET_EXPERIENCE,
+  GET_PROFILE_BY_ID
 } from "./types";
 import api from "../api";
 
@@ -22,6 +23,25 @@ export const fetchUsers = () => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_USERS,
+        payload: []
+      })
+    );
+};
+
+export const getProfileById = id => dispatch => {
+  console.log("Here");
+  dispatch(setUsersLoading());
+  api.users
+    .getProfileById(id)
+    .then(displayProfile => {
+      dispatch({
+        type: GET_PROFILE_BY_ID,
+        payload: displayProfile
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE_BY_ID,
         payload: []
       })
     );

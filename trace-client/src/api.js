@@ -43,6 +43,9 @@ export default {
   users: {
     usersList: () => axios.get(serverhost + "users_list").then(res => res.data),
 
+    getProfileById: id =>
+      axios.get(serverhost + `get_profile_by_id/${id}`).then(res => res.data),
+
     currentUser: () =>
       axios.get(serverhost + "current_user").then(res => res.data),
 

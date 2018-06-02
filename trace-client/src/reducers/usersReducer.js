@@ -5,7 +5,8 @@ import {
   ALL_USERS,
   USERS_LOADING,
   GET_EDUCATION,
-  GET_EXPERIENCE
+  GET_EXPERIENCE,
+  GET_PROFILE_BY_ID
 } from "../actions/types";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   allUsers: [],
   education: [],
   experience: [],
+  displayProfile: {},
   loading: false
 };
 
@@ -59,6 +61,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         experience: action.payload,
+        loading: false
+      };
+
+    case GET_PROFILE_BY_ID:
+      return {
+        ...state,
+        displayProfile: action.payload,
         loading: false
       };
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Menu, Input, Table } from "semantic-ui-react";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 //import { recruiters } from "../common/common";
 
 const color = "teal";
@@ -34,7 +35,9 @@ class UserRecord extends Component {
     usersList = this.state.searchList.map(users => (
       <Table.Row key={users._id}>
         <Table.Cell textAlign="center" className="text-capitalize">
-          {users.user.firstName} {users.user.lastName}
+          <Link to={`/displayProfile/${users.user._id}`}>
+            {users.user.firstName} {users.user.lastName}
+          </Link>
         </Table.Cell>
         <Table.Cell textAlign="center">{users.user.email}</Table.Cell>
         <Table.Cell textAlign="center">{users.cellphone}</Table.Cell>

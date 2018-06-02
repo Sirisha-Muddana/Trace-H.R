@@ -37,6 +37,7 @@ import SubmissionsPage from "../Recruiters/Submissions/SubmissionsPage";
 import PostSubmissionPage from "../Recruiters/Submissions/PostSubmissionPage";
 import EditSubmissionForm from "../Recruiters/Submissions/EditSubmissionForm";
 import UsersPage from "../Users/UsersPage";
+import DisplayProfile from "../Users/UserProfile/DisplayProfile";
 
 import GuestRoute from "./GuestRoute";
 import UserRoute from "./UserRoute";
@@ -216,6 +217,13 @@ const Main = ({ isAuthenticated }) => (
       ) : (
         <Redirect to="/login" />
       )}
+
+      {isAuthenticated ? (
+        <Route exact path="/displayProfile/:id" component={DisplayProfile} />
+      ) : (
+        <Redirect to="/login" />
+      )}
+
       {/*************************RECRUITER ROUTES******************************/}
       {isAuthenticated ? (
         <RecruiterRoute
@@ -241,16 +249,6 @@ const Main = ({ isAuthenticated }) => (
           path="/editSubmission/:id"
           component={EditSubmissionForm}
         />
-      ) : (
-        <Redirect to="/login" />
-      )}
-      {isAuthenticated ? (
-        <Route exact path="/users" component={UsersPage} />
-      ) : (
-        <Redirect to="/login" />
-      )}
-      {isAuthenticated ? (
-        <Route exact path="/users" component={UsersPage} />
       ) : (
         <Redirect to="/login" />
       )}
