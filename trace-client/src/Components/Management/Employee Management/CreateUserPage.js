@@ -10,7 +10,7 @@ class CreateUserPage extends Component {
 
   render() {
     return (
-      <div className="container h-100">
+      <div className="container h-100 mt-5">
         <div className="row justify-content-md-center h-100">
           <div className="card-wrapper">
             <div className="card">
