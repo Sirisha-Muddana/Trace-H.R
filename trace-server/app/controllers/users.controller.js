@@ -24,6 +24,26 @@ exports.usersList = (req, res) => {
     .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
 };
 
+// @route   GET api/get_profile_by_id
+// @desc    Get user profile by ID
+// @access  Private
+
+exports.getProfileById = (req, res) => {
+  console.log(req.params.id);
+  Profile.findOne({ user: req.params.id })
+    .populate("user", ["firstName", "lastName", "email"])
+    .then(displayProfile => {
+      console.log(displayProfile);
+      if (!displayProfile) {
+        return res.json({
+          errors: { global: "No profile" }
+        });
+      }
+      res.json(displayProfile);
+    })
+    .catch(err => res.status(404).json({ errors: parseErrors(err.errors) }));
+};
+
 // @route   GET api/current_user
 // @desc    Get current user profile
 // @access  Private

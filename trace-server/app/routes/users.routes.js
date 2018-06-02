@@ -114,6 +114,12 @@ module.exports = app => {
   );
 
   app.get(
+    "/api/get_profile_by_id/:id",
+    passport.authenticate("jwt", { session: false }),
+    users.getProfileById
+  );
+
+  app.get(
     "/api/all_users",
     passport.authenticate("jwt", { session: false }),
     users.allUsers
