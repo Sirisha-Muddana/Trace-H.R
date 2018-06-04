@@ -7,12 +7,15 @@ const color = "teal";
 
 class TimesheetsFolder extends Component {
   render() {
+    const profile = this.props.profile;
     const timesheetsList = this.props.timesheetsList.map(timesheets => (
-      <Table.Row key={timesheets}>
+      <Table.Row key={timesheets.id}>
         <Table.Cell textAlign="left">
           <Icon name="folder" />
-          <Link to={`/timesheetsDisplay/${timesheets}`}>
-            <Moment format="YYYY-MMM-DD">{timesheets}</Moment>
+          <Link
+            to={`/timesheetsDisplay/${timesheets.date}/${profile.user._id}`}
+          >
+            <Moment format="YYYY-MMM-DD">{timesheets.date}</Moment>
           </Link>
         </Table.Cell>
       </Table.Row>

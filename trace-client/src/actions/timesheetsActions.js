@@ -63,10 +63,10 @@ export const getTimesheets = id => dispatch => {
     );
 };
 
-export const getTimesheetsByDate = date => dispatch => {
+export const getTimesheetsByDate = (date, id) => dispatch => {
   dispatch(setTimesheetLoading());
   api.timesheets
-    .getTimesheetsByDate(date)
+    .getTimesheetsByDate(date, id)
     .then(timesheets => {
       dispatch({
         type: TIMESHEETS_LIST_BY_DATE,

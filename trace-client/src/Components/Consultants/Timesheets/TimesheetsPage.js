@@ -3,22 +3,30 @@ import PropTypes from "prop-types";
 import TimesheetsFolder from "./TimesheetsFolder";
 import { connect } from "react-redux";
 import { fetchTimesheets } from "../../../actions/timesheetsActions";
+import { getCurrentProfile } from "../../../actions/userActions";
 import { Link } from "react-router-dom";
 import { Button, Menu, Input, Loader } from "semantic-ui-react";
 
 class TimesheetsPage extends Component {
   componentDidMount() {
     this.props.fetchTimesheets();
+    this.props.getCurrentProfile();
   }
 
   render() {
     const { timesheetsList, loading } = this.props.timesheets;
+    const { profile, loadingUser } = this.props.users;
     let allTimesheets;
-    if (loading) {
+    if (loading || loadingUser) {
       allTimesheets = <Loader active inline="centered" />;
     } else {
-      if (Object.keys(timesheetsList).length > 0) {
-        allTimesheets = <TimesheetsFolder timesheetsList={timesheetsList} />;
+      if (
+        Object.keys(timesheetsList).length > 0 &&
+        Object.keys(profile).length > 0
+      ) {
+        allTimesheets = (
+          <TimesheetsFolder timesheetsList={timesheetsList} profile={profile} />
+        );
       } else {
         allTimesheets = <h4> No Timesheets found</h4>;
       }
@@ -45,11 +53,15 @@ class TimesheetsPage extends Component {
 
 TimesheetsPage.propTypes = {
   fetchTimesheets: PropTypes.func.isRequired,
-  timesheets: PropTypes.object.isRequired
+  timesheets: PropTypes.object.isRequired,
+  users: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  timesheets: state.timesheets
+  timesheets: state.timesheets,
+  users: state.users
 });
 
-export default connect(mapStateToProps, { fetchTimesheets })(TimesheetsPage);
+export default connect(mapStateToProps, { fetchTimesheets, getCurrentProfile })(
+  TimesheetsPage
+);

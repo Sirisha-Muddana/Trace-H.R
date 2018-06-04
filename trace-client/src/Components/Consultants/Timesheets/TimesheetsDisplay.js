@@ -8,7 +8,10 @@ import { Button, Menu, Input, Loader } from "semantic-ui-react";
 
 class TimesheetsDisplay extends Component {
   componentDidMount() {
-    this.props.getTimesheetsByDate(this.props.match.params.date);
+    this.props.getTimesheetsByDate(
+      this.props.match.params.date,
+      this.props.match.params.id
+    );
   }
 
   render() {

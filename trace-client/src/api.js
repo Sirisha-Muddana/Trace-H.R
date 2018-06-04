@@ -88,9 +88,9 @@ export default {
     getTimesheets: id =>
       axios.get(serverhost + `get_timesheets/${id}`).then(res => res.data),
 
-    getTimesheetsByDate: date =>
+    getTimesheetsByDate: (date, id) =>
       axios
-        .get(serverhost + `get_timesheets_by_date/${date}`)
+        .get(serverhost + `get_timesheets_by_date/${date}/${id}`)
         .then(res => res.data),
 
     getImage: filename =>

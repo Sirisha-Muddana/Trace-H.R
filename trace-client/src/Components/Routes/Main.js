@@ -90,7 +90,7 @@ const Main = ({ isAuthenticated }) => (
       {isAuthenticated ? (
         <ManagementRoute
           exact
-          path="/getTimesheets/:id"
+          path="/getTimesheets/:id/"
           component={GetTimesheetPage}
         />
       ) : (
@@ -154,7 +154,7 @@ const Main = ({ isAuthenticated }) => (
       {isAuthenticated ? (
         <Route
           exact
-          path="/timesheetsDisplay/:date"
+          path="/timesheetsDisplay/:date/:id"
           component={TimesheetsDisplay}
         />
       ) : (
