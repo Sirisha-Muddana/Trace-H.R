@@ -87,7 +87,7 @@ module.exports = app => {
     file.getTimesheet
   );
   app.get(
-    "/api/get_timesheets_by_date/:date",
+    "/api/get_timesheets_by_date/:date/:id",
     passport.authenticate("jwt", { session: false }),
     file.getTimesheetsByDate
   );

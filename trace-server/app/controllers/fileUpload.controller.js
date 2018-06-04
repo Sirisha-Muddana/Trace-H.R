@@ -1,5 +1,6 @@
 import parseErrors from "../utils/parseErrors";
-
+import isEmpty from "lodash/isEmpty";
+import _ from "lodash";
 const mongoose = require("mongoose");
 const GridFsStorage = require("multer-gridfs-storage");
 const Grid = require("gridfs-stream");
@@ -54,19 +55,33 @@ exports.getTimesheets = (req, res) => {
       }
       // Files exist
       else {
-        var timesheetsByDate = [];
-        for (var i = 0; i < timesheets.length; i++) {
-          for (var j = 1; j < timesheets.length; j++) {
-            if (timesheets[i].metadata.date !== timesheets[j].metadata.date) {
-              if (!timesheetsByDate.includes(timesheets[i].metadata.date)) {
-                //console.log(timesheets[i].metadata.date);
-                timesheetsByDate.push(timesheets[i].metadata.date);
-                break;
-              }
+        let timesheetsByDate = [];
+        for (let i = 0; i < timesheets.length; i++) {
+          if (i !== timesheets.length - 1) {
+            if (
+              timesheets[i].metadata.date !== timesheets[i + 1].metadata.date
+            ) {
+              timesheetsByDate.push({
+                date: timesheets[i].metadata.date,
+                id: timesheets[i]._id
+              });
+            }
+          } else {
+            if (
+              timesheets[i].metadata.date === timesheets[i - 1].metadata.date
+            ) {
+              timesheetsByDate.push({
+                date: timesheets[i - 1].metadata.date,
+                id: timesheets[i - 1]._id
+              });
+            } else {
+              timesheetsByDate.push({
+                date: timesheets[i].metadata.date,
+                id: timesheets[i]._id
+              });
             }
           }
         }
-        //console.log(timesheetsByDate);
         return res.json(timesheetsByDate);
       }
     });
@@ -88,19 +103,33 @@ exports.getTimesheet = (req, res) => {
       }
       // Files exist
       else {
-        var timesheetsByDate = [];
-        for (var i = 0; i < timesheets.length; i++) {
-          for (var j = 1; j < timesheets.length; j++) {
-            if (timesheets[i].metadata.date !== timesheets[j].metadata.date) {
-              if (!timesheetsByDate.includes(timesheets[i].metadata.date)) {
-                //console.log(timesheets[i].metadata.date);
-                timesheetsByDate.push(timesheets[i].metadata.date);
-                break;
-              }
+        let timesheetsByDate = [];
+        for (let i = 0; i < timesheets.length; i++) {
+          if (i !== timesheets.length - 1) {
+            if (
+              timesheets[i].metadata.date !== timesheets[i + 1].metadata.date
+            ) {
+              timesheetsByDate.push({
+                date: timesheets[i].metadata.date,
+                id: timesheets[i]._id
+              });
+            }
+          } else {
+            if (
+              timesheets[i].metadata.date === timesheets[i - 1].metadata.date
+            ) {
+              timesheetsByDate.push({
+                date: timesheets[i - 1].metadata.date,
+                id: timesheets[i - 1]._id
+              });
+            } else {
+              timesheetsByDate.push({
+                date: timesheets[i].metadata.date,
+                id: timesheets[i]._id
+              });
             }
           }
         }
-        //console.log(timesheetsByDate);
         return res.json(timesheetsByDate);
       }
     });
@@ -109,7 +138,7 @@ exports.getTimesheet = (req, res) => {
 // Route to display all files by date
 exports.getTimesheetsByDate = (req, res) => {
   gfs.files
-    .find({ "metadata.user": req.user.id, "metadata.date": req.params.date })
+    .find({ "metadata.user": req.params.id, "metadata.date": req.params.date })
     .sort([["uploadDate", -1]])
     .toArray((err, timesheets) => {
       // Check if timesheets
