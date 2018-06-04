@@ -127,8 +127,7 @@ const ProfileSchema = new Schema({
       },
       to: {
         type: String,
-        default: moment(Date.now()).format("YYYY-MM"),
-        required: true
+        default: moment(Date.now()).format("YYYY-MM")
       },
       description: {
         type: String
@@ -157,8 +156,7 @@ const ProfileSchema = new Schema({
       },
       to: {
         type: String,
-        default: moment(Date.now()).format("YYYY-MM"),
-        required: true
+        default: moment(Date.now()).format("YYYY-MM")
       }
     }
   ]

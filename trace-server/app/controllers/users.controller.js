@@ -29,11 +29,9 @@ exports.usersList = (req, res) => {
 // @access  Private
 
 exports.getProfileById = (req, res) => {
-  console.log(req.params.id);
   Profile.findOne({ user: req.params.id })
     .populate("user", ["firstName", "lastName", "email"])
     .then(displayProfile => {
-      console.log(displayProfile);
       if (!displayProfile) {
         return res.json({
           errors: { global: "No profile" }
@@ -104,9 +102,10 @@ exports.createProfile = (req, res) => {
   profileFields.user = req.user.id;
   if (req.body.cellphone) profileFields.cellphone = req.body.cellphone;
   if (req.body.onProject) profileFields.onProject = req.body.onProject;
-  if (req.body.endDate) profileFields.endDate = req.body.endDate;
+  if (typeof req.body.endDate !== "undefined")
+    profileFields.endDate = req.body.endDate;
+  else profileFields.endDate = "";
   if (req.body.relocation) profileFields.relocation = req.body.relocation;
-
   // Skillset - Split into array
   if (typeof req.body.skillset !== "undefined") {
     profileFields.skillset = req.body.skillset.split(",");
@@ -175,7 +174,7 @@ exports.addExperience = (req, res) => {
     newExp.description = req.body.description;
 
     if (profile) {
-      console.log(req.body.id);
+      //console.log(req.body.id);
       if (!isEmpty(req.body.id)) {
         //console.log(req.body.id);
         Profile.updateOne(
