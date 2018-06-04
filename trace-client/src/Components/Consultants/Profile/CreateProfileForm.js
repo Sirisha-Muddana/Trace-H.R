@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-/*
-import InlineError from "../messages/InlineError";
-*/
-import { Form, Message } from "semantic-ui-react";
+import InlineError from "../../messages/InlineError";
+import { Form, Message, Dropdown } from "semantic-ui-react";
 import TextFieldGroup from "../../common/TextFieldGroup";
+//import SelectListGroup from "../../common/SelectListGroup";
 
 class CreateProfileForm extends Component {
-  state = {
-    data: {
+  constructor(props) {
+    super(props);
+    this.state = {
       street: "",
       apartment: "",
       city: "",
@@ -18,24 +18,40 @@ class CreateProfileForm extends Component {
       dateOfBirth: "",
       skillset: "",
       onProject: "",
-      endDate: ""
-    },
-    loading: false,
-    errors: {}
-  };
+      endDate: "",
+      loading: false,
+      errors: {}
+    };
+    this.onChange = this.onChange.bind(this);
+    this.dropdownOnChange = this.dropdownOnChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
   onChange = e =>
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    });
+    this.setState({ ...this.state, [e.target.name]: e.target.value });
+
+  dropdownOnChange = (e, data) =>
+    this.setState({ ...this.state, onProject: data.value });
 
   onSubmit = () => {
-    const errors = this.validate(this.state.data);
+    const data = {
+      street: this.state.street,
+      apartment: this.state.apartment,
+      city: this.state.city,
+      state: this.state.state,
+      zip: this.state.zip,
+      cellphone: this.state.cellphone,
+      dateOfBirth: this.state.dateOfBirth,
+      skillset: this.state.skillset,
+      onProject: this.state.onProject
+    };
+    if (this.state.endDate) data.endDate = this.state.endDate;
+    const errors = this.validate(data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
       this.props
-        .submit(this.state.data)
+        .submit(data)
         .catch(err =>
           this.setState({ errors: err.response.data.errors, loading: false })
         );
@@ -52,12 +68,26 @@ class CreateProfileForm extends Component {
     if (!data.cellphone) errors.cellphone = "Please enter a cellphone";
     if (!data.skillset) errors.skillset = "Please enter a skillset";
     if (!data.onProject) errors.onProject = "Please select Yes or No ";
+    if (data.onProject === "Yes" && !data.endDate)
+      errors.endDate = "Please enter a tentative end date ";
 
     return errors;
   };
 
   render() {
-    const { data, errors, loading } = this.state;
+    const { errors, loading } = this.state;
+    const options = [
+      {
+        key: "Yes",
+        text: "Yes",
+        value: "Yes"
+      },
+      {
+        key: "No",
+        text: "No",
+        value: "No"
+      }
+    ];
     return (
       <Form onSubmit={this.onSubmit} loading={loading}>
         {errors.global && (
@@ -71,7 +101,7 @@ class CreateProfileForm extends Component {
             <TextFieldGroup
               type="text"
               name="street"
-              value={data.street}
+              value={this.state.street}
               label="Street Address"
               onChange={this.onChange}
               error={errors.street}
@@ -81,7 +111,7 @@ class CreateProfileForm extends Component {
             <TextFieldGroup
               type="text"
               name="apartment"
-              value={data.apartment}
+              value={this.state.apartment}
               label="Apartment number"
               onChange={this.onChange}
               error={errors.apartment}
@@ -93,7 +123,7 @@ class CreateProfileForm extends Component {
             <TextFieldGroup
               type="text"
               name="city"
-              value={data.city}
+              value={this.state.city}
               label="City"
               onChange={this.onChange}
               error={errors.city}
@@ -103,7 +133,7 @@ class CreateProfileForm extends Component {
             <TextFieldGroup
               type="text"
               name="state"
-              value={data.state}
+              value={this.state.state}
               label="State"
               onChange={this.onChange}
               error={errors.state}
@@ -115,7 +145,7 @@ class CreateProfileForm extends Component {
             <TextFieldGroup
               type="number"
               name="zip"
-              value={data.zip}
+              value={this.state.zip}
               label="Zip Code"
               onChange={this.onChange}
               error={errors.zip}
@@ -126,7 +156,7 @@ class CreateProfileForm extends Component {
             <TextFieldGroup
               type="number"
               name="cellphone"
-              value={data.cellphone}
+              value={this.state.cellphone}
               label="Phone number"
               onChange={this.onChange}
               error={errors.cellphone}
@@ -141,7 +171,7 @@ class CreateProfileForm extends Component {
               placeholder="Please use comma separated values (eg.
                     HTML,CSS,JavaScript,PHP"
               name="skillset"
-              value={data.skillset}
+              value={this.state.skillset}
               label="List your skillset"
               onChange={this.onChange}
               error={errors.skillset}
@@ -150,25 +180,43 @@ class CreateProfileForm extends Component {
         </div>
         <div className="row">
           <div className="col-md-6 form">
-            <TextFieldGroup
+            <Form.Field required error={!!errors.onProject}>
+              <label htmlFor="onProject">
+                Are you currently on a project?>
+              </label>
+              <Dropdown
+                name="onProject"
+                onChange={this.dropdownOnChange}
+                options={options}
+                placeholder="Select an option"
+                fluid
+                selection
+              />
+              {errors.onProject && <InlineError text={errors.onProject``} />}
+            </Form.Field>
+            {/*<SelectListGroup
               type="text"
               name="onProject"
               value={data.onProject}
               label="On project?"
               onChange={this.onChange}
+              options={options}
+              placeholder="Select an option"
               error={errors.onProject}
-            />
+            />*/}
           </div>
-          <div className="col-md-6 form">
-            <TextFieldGroup
-              type="date"
-              name="endDate"
-              value={data.endDate}
-              label="End date"
-              onChange={this.onChange}
-              error={errors.endDate}
-            />
-          </div>
+          {this.state.onProject === "Yes" && (
+            <div className="col-md-6 form">
+              <TextFieldGroup
+                type="date"
+                name="endDate"
+                value={this.state.endDate}
+                label="End date"
+                onChange={this.onChange}
+                error={errors.endDate}
+              />
+            </div>
+          )}
         </div>
         <br />
         <button className="btn btn-lg btn-secondary btn-block">Submit</button>

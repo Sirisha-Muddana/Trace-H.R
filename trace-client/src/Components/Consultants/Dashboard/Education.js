@@ -23,8 +23,8 @@ class Education extends Component {
           </Table.Cell>
           <Table.Cell width={4} textAlign="left">
             <Moment format="MMM/YYYY">{edu.from}</Moment> -
-            {edu.to === null ? (
-              " Now"
+            {edu.to === "" ? (
+              " Present"
             ) : (
               <Moment format="MMM/YYYY">{edu.to}</Moment>
             )}

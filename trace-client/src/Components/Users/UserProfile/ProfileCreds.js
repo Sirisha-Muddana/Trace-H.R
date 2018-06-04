@@ -47,6 +47,9 @@ class ProfileCreds extends Component {
           <strong>Position:</strong> {exp.title}
         </p>
         <p>
+          <strong>Client:</strong> {exp.company}
+        </p>
+        <p>
           {exp.location === "" ? null : (
             <span>
               <strong>Location: </strong> {exp.location}

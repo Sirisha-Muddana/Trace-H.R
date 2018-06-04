@@ -23,8 +23,8 @@ class Experience extends Component {
           </Table.Cell>
           <Table.Cell width={4} textAlign="left">
             <Moment format="MMM/YYYY">{exp.from}</Moment> -
-            {exp.to === null ? (
-              " Now"
+            {exp.to === "" ? (
+              " Present"
             ) : (
               <Moment format="MMM/YYYY">{exp.to}</Moment>
             )}

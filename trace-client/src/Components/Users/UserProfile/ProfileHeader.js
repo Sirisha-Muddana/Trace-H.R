@@ -10,8 +10,7 @@ class ProfileHeader extends Component {
           <div className="card card-body bg-info text-white mb-3">
             <div className="text-center">
               <h1 className="display-4 text-center">
-                {displayProfile.user.firstName}
-                {displayProfile.user.lastName}
+                {displayProfile.user.firstName} {displayProfile.user.lastName}
               </h1>
               <p>
                 {displayProfile.address.street},{" "}

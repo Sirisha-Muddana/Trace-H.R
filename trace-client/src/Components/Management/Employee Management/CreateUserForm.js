@@ -1,37 +1,50 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Validator from "validator";
-import { Form } from "semantic-ui-react";
+import { Form, Dropdown } from "semantic-ui-react";
+import InlineError from "../../messages/InlineError";
 import TextFieldGroup from "../../common/TextFieldGroup";
-import SelectListGroup from "../../common/SelectListGroup";
+//import SelectListGroup from "../../common/SelectListGroup";
 
 class CreateUserForm extends Component {
-  state = {
-    data: {
+  constructor(props) {
+    super(props);
+    this.state = {
       firstName: "",
       lastName: "",
       email: "",
       password: "",
-      userAccessRole: ""
-    },
+      userAccessRole: "",
+      loading: false,
+      errors: {}
+    };
 
-    loading: false,
-    errors: {}
-  };
+    this.onChange = this.onChange.bind(this);
+    this.dropdownOnChange = this.dropdownOnChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
   onChange = e =>
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    });
+    this.setState({ ...this.state, [e.target.name]: e.target.value });
+
+  dropdownOnChange = (e, data) =>
+    this.setState({ ...this.state, userAccessRole: data.value });
 
   onSubmit = e => {
     e.preventDefault();
-    const errors = this.validate(this.state.data);
+    const data = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      password: this.state.password,
+      userAccessRole: this.state.userAccessRole
+    };
+    const errors = this.validate(data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
       this.props
-        .submit(this.state.data)
+        .submit(data)
         .catch(err =>
           this.setState({ errors: err.response.data.errors, loading: false })
         );
@@ -51,7 +64,7 @@ class CreateUserForm extends Component {
   };
 
   render() {
-    const { data, errors, loading } = this.state;
+    const { errors, loading } = this.state;
     const accessOptions = [
       {
         key: "ACCESS LEVEL 1",
@@ -84,7 +97,7 @@ class CreateUserForm extends Component {
         <TextFieldGroup
           type="text"
           name="firstName"
-          value={data.firstName}
+          value={this.state.firstName}
           label="First Name"
           onChange={this.onChange}
           error={errors.firstName}
@@ -92,7 +105,7 @@ class CreateUserForm extends Component {
         <TextFieldGroup
           type="text"
           name="lastName"
-          value={data.lastName}
+          value={this.state.lastName}
           label="Last Name"
           onChange={this.onChange}
           error={errors.lastName}
@@ -100,7 +113,7 @@ class CreateUserForm extends Component {
         <TextFieldGroup
           type="email"
           name="email"
-          value={data.email}
+          value={this.state.email}
           label="Email Address"
           onChange={this.onChange}
           error={errors.email}
@@ -108,19 +121,33 @@ class CreateUserForm extends Component {
         <TextFieldGroup
           type="password"
           name="password"
-          value={data.password}
+          value={this.state.password}
           label="Password"
           onChange={this.onChange}
           error={errors.password}
         />
-        <SelectListGroup
+        <Form.Field required error={!!errors.userAccessRole}>
+          <label htmlFor="userAccessRole">Please select an access role</label>
+          <Dropdown
+            name="userAccessRole"
+            onChange={this.dropdownOnChange}
+            options={accessOptions}
+            placeholder="Select an option"
+            fluid
+            selection
+          />
+          {errors.userAccessRole && (
+            <InlineError text={errors.userAccessRole``} />
+          )}
+        </Form.Field>
+        {/*<SelectListGroup
           placeholder="Select Access Role"
           name="userAccessRole"
           value={data.userAccessRole}
           onChange={this.onChange}
           options={accessOptions}
           error={errors.userAccessRole}
-        />
+        />*/}
         <br />
         <button className="btn btn-secondary btn-lg btn-block">Submit</button>
       </Form>

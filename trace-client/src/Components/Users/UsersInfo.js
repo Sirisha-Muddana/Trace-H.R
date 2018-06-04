@@ -42,7 +42,9 @@ class UsersInfo extends Component {
         <Table.Cell textAlign="center">{users.cellphone}</Table.Cell>
         <Table.Cell textAlign="center">{users.address.state}</Table.Cell>
         <Table.Cell textAlign="center">{users.onProject}</Table.Cell>
-        <Table.Cell textAlign="center">{users.endDate}</Table.Cell>
+        <Table.Cell textAlign="center">
+          {users.endDate === "" ? "N/A" : users.endDate}
+        </Table.Cell>
       </Table.Row>
     ));
     return (

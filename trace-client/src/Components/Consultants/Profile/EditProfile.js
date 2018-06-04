@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, Message } from "semantic-ui-react";
+import InlineError from "../../messages/InlineError";
+import { Form, Message, Dropdown } from "semantic-ui-react";
 import TextFieldGroup from "../../common/TextFieldGroup";
 import { createProfile, getCurrentProfile } from "../../../actions/userActions";
 import { connect } from "react-redux";
@@ -23,6 +24,7 @@ class EditProfile extends Component {
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
+    this.dropdownOnChange = this.dropdownOnChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -55,6 +57,9 @@ class EditProfile extends Component {
       [e.target.name]: e.target.value
     });
 
+  dropdownOnChange = (e, data) =>
+    this.setState({ ...this.state, onProject: data.value });
+
   onSubmit = () => {
     const data = {
       street: this.state.street,
@@ -65,9 +70,10 @@ class EditProfile extends Component {
       cellphone: this.state.cellphone,
       dateOfBirth: this.state.dateOfBirth,
       skillset: this.state.skillset,
-      onProject: this.state.onProject,
-      endDate: this.state.endDate
+      onProject: this.state.onProject
     };
+
+    if (this.state.endDate) data.endDate = this.state.endDate;
 
     const errors = this.validate(data);
     this.setState({ errors });
@@ -92,11 +98,25 @@ class EditProfile extends Component {
     if (!data.cellphone) errors.cellphone = "Please enter a cellphone";
     if (!data.skillset) errors.skillset = "Please enter a skillset";
     if (!data.onProject) errors.onProject = "Please enter ";
+    if (data.onProject === "Yes" && !data.endDate)
+      errors.endDate = "Please enter a tentative end date ";
     return errors;
   };
 
   render() {
     const { errors, loading } = this.state;
+    const options = [
+      {
+        key: "Yes",
+        text: "Yes",
+        value: "Yes"
+      },
+      {
+        key: "No",
+        text: "No",
+        value: "No"
+      }
+    ];
     return (
       <div className="container h-100">
         <h1 className="display-4 text-center">Edit Profile</h1>
@@ -194,25 +214,35 @@ class EditProfile extends Component {
               </div>
               <div className="row">
                 <div className="col-md-6 form">
-                  <TextFieldGroup
-                    type="text"
-                    name="onProject"
-                    value={this.state.onProject}
-                    label="On project?"
-                    onChange={this.onChange}
-                    error={errors.onProject}
-                  />
+                  <Form.Field required error={!!errors.onProject}>
+                    <label htmlFor="onProject">
+                      Are you currently on a project?
+                    </label>
+                    <Dropdown
+                      name="onProject"
+                      onChange={this.dropdownOnChange}
+                      options={options}
+                      placeholder="Select an option"
+                      fluid
+                      selection
+                    />
+                    {errors.onProject && (
+                      <InlineError text={errors.onProject``} />
+                    )}
+                  </Form.Field>
                 </div>
-                <div className="col-md-6 form">
-                  <TextFieldGroup
-                    type="date"
-                    name="endDate"
-                    value={this.state.endDate}
-                    label="End date"
-                    onChange={this.onChange}
-                    error={errors.endDate}
-                  />
-                </div>
+                {this.state.onProject === "Yes" && (
+                  <div className="col-md-6 form">
+                    <TextFieldGroup
+                      type="date"
+                      name="endDate"
+                      value={this.state.endDate}
+                      label="End date"
+                      onChange={this.onChange}
+                      error={errors.endDate}
+                    />
+                  </div>
+                )}
               </div>
 
               <br />

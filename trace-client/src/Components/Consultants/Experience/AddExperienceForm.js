@@ -42,7 +42,6 @@ class AddExperienceForm extends Component {
     if (!data.title) errors.title = "Please enter your Job title";
     if (!data.company) errors.company = "Please enter your Client name";
     if (!data.from) errors.from = "Please enter the from date";
-    if (!data.to) errors.to = "Please enter your to date";
 
     return errors;
   };
@@ -89,7 +88,6 @@ class AddExperienceForm extends Component {
           value={data.to}
           label="To date"
           onChange={this.onChange}
-          error={errors.to}
         />
 
         <button className="btn btn-secondary btn-lg btn-block">Submit</button>
