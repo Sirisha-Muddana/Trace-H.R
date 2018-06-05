@@ -14,10 +14,12 @@ export default {
         .then(res => res.data.user),
 
     signup: user =>
-      axios.post(serverhost + "register", user).then(res => res.data.user),
+      axios.post(serverhost + "register", user).then(res => res.data),
 
     confirm: token =>
-      axios.post(serverhost + "confirmation", token).then(res => res.data.user),
+      axios
+        .post(serverhost + "confirmation", { token: token })
+        .then(res => res.data.user),
 
     resetPasswordRequest: email =>
       axios.post(serverhost + "reset_password_request", email),
