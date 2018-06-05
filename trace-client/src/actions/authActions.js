@@ -28,7 +28,7 @@ export const confirm = token => dispatch =>
     dispatch(userLoggedIn(user));
   });
 
-export const resetPasswordRequest = ({ email }) => () =>
+export const resetPasswordRequest = email => () =>
   api.auth.resetPasswordRequest(email);
 
 export const validateToken = token => () => api.auth.validateToken(token);
