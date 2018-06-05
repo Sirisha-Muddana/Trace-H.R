@@ -67,18 +67,25 @@ exports.getTimesheets = (req, res) => {
               });
             }
           } else {
-            if (
-              timesheets[i].metadata.date === timesheets[i - 1].metadata.date
-            ) {
-              timesheetsByDate.push({
-                date: timesheets[i - 1].metadata.date,
-                id: timesheets[i - 1]._id
-              });
-            } else {
+            if (timesheets.length === 1) {
               timesheetsByDate.push({
                 date: timesheets[i].metadata.date,
                 id: timesheets[i]._id
               });
+            } else {
+              if (
+                timesheets[i].metadata.date === timesheets[i - 1].metadata.date
+              ) {
+                timesheetsByDate.push({
+                  date: timesheets[i - 1].metadata.date,
+                  id: timesheets[i - 1]._id
+                });
+              } else {
+                timesheetsByDate.push({
+                  date: timesheets[i].metadata.date,
+                  id: timesheets[i]._id
+                });
+              }
             }
           }
         }
@@ -115,18 +122,25 @@ exports.getTimesheet = (req, res) => {
               });
             }
           } else {
-            if (
-              timesheets[i].metadata.date === timesheets[i - 1].metadata.date
-            ) {
-              timesheetsByDate.push({
-                date: timesheets[i - 1].metadata.date,
-                id: timesheets[i - 1]._id
-              });
-            } else {
+            if (timesheets.length === 1) {
               timesheetsByDate.push({
                 date: timesheets[i].metadata.date,
                 id: timesheets[i]._id
               });
+            } else {
+              if (
+                timesheets[i].metadata.date === timesheets[i - 1].metadata.date
+              ) {
+                timesheetsByDate.push({
+                  date: timesheets[i - 1].metadata.date,
+                  id: timesheets[i - 1]._id
+                });
+              } else {
+                timesheetsByDate.push({
+                  date: timesheets[i].metadata.date,
+                  id: timesheets[i]._id
+                });
+              }
             }
           }
         }
