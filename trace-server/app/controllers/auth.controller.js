@@ -82,12 +82,12 @@ exports.validateToken = (req, res) => {
 };
 
 exports.resetPassword = (req, res) => {
-  const { password, token } = req.body.data;
+  const { password, token } = req.body;
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      res.status(401).json({ errors: { global: "Invalid token" } });
+      res.status(401).json({ errors: { global: "Error decoding token" } });
     } else {
-      Users.findOne({ _id: decoded._id }).then(user => {
+      Users.findOne({ _id: decoded.id }).then(user => {
         if (user) {
           user.setPassword(password);
           user.save().then(() => res.json({}));
