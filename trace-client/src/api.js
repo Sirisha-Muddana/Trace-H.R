@@ -21,6 +21,9 @@ export default {
         .post(serverhost + "confirmation", { token: token })
         .then(res => res.data.user),
 
+    resendConfirmation: () =>
+      axios.post(serverhost + "resend_confirmation").then(res => res.data),
+
     resetPasswordRequest: email =>
       axios.post(serverhost + "reset_password_request", email),
 

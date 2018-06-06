@@ -1,10 +1,15 @@
-import { USER_LOGGED_IN, SUCCESS_MESSAGE } from "../actions/types";
+import {
+  USER_LOGGED_IN,
+  SUCCESS_MESSAGE,
+  RESEND_EMAIL
+} from "../actions/types";
 import isEmpty from "lodash/isEmpty";
 
 const initialState = {
   isAuthenticated: false,
   user: {},
-  success: false
+  success: false,
+  resendEmail: false
 };
 
 export default function authReducer(state = initialState, action = {}) {
@@ -21,6 +26,12 @@ export default function authReducer(state = initialState, action = {}) {
       return {
         ...state,
         success: true
+      };
+
+    case RESEND_EMAIL:
+      return {
+        ...state,
+        resendEmail: true
       };
     default:
       return state;

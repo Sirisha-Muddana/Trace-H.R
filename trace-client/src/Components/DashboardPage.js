@@ -8,7 +8,7 @@ import AllSubmissionsPage from "./Management/All Submissions/AllSubmissionsPage"
 import DashboardCalendar from "./Human Resources/DashboardCalendar";
 import Profile from "./Consultants/Dashboard/Profile";
 
-const DashboardPage = ({ isConfirmed, userAccessRole }) => (
+const DashboardPage = ({ resendEmail, isConfirmed, userAccessRole }) => (
   <div>
     {!isConfirmed && <ConfirmEmailMessage />}
     {userAccessRole === "ACCESS LEVEL 1" && <Profile />}
@@ -19,13 +19,15 @@ const DashboardPage = ({ isConfirmed, userAccessRole }) => (
 );
 DashboardPage.propTypes = {
   isConfirmed: PropTypes.bool.isRequired,
+  resendEmail: PropTypes.bool.isRequired,
   userAccessRole: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state) {
   return {
     isConfirmed: !!state.auth.user.confirmed,
-    userAccessRole: state.auth.user.userAccessRole
+    userAccessRole: state.auth.user.userAccessRole,
+    resendEmail: state.auth.resendEmail
   };
 }
 
