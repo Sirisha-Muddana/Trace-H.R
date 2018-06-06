@@ -1,4 +1,3 @@
-var bcrypt = require("bcryptjs");
 const Users = require("../models/users.model");
 import parseErrors from "../utils/parseErrors";
 import { sendConfirmationEmail } from "../mailer";
@@ -45,10 +44,9 @@ exports.confirmation = (req, res) => {
 };
 
 exports.resendConfirmation = (req, res) => {
-  let token = "";
-  Users.findOne({ _id: req.user.id }).then(user => {
+  Users.findOne({ email: req.body.email }).then(user => {
     Users.findOneAndUpdate(
-      { _id: req.user.id },
+      { email: req.body.email },
       { confirmationToken: user.resetConfirmationToken() },
       { new: true }
     ).then(user => {
@@ -107,10 +105,19 @@ exports.authenticate = (req, res) => {
   const password = req.body.password;
   Users.findOne({ email })
     .then(user => {
-      if (user && user.comparePassword(password)) {
-        res.json({ user: user.toAuthJSON() });
-      } else
-        res.status(404).json({ errors: { global: "Invalid credentials" } });
+      if (user.confirmed === true) {
+        if (user && user.comparePassword(password)) {
+          res.json({ user: user.toAuthJSON() });
+        } else
+          res.status(404).json({ errors: { global: "Invalid credentials" } });
+      } else {
+        res.status(404).json({
+          errors: {
+            global:
+              "You have to verify your account before logging in. Please click the link in your email."
+          }
+        });
+      }
     })
     .catch(err => res.status(500).json({ errors: parseErrors(err.errors) }));
 };
