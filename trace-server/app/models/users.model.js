@@ -105,6 +105,10 @@ UserSchema.methods.setConfirmationToken = function setConfirmationToken() {
   this.confirmationToken = this.generateJWT();
 };
 
+UserSchema.methods.resetConfirmationToken = function resetConfirmationToken() {
+  return this.generateJWT();
+};
+
 UserSchema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
   return `${process.env.HOST}/confirmation/${this.confirmationToken}`;
 };

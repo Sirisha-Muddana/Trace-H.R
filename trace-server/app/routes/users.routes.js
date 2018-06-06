@@ -53,6 +53,12 @@ module.exports = app => {
 
   app.post("/api/confirmation", auth.confirmation);
 
+  app.post(
+    "/api/resend_confirmation",
+    passport.authenticate("jwt", { session: false }),
+    auth.resendConfirmation
+  );
+
   app.post("/api/reset_password_request", auth.resetPasswordRequest);
 
   app.post("/api/validate_token", auth.validateToken);

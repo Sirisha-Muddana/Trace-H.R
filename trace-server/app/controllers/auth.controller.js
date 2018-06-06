@@ -44,6 +44,21 @@ exports.confirmation = (req, res) => {
   );
 };
 
+exports.resendConfirmation = (req, res) => {
+  let token = "";
+  Users.findOne({ _id: req.user.id }).then(user => {
+    Users.findOneAndUpdate(
+      { _id: req.user.id },
+      { confirmationToken: user.resetConfirmationToken() },
+      { new: true }
+    ).then(user => {
+      user
+        ? sendConfirmationEmail(user) && res.json({})
+        : res.status(400).json({});
+    });
+  });
+};
+
 exports.resetPasswordRequest = (req, res) => {
   Users.findOne({ email: req.body.email }).then(user => {
     if (user) {
@@ -62,6 +77,7 @@ exports.validateToken = (req, res) => {
     if (err) {
       res.status(401).json({});
     } else {
+      console.log;
       res.json({});
     }
   });
@@ -89,10 +105,12 @@ exports.resetPassword = (req, res) => {
 exports.authenticate = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  Users.findOne({ email }).then(user => {
-    if (user && user.comparePassword(password)) {
-      res.json({ user: user.toAuthJSON() });
-    } else res.status(404).json({ errors: { global: "Invalid credentials" } });
-  })
-      .catch(err => res.status(500).json({ errors: parseErrors(err.errors) }));
+  Users.findOne({ email })
+    .then(user => {
+      if (user && user.comparePassword(password)) {
+        res.json({ user: user.toAuthJSON() });
+      } else
+        res.status(404).json({ errors: { global: "Invalid credentials" } });
+    })
+    .catch(err => res.status(500).json({ errors: parseErrors(err.errors) }));
 };
