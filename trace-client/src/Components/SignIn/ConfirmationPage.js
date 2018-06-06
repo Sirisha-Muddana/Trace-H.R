@@ -37,7 +37,7 @@ class ConfirmationPage extends Component {
                 <Message.Header>
                   Thank you. Your account has been verified
                 </Message.Header>
-                <Link to="/dashboard"> Go to dashboard</Link>
+                <Link to="/login"> Go to login</Link>
               </Message.Content>
             </Message>
           )}
@@ -48,9 +48,9 @@ class ConfirmationPage extends Component {
               <Icon name="warning sign" />
               <Message.Content>
                 <Message.Header>
-                  You're already verified. Please continue.
+                  Token Invalid or You're already verified.
                 </Message.Header>
-                <Link to="/dashboard"> Go to dashboard</Link>
+                <Link to="/login"> Go to login</Link>
               </Message.Content>
             </Message>
           )}

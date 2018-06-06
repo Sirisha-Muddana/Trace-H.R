@@ -1,5 +1,5 @@
 import setAuthorizationToken from "../utils/setAuthorizationToken";
-import { RESEND_EMAIL, USER_LOGGED_IN } from "./types";
+import { USER_LOGGED_IN } from "./types";
 import api from "../api";
 import decode from "jwt-decode";
 
@@ -22,24 +22,10 @@ export const logout = () => dispatch => {
   dispatch(userLoggedIn({}));
 };
 
-export const confirm = token => dispatch =>
-  api.auth.confirm(token).then(user => {
-    localStorage.jwtToken = user.token;
-    const decoded = decode(user.token);
-    dispatch(userLoggedIn(decoded));
-  });
+export const confirm = token => () => api.auth.confirm(token);
 
-export const resendConfirmation = () => dispatch =>
-  api.auth.resendConfirmation().then(user => {
-    dispatch(resendEmail());
-  });
-
-// Success
-export const resendEmail = () => {
-  return {
-    type: RESEND_EMAIL
-  };
-};
+export const resendConfirmation = email => dispatch =>
+  api.auth.resendConfirmation(email).then(user => {});
 
 export const resetPasswordRequest = email => () =>
   api.auth.resetPasswordRequest(email);

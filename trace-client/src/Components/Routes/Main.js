@@ -61,11 +61,11 @@ const Main = ({ isAuthenticated }) => (
         path="/reset_password/:token"
         component={ResetPasswordPage}
       />
-      {isAuthenticated ? (
-        <Route exact path="/confirmation/:token" component={ConfirmationPage} />
-      ) : (
-        <Redirect to="/login" />
-      )}
+      <GuestRoute
+        exact
+        path="/confirmation/:token"
+        component={ConfirmationPage}
+      />
 
       {/*********************MANAGEMENT ROUTES*********************************/}
       {isAuthenticated ? (

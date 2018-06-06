@@ -16,13 +16,12 @@ export default {
     signup: user =>
       axios.post(serverhost + "register", user).then(res => res.data),
 
-    confirm: token =>
-      axios
-        .post(serverhost + "confirmation", { token: token })
-        .then(res => res.data.user),
+    confirm: token => axios.post(serverhost + "confirmation", { token: token }),
 
-    resendConfirmation: () =>
-      axios.post(serverhost + "resend_confirmation").then(res => res.data),
+    resendConfirmation: email =>
+      axios
+        .post(serverhost + "resend_confirmation", { email: email })
+        .then(res => res.data),
 
     resetPasswordRequest: email =>
       axios.post(serverhost + "reset_password_request", email),

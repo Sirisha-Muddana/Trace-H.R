@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Validator from "validator";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { Form, Message } from "semantic-ui-react";
 import TextFieldGroup from "../../common/TextFieldGroup";
+import { resendConfirmation } from "../../../actions/authActions";
 
 class LoginForm extends Component {
   state = {
@@ -14,6 +17,10 @@ class LoginForm extends Component {
     loading: false,
     errors: {}
   };
+
+  onClick(email) {
+    this.props.resendConfirmation(email);
+  }
 
   onChange = e =>
     this.setState({
@@ -48,8 +55,11 @@ class LoginForm extends Component {
       <Form className="form-signin" onSubmit={this.onSubmit} loading={loading}>
         {errors.global && (
           <Message negative>
-            <Message.Header>Something went wrong</Message.Header>
+            <Message.Header>Thank you for registering</Message.Header>
             <p>{errors.global}</p>
+            <Link to="/login" onClick={this.onClick.bind(this, data.email)}>
+              Resend confirmation email
+            </Link>
           </Message>
         )}
         <h1 id="heading" className="text-center">
@@ -84,7 +94,8 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  resendConfirmation: PropTypes.func.isRequired
 };
 
-export default LoginForm;
+export default connect(null, { resendConfirmation })(LoginForm);

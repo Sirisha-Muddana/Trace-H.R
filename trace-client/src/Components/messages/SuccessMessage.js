@@ -5,7 +5,7 @@ const SuccessMessage = () => (
   <Message
     success
     header="Registration successful"
-    content="You're all signed up. Please login to continue."
+    content="Email sent. Please verify your email to continue."
   />
 );
 
