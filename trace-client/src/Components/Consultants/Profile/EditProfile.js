@@ -18,7 +18,7 @@ class EditProfile extends Component {
       cellphone: "",
       dateOfBirth: "",
       skillset: "",
-      onProject: "",
+      onProject: this.props.users.profile.onProject,
       endDate: "",
       loading: false,
       errors: {}
@@ -46,7 +46,7 @@ class EditProfile extends Component {
         cellphone: profile.cellphone,
         dateOfBirth: profile.dateOfBirth,
         skillset: skillset,
-        onProject: profile.onProject,
+        //onProject: profile.onProject,
         endDate: profile.endDate
       });
     }
@@ -54,6 +54,7 @@ class EditProfile extends Component {
 
   onChange = e =>
     this.setState({
+      ...this.state,
       [e.target.name]: e.target.value
     });
 
@@ -73,7 +74,8 @@ class EditProfile extends Component {
       onProject: this.state.onProject
     };
 
-    if (this.state.endDate) data.endDate = this.state.endDate;
+    if (this.state.onProject === "Yes") data.endDate = this.state.endDate;
+    else data.endDate = "";
 
     const errors = this.validate(data);
     this.setState({ errors });
@@ -95,9 +97,11 @@ class EditProfile extends Component {
     if (!data.city) errors.city = "Please enter a city";
     if (!data.state) errors.state = "Please enter a state";
     if (!data.zip) errors.zip = "Please enter a zip code";
+    if (data.zip.length < 5 || data.zip.length > 5)
+      errors.zip = "Zip code has to be 5 digits";
     if (!data.cellphone) errors.cellphone = "Please enter a cellphone";
     if (!data.skillset) errors.skillset = "Please enter a skillset";
-    if (!data.onProject) errors.onProject = "Please enter ";
+    if (!data.onProject) errors.onProject = "Please select an option";
     if (data.onProject === "Yes" && !data.endDate)
       errors.endDate = "Please enter a tentative end date ";
     return errors;
@@ -220,6 +224,7 @@ class EditProfile extends Component {
                     </label>
                     <Dropdown
                       name="onProject"
+                      defaultValue={this.state.onProject}
                       onChange={this.dropdownOnChange}
                       options={options}
                       placeholder="Select an option"
