@@ -100,6 +100,7 @@ exports.createProfile = (req, res) => {
   // Get fields
   const profileFields = {};
   profileFields.user = req.user.id;
+  if (req.body.dateOfBirth) profileFields.dateOfBirth = req.body.dateOfBirth;
   if (req.body.cellphone) profileFields.cellphone = req.body.cellphone;
   if (req.body.onProject) profileFields.onProject = req.body.onProject;
   if (typeof req.body.endDate !== "undefined")
