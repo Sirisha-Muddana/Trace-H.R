@@ -427,3 +427,12 @@ body > .navbar-collapse:after {
   padding-bottom: 0;
   background-color: #fff;
 }
+
+/****** CSS for hiding input spin button ********/
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}

@@ -100,6 +100,8 @@ class EditProfile extends Component {
     if (data.zip.length < 5 || data.zip.length > 5)
       errors.zip = "Zip code has to be 5 digits";
     if (!data.cellphone) errors.cellphone = "Please enter a cellphone";
+    if (data.cellphone.length < 10 || data.cellphone.length > 10)
+      errors.cellphone = "Cellphone number has to be 10 digits";
     if (!data.skillset) errors.skillset = "Please enter a skillset";
     if (!data.onProject) errors.onProject = "Please select an option";
     if (data.onProject === "Yes" && !data.endDate)

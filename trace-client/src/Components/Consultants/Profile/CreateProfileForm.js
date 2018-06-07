@@ -65,7 +65,11 @@ class CreateProfileForm extends Component {
     if (!data.city) errors.city = "Please enter a city";
     if (!data.state) errors.state = "Please enter a state";
     if (!data.zip) errors.zip = "Please enter a zip code";
-    if (!data.cellphone) errors.cellphone = "Please enter a cellphone";
+    if (data.zip.length < 5 || data.zip.length > 5)
+      errors.zip = "Zip code has to be 5 digits";
+    if (!data.cellphone) errors.cellphone = "Please enter a cellphone number";
+    if (data.cellphone.length < 10 || data.cellphone.length > 10)
+      errors.cellphone = "Cellphone number has to be 10 digits";
     if (!data.skillset) errors.skillset = "Please enter a skillset";
     if (!data.onProject) errors.onProject = "Please select Yes or No ";
     if (data.onProject === "Yes" && !data.endDate)
@@ -161,6 +165,7 @@ class CreateProfileForm extends Component {
               onChange={this.onChange}
               error={errors.cellphone}
               max="10"
+              min="10"
             />
           </div>
         </div>
@@ -181,9 +186,7 @@ class CreateProfileForm extends Component {
         <div className="row">
           <div className="col-md-6 form">
             <Form.Field required error={!!errors.onProject}>
-              <label htmlFor="onProject">
-                Are you currently on a project?>
-              </label>
+              <label htmlFor="onProject">Are you currently on a project?</label>
               <Dropdown
                 name="onProject"
                 onChange={this.dropdownOnChange}
@@ -192,7 +195,7 @@ class CreateProfileForm extends Component {
                 fluid
                 selection
               />
-              {errors.onProject && <InlineError text={errors.onProject``} />}
+              {errors.onProject && <InlineError text={errors.onProject} />}
             </Form.Field>
             {/*<SelectListGroup
               type="text"
