@@ -16,7 +16,6 @@ const DashboardPage = ({ userAccessRole }) => (
   </div>
 );
 DashboardPage.propTypes = {
-  resendEmail: PropTypes.bool.isRequired,
   userAccessRole: PropTypes.string.isRequired
 };
 
