@@ -12,6 +12,10 @@ class ResetPasswordPage extends Component {
     success: false
   };
 
+  onClick(email) {
+    this.props.resendConfirmation(email);
+  }
+
   componentDidMount() {
     this.props
       .validateToken(this.props.match.params.token)
@@ -45,8 +49,11 @@ class ResetPasswordPage extends Component {
             <Message negative icon>
               <Icon name="warning sign" />
               <Message.Content>
-                <Message.Header>Invalid token.</Message.Header>
-                <Link to="/forgot_password"> Resend reset link</Link>
+                <Message.Header>
+                  Invalid token. Please go to the forgot password page to
+                  request a new token.
+                </Message.Header>
+                <Link to="/forgot_password">Back to forgot password</Link>
               </Message.Content>
             </Message>
           )}
