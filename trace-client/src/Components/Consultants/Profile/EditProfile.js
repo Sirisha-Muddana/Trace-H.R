@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import InlineError from "../../messages/InlineError";
+import { stateOptions } from "../../common/common";
 import { Form, Message, Dropdown } from "semantic-ui-react";
 import TextFieldGroup from "../../common/TextFieldGroup";
 import { createProfile, getCurrentProfile } from "../../../actions/userActions";
@@ -13,7 +14,7 @@ class EditProfile extends Component {
       street: "",
       apartment: "",
       city: "",
-      state: "",
+      state: this.props.users.profile.address.state,
       zip: "",
       cellphone: "",
       dateOfBirth: "",
@@ -25,6 +26,7 @@ class EditProfile extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.dropdownOnChange = this.dropdownOnChange.bind(this);
+    this.onStateChange = this.onStateChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -41,7 +43,7 @@ class EditProfile extends Component {
         street: profile.address.street,
         apartment: profile.address.apartment,
         city: profile.address.city,
-        state: profile.address.state,
+        //state: profile.address.state,
         zip: profile.address.zip,
         cellphone: profile.cellphone,
         dateOfBirth: profile.dateOfBirth,
@@ -60,6 +62,9 @@ class EditProfile extends Component {
 
   dropdownOnChange = (e, data) =>
     this.setState({ ...this.state, onProject: data.value });
+
+  onStateChange = (e, data) =>
+    this.setState({ ...this.state, state: data.value });
 
   onSubmit = () => {
     const data = {
@@ -159,7 +164,7 @@ class EditProfile extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-6 form">
+                <div className="col-md-4 form">
                   <TextFieldGroup
                     type="text"
                     name="city"
@@ -170,19 +175,23 @@ class EditProfile extends Component {
                     max="5"
                   />
                 </div>
-                <div className="col-md-6 form">
-                  <TextFieldGroup
-                    type="text"
-                    name="state"
-                    value={this.state.state}
-                    label="State"
-                    onChange={this.onChange}
-                    error={errors.state}
-                  />
+                <div className="col-md-4 form">
+                  <Form.Field required error={!!errors.state}>
+                    <label htmlFor="state">Select state</label>
+                    <Dropdown
+                      name="state"
+                      defaultValue={this.state.state}
+                      onChange={this.onStateChange}
+                      options={stateOptions}
+                      placeholder="Select a state"
+                      fluid
+                      selection
+                      search
+                    />
+                    {errors.state && <InlineError text={errors.state} />}
+                  </Form.Field>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6 form">
+                <div className="col-md-4 form">
                   <TextFieldGroup
                     type="number"
                     name="zip"
@@ -190,6 +199,18 @@ class EditProfile extends Component {
                     label="Zip Code"
                     onChange={this.onChange}
                     error={errors.zip}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6 form">
+                  <TextFieldGroup
+                    type="date"
+                    name="dateOfBirth"
+                    value={this.state.dateOfBirth}
+                    label="Date of birth"
+                    onChange={this.onChange}
+                    error={errors.dateOfBirth}
                   />
                 </div>
                 <div className="col-md-6 form">
@@ -234,7 +255,7 @@ class EditProfile extends Component {
                       selection
                     />
                     {errors.onProject && (
-                      <InlineError text={errors.onProject``} />
+                      <InlineError text={errors.onProject} />
                     )}
                   </Form.Field>
                 </div>

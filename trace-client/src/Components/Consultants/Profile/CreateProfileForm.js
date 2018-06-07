@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import InlineError from "../../messages/InlineError";
 import { Form, Message, Dropdown } from "semantic-ui-react";
 import TextFieldGroup from "../../common/TextFieldGroup";
+import { stateOptions } from "../../common/common";
 //import SelectListGroup from "../../common/SelectListGroup";
 
 class CreateProfileForm extends Component {
@@ -24,6 +25,7 @@ class CreateProfileForm extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.dropdownOnChange = this.dropdownOnChange.bind(this);
+    this.onStateChange = this.onStateChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -32,6 +34,9 @@ class CreateProfileForm extends Component {
 
   dropdownOnChange = (e, data) =>
     this.setState({ ...this.state, onProject: data.value });
+
+  onStateChange = (e, data) =>
+    this.setState({ ...this.state, state: data.value });
 
   onSubmit = () => {
     const data = {
@@ -123,7 +128,7 @@ class CreateProfileForm extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6 form">
+          <div className="col-md-4 form">
             <TextFieldGroup
               type="text"
               name="city"
@@ -133,19 +138,23 @@ class CreateProfileForm extends Component {
               error={errors.city}
             />
           </div>
-          <div className="col-md-6 form">
-            <TextFieldGroup
-              type="text"
-              name="state"
-              value={this.state.state}
-              label="State"
-              onChange={this.onChange}
-              error={errors.state}
-            />
+          <div className="col-md-4 form">
+            <Form.Field required error={!!errors.state}>
+              <label htmlFor="state">Select state</label>
+              <Dropdown
+                name="state"
+                defaultValue={this.state.state}
+                onChange={this.onStateChange}
+                options={stateOptions}
+                placeholder="Select a state"
+                fluid
+                selection
+                search
+              />
+              {errors.state && <InlineError text={errors.state} />}
+            </Form.Field>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6 form">
+          <div className="col-md-4 form">
             <TextFieldGroup
               type="number"
               name="zip"
@@ -154,6 +163,18 @@ class CreateProfileForm extends Component {
               onChange={this.onChange}
               error={errors.zip}
               max="5"
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6 form">
+            <TextFieldGroup
+              type="date"
+              name="dateOfBirth"
+              value={this.state.dateOfBirth}
+              label="Date of birth"
+              onChange={this.onChange}
+              error={errors.dateOfBirth}
             />
           </div>
           <div className="col-md-6 form">

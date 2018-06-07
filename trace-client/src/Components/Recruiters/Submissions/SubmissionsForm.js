@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button, Dropdown } from "semantic-ui-react";
-import { feedback, recruiters } from "../../common/common";
+import { Table, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 const color = "teal";
@@ -16,9 +15,9 @@ class SubmissionsForm extends Component {
         <Table.Cell textAlign="center" width={3}>
           <Dropdown placeholder="Status" fluid selection options={feedback} />
         </Table.Cell>
-        <Table.Cell textAlign="center" width={3}>
+        {/*<Table.Cell textAlign="center" width={3}>
           <Dropdown placeholder="Status" fluid selection options={recruiters} />
-        </Table.Cell>
+        </Table.Cell>*/}
         <Table.Cell textAlign="center">
           <Button.Group>
             <Button
