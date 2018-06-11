@@ -154,14 +154,14 @@ export const deleteEducation = id => dispatch => {
   });
 };
 
-export const createProfile = data => dispatch => api.users.createProfile(data);
+export const createProfile = data => () => api.users.createProfile(data);
 
-export const addImmigrationInfo = data => dispatch =>
+export const addImmigrationInfo = data => () =>
   api.users.addImmigrationInfo(data);
 
-export const addExperience = data => dispatch => api.users.addExperience(data);
+export const addExperience = data => () => api.users.addExperience(data);
 
-export const addEducation = data => dispatch => api.users.addEducation(data);
+export const addEducation = data => () => api.users.addEducation(data);
 
 // users loading
 export const setUsersLoading = () => {
